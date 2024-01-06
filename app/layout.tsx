@@ -11,13 +11,13 @@ export const metadata: Metadata = {
     icon: [
       {
         media: "(prefers-color-scheme: dark)",
-        url: "../../public/image/hodlogo1.png",
-        href: "../../public/image/hodlogo1.png",
+        url: "../public/images/hodlogo1.png",
+        href: "../public/images/hodlogo1.png"
       },
       {
         media: "(prefers-color-scheme: light)",
-        url: "../../public/image/hodlogo1.png",
-        href: "../../public/image/hodlogo1.png",
+        url: "../public/images/hodlogo1.png",
+        href: "../public/images/hodlogo1.png",
       },
     ]
   }
