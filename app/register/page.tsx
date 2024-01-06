@@ -1,7 +1,7 @@
 export default function Registration() {
   return (
     <div>
-      <h1>About</h1>
+      <h1>Registration</h1>
     </div>
   );
 }
