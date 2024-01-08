@@ -199,7 +199,9 @@ export default function Registration() {
                 </div>
                 {step === 1 && (
                   <>
-                    <p className=" text-xs text-red-800 text-center">Step 1/3</p>
+                    <p className=" text-xs text-red-800 text-center">
+                      Step 1/3
+                    </p>
                     <p className="text-2xl font-bold text-center">
                       Parent Information
                     </p>
@@ -209,7 +211,6 @@ export default function Registration() {
                     <br />
                     <hr />
                     <br />
-
                   </>
                 )}
                 {step === 2 && <></>}
