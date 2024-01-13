@@ -1,3 +1,5 @@
+import "../../styles/register.module.css";
+
 export const metadata = {
   title: 'Register',
   description: 'a simple app to help parents organize and monitor pickups',
