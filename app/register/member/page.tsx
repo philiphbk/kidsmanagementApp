@@ -1,10 +1,11 @@
-import RegisterComponent from "@/components/registration/RegisterComponent";
+import RegisterMemberComponent from "@/components/registration/RegisterMemberComponent";
 
-export default function MemberRegistration() {
-
+const RegisterComponent = () => {
   return (
     <>
-      <RegisterComponent />
+      <RegisterMemberComponent />
     </>
   );
-}
+};
+
+export default RegisterComponent;

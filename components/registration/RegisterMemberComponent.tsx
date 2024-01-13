@@ -17,13 +17,13 @@ import { RegistrationFormValues } from "@/lib/definitions/form-interfaces";
 // import ImageUpload from "../components/ImageUpload";
 // import ImageUploader from "../components/ImageUploader";
 
-import HodLogoOnly from "@/components/HodLogo";
-import FormHeader from "@/components/FormHeader";
-import PersonalInformation from "./members/InformationPersonal";
-import ChildInformation from "./members/InformationChild";
-import CaretakerInformation from "./members/InformationCaretaker";
+import HodLogoOnly from "@/app/register/member/components/HodLogo";
+import FormHeader from "@/app/register/member/components/FormHeader";
+import PersonalInformation from "@/app/register/member/components/InformationPersonal";
+import ChildInformation from "@/app/register/member/components/InformationChild";
+import CaretakerInformation from "@/app/register/member/components/InformationCaretaker";
 
-const RegisterComponent = () => {
+const RegisterMemberComponent = () => {
     const [step, setStep] = useState(1);
     const totalSteps = 3;
     const [currentTitle, setCurrentTitle] = useState("Personal Information");
@@ -270,4 +270,4 @@ const RegisterComponent = () => {
     );
 }
 
-export default RegisterComponent;
+export default RegisterMemberComponent;
