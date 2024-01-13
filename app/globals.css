@@ -3,25 +3,53 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+    --fontUbuntu: var(--font-ubuntu);
+    --fontInter: var(--font-inter);
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    font-family: var(--fontUbuntu);
+    background-color: #f9f9f9;
+    overflow-x: hidden;
+    padding: 20px;
+}
+
+.platform_title {
+    @apply font-normal text-2xl text-hod-black2;
+}
+
+.form_container {
+    background: url("../public/images/backimg.png"), #f9f9f9 no-repeat;
+}
+
+.form_container form {
+    box-shadow: 0px 2px 24px 0px rgba(0, 0, 0, 0.08);
+}
+
+.steps {
+    @apply py-0.5 px-2 flex justify-center items-center rounded-2xl bg-hod-bg-red-light text-hod-red text-center text-xs leading-4.5 font-inter font-medium;
+}
+
+.input_group {
+    @apply flex flex-col gap-2 w-full mb-6 last:mb-10;
+}
+
+.input_group label {
+    @apply flex flex-col gap-2;
+}
+
+.hod_input {
+    @apply flex flex-col gap-2.5 h-14 w-full p-4 rounded-lg bg-white border border-hod-border-gray;
+}
+
+.hod_button {
+    @apply flex gap-2.5 py-4 px-12 rounded-lg text-base font-normal;
+}
+
+.hod_button_primary {
+    @apply bg-hod-primary text-white border border-hod-primary;
+}
+
+.hod_button_secondary {
+    @apply bg-hod-bg-red-transparent text-hod-secondary border border-hod-border-red;
 }

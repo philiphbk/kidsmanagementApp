@@ -1,11 +1,20 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Ubuntu } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const ubuntu = Ubuntu({
+  weight: ['300', '400', '500', '700'],
+  style: ['normal', 'italic'],
+  subsets: ['latin']
+});
+
 export const metadata: Metadata = {
-  title: "Kids Pickup App",
+  title: {
+    default: "HOD Kids Pick-Up Platform",
+    template: "%s | HOD Kids Pick-Up Platform"
+  },
   description: "a simple app to help parents organize and monitor pickups",
   icons: {
     icon: [
@@ -30,7 +39,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={ubuntu.className}>{children}</body>
     </html>
   );
 }
