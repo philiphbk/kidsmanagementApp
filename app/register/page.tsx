@@ -1,7 +1,5 @@
 import Link from "next/link";
 
-import RegisterComponent from "./member/page";
-
 export default function Register() {
   return (
     <div className="container flex flex-col justify-center p-60">
