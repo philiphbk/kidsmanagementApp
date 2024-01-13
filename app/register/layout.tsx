@@ -1,4 +1,4 @@
-import "../../styles/register.module.css";
+import styles from "../../styles/register.module.css";
 
 export const metadata = {
   title: 'Kids Pickup App Registration',
