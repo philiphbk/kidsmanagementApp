@@ -13,6 +13,10 @@ import * as Yup from "yup";
 
 import { RegistrationFormValues } from "@/lib/definitions/form-interfaces";
 
+// import PreviewImage from "../components/PreviewImage";
+// import ImageUpload from "../components/ImageUpload";
+// import ImageUploader from "../components/ImageUploader";
+
 import HodLogoOnly from "@/components/HodLogo";
 import FormHeader from "@/components/FormHeader";
 import PersonalInformation from "./members/InformationPersonal";
@@ -172,7 +176,7 @@ const RegisterComponent = () => {
                             <h1 className="platform_title">HOD Kids Pick-Up Platform</h1>
                         </div>
 
-                        <main className="form_container flex flex-col items-center w-full h-full">
+                        <main className="form_container flex flex-col items-center w-full h-full mb-14">
                             <Formik<RegistrationFormValues>
                                 initialValues={{
                                     parentInformation: {

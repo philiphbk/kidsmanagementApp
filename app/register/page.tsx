@@ -1,7 +1,5 @@
 import Link from "next/link";
 
-import RegisterComponent from "@/components/registration/RegisterComponent";
-
 export default function Register() {
   return (
     <div className="container flex flex-col justify-center p-60">
@@ -13,7 +11,7 @@ export default function Register() {
           className=" bg-amber-800 rounded px-4 py-5 text-wrap text-white font-semibold"
           href="/register/member"
         >
-          <RegisterComponent />
+          Register as a Member
         </Link>
         <Link
           className=" bg-amber-800 rounded px-4 py-5 text-wrap text-white font-semibold"
