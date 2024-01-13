@@ -1,25 +1,24 @@
 "use client";
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import {
-  useFormik,
-  Field,
-  Form,
-  FormikHelpers,
-  Formik,
-  useFormikContext,
-} from "formik";
-import * as Yup from "yup";
-import PreviewImage from "../components/PreviewImage";
-import ImageUpload from "../components/ImageUpload";
-import ImageUploader from "../components/ImageUploader";
-import { RegistrationFormValues } from "../components/interface";
-import HODLogo from "../../public/hod-logo.png";
 
-export default function MemberRegistration() {
+import { useState, useEffect } from "react";
+
+import { Formik, FormikHelpers, Form } from "formik";
+import * as Yup from "yup";
+
+import { RegistrationFormValues } from "@/lib/definitions/form-interfaces";
+
+import HodLogoOnly from "@/app/register/member/components/HodLogo";
+import FormHeader from "@/app/register/member/components/FormHeader";
+import PersonalInformation from "./components/InformationPersonal";
+import ChildInformation from "./components/InformationChild";
+import CaretakerInformation from "./components/InformationCaretaker";
+
+const RegisterComponent = () => {
   const [step, setStep] = useState(1);
   const totalSteps = 3;
-  const formik = useFormikContext<RegistrationFormValues>();
+  const [currentTitle, setCurrentTitle] = useState("Personal Information");
+
+  // const formik = useFormikContext<RegistrationFormValues>();
 
   const nextStep = () => {
     if (step < totalSteps) {
@@ -52,10 +51,14 @@ export default function MemberRegistration() {
         idName: Yup.string().required("ID name is required!"),
         idPhoto: Yup.mixed()
           .required("ID photo is required!")
-          .test("fileSize", "Image size should be less than 1MB", (value) => {
-            return value && value.size <= 1000000;
-          })
-          .test("fileType", "Only images are allowed", (value) => {
+          .test(
+            "fileSize",
+            "Image size should be less than 1MB",
+            (value: any) => {
+              return value && value.size <= 1000000;
+            }
+          )
+          .test("fileType", "Only images are allowed", (value: any) => {
             return value && value.type.includes("image");
           }),
       }),
@@ -72,11 +75,11 @@ export default function MemberRegistration() {
               .test(
                 "fileSize",
                 "Image size should be less than 1MB",
-                (value) => {
+                (value: any) => {
                   return value && value.size <= 1000000;
                 }
               )
-              .test("fileType", "Only images are allowed", (value) => {
+              .test("fileType", "Only images are allowed", (value: any) => {
                 return value && value.type.includes("image");
               }),
             relationship: Yup.string().required("Relationship is required!"),
@@ -107,11 +110,11 @@ export default function MemberRegistration() {
               .test(
                 "fileSize",
                 "Image size should be less than 1MB",
-                (value) => {
+                (value: any) => {
                   return value && value.size <= 1000000;
                 }
               )
-              .test("fileType", "Only images are allowed", (value) => {
+              .test("fileType", "Only images are allowed", (value: any) => {
                 return value && value.type.includes("image");
               }),
           })
@@ -129,16 +132,29 @@ export default function MemberRegistration() {
       actions.setTouched({});
       actions.setSubmitting(false);
     } else {
-      console.log("Registration form submitted!");
-      console.log(values);
-      const formData = new FormData();
+      actions.setSubmitting(true);
+      console.log("is submitting!", values);
+      // const formData = new FormData();
 
       try {
+        console.log("Registration form submitted!");
+        setStep(1);
+        actions.resetForm();
       } catch (err) {
         console.log(err);
       }
     }
   };
+
+  useEffect(() => {
+    if (step === 1) {
+      setCurrentTitle("Parent Information");
+    } else if (step === 2) {
+      setCurrentTitle("Child’s Information");
+    } else {
+      setCurrentTitle("Caretaker Information");
+    }
+  }, [step]);
 
   return (
     <>
@@ -149,77 +165,107 @@ export default function MemberRegistration() {
         </>
       ) : (
         <>
-          <Formik<RegistrationFormValues>
-            initialValues={{
-              parentInformation: {
-                firstName: "",
-                lastName: "",
-                email: "",
-                gender: "",
-                phoneNumberPrimary: "",
-                phoneNumberSecondary: "",
-                idName: "",
-                idPhoto: "", // Image data for the ID picture
-              },
-              childInformation: [
-                {
-                  firstName: "",
-                  lastName: "",
-                  gender: "",
-                  dateOfBirth: new Date(),
-                  ageGroup: "",
-                  photograph: "", // Image data for the photograph
-                  relationship: "",
-                  specialNeeds: "",
-                },
-              ],
-              caregiverInformation: [
-                {
-                  firstName: "",
-                  lastName: "",
-                  email: "",
-                  gender: "",
-                  phoneNumberPrimary: "",
-                  phoneNumberSecondary: "",
-                  relationshipWithChild: "",
-                  relationshipWithParent: "",
-                  photograph: "", // Compulsory if relationship with parent is 'Others'
-                },
-              ],
-            }}
-            onSubmit={handleSubmit}
-          >
-            {({ values }) => (
-              <Form>
-                <div className=" p-7">
-                  <div className="flex justify-center"></div>
-                  <div className="flex justify-center">
-                    <h1 className="text-xl font-bold">Registration Form</h1>
-                  </div>
-                </div>
-                {step === 1 && (
-                  <>
-                    <p className=" text-xs text-red-800 text-center">
-                      Step 1/3
-                    </p>
-                    <p className="text-2xl font-bold text-center">
-                      Parent Information
-                    </p>
-                    <p className=" italic text-xs">
-                      (All fields are required unless specified optional)
-                    </p>
-                    <br />
-                    <hr />
-                    <br />
-                  </>
+          <div className="h-screen w-screen flex flex-col items-center p-10">
+            <div className="flex flex-col gap-6 items-center">
+              <HodLogoOnly />
+              <h1 className="platform_title">HOD Kids Pick-Up Platform</h1>
+            </div>
+
+            <main className="form_container flex flex-col items-center w-full h-full">
+              <Formik<RegistrationFormValues>
+                initialValues={{
+                  parentInformation: {
+                    firstName: "",
+                    lastName: "",
+                    email: "",
+                    gender: "",
+                    phoneNumberPrimary: "",
+                    phoneNumberSecondary: "",
+                    idName: "",
+                    idPhoto: "", // Image data for the ID picture
+                  },
+                  childInformation: [
+                    {
+                      firstName: "",
+                      lastName: "",
+                      gender: "",
+                      dateOfBirth: new Date(),
+                      ageGroup: "",
+                      photograph: "", // Image data for the photograph
+                      relationship: "",
+                      specialNeeds: "",
+                    },
+                  ],
+                  caregiverInformation: [
+                    {
+                      firstName: "",
+                      lastName: "",
+                      email: "",
+                      gender: "",
+                      phoneNumberPrimary: "",
+                      phoneNumberSecondary: "",
+                      relationshipWithChild: "",
+                      relationshipWithParent: "",
+                      photograph: "", // Compulsory if relationship with parent is 'Others'
+                    },
+                  ],
+                }}
+                // validationSchema={RegistrationSchema}
+                onSubmit={handleSubmit}
+              >
+                {({ errors, touched }) => (
+                  <Form className="mt-14 p-10 flex flex-col justify-center max-w-[564px] w-full bg-white rounded-2xl">
+                    <div className="steps mb-2 w-16">
+                      Step {step}/{totalSteps}
+                    </div>
+
+                    <FormHeader title={currentTitle} />
+                    <hr className="text-hod-text-gray2 mt-6 mb-10" />
+
+                    {step === 1 && (
+                      <>
+                        <PersonalInformation />
+                      </>
+                    )}
+
+                    {step === 2 && (
+                      <>
+                        <ChildInformation />
+                      </>
+                    )}
+
+                    {step === 3 && (
+                      <>
+                        <CaretakerInformation />
+                      </>
+                    )}
+
+                    <div className="buttons flex gap-6 justify-end">
+                      {step > 1 && (
+                        <button
+                          type="button"
+                          className="hod_button hod_button_secondary"
+                          onClick={previousStep}
+                        >
+                          Previous
+                        </button>
+                      )}
+                      <button
+                        type="submit"
+                        className="hod_button hod_button_primary"
+                      >
+                        {step < totalSteps ? "Next" : "Submit"}
+                      </button>
+                    </div>
+                  </Form>
                 )}
-                {step === 2 && <></>}
-                {step === 3 && <></>}
-              </Form>
-            )}
-          </Formik>
+              </Formik>
+            </main>
+          </div>
         </>
       )}
     </>
   );
-}
+};
+
+export default RegisterComponent;

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import RegisterComponent from "@/components/registration/RegisterComponent";
+import RegisterComponent from "./member/page";
 
 export default function Register() {
   return (
@@ -13,7 +13,7 @@ export default function Register() {
           className=" bg-amber-800 rounded px-4 py-5 text-wrap text-white font-semibold"
           href="/register/member"
         >
-          <RegisterComponent />
+          Register as a Member
         </Link>
         <Link
           className=" bg-amber-800 rounded px-4 py-5 text-wrap text-white font-semibold"
