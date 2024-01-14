@@ -3,8 +3,6 @@
 import { useState, useEffect } from "react";
 
 import {
-    //   useFormik,
-    // useFormikContext,
     Formik,
     FormikHelpers,
     Form,
@@ -19,13 +17,12 @@ import { RegistrationFormValues } from "@/lib/definitions/form-interfaces";
 
 import HodLogoOnly from "@/app/register/components/HodLogo";
 import FormHeader from "@/app/register/components/FormHeader";
-import PersonalInformation from "@/app/register/member/components/InformationPersonal";
-import ChildInformation from "@/app/register/member/components/InformationChild";
-import CaretakerInformation from "@/app/register/member/components/InformationCaretaker";
+import PersonalInformation from "@/app/register/visitor/components/InformationPersonal";
+import ChildInformation from "@/app/register/visitor/components/InformationChild";
 
-const RegisterMemberComponent = () => {
+const RegisterVisitorComponent = () => {
     const [step, setStep] = useState(1);
-    const totalSteps = 3;
+    const totalSteps = 2;
     const [currentTitle, setCurrentTitle] = useState("Personal Information");
 
     // const formik = useFormikContext<RegistrationFormValues>();
