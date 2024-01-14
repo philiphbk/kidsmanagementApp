@@ -66,6 +66,7 @@ export interface VisitorParent {
 
 export interface VisitorChild {
     firstName: string;
+    lastName: string;
     gender: string;
     dateOfBirth: Date;
     ageGroup: string;
