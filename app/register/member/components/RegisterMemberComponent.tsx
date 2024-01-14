@@ -17,8 +17,8 @@ import { RegistrationFormValues } from "@/lib/definitions/form-interfaces";
 // import ImageUpload from "../components/ImageUpload";
 // import ImageUploader from "../components/ImageUploader";
 
-import HodLogoOnly from "@/app/register/member/components/HodLogo";
-import FormHeader from "@/app/register/member/components/FormHeader";
+import HodLogoOnly from "@/app/register/components/HodLogo";
+import FormHeader from "@/app/register/components/FormHeader";
 import PersonalInformation from "@/app/register/member/components/InformationPersonal";
 import ChildInformation from "@/app/register/member/components/InformationChild";
 import CaretakerInformation from "@/app/register/member/components/InformationCaretaker";

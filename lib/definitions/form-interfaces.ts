@@ -54,3 +54,26 @@ export interface RegistrationFormValues {
     childInformation: ChildInformation[];
     caregiverInformation: CaregiverInformation[];
 }
+
+export interface VisitorParent {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+    gender: string;
+    relationshipWithChild: string;
+}
+
+export interface VisitorChild {
+    firstName: string;
+    gender: string;
+    dateOfBirth: Date;
+    ageGroup: string;
+    photograph: string;
+    specialNeeds?: string;
+}
+
+export interface VisitorInformation {
+    parentInformation: VisitorParent;
+    childInformation: VisitorChild[];
+}

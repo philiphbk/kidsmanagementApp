@@ -17,7 +17,7 @@ body {
     @apply font-normal text-2xl text-hod-black2;
 }
 
-.form_container {
+.form_container, .success_container {
     background: url("../public/images/backimg.png"), #f9f9f9 no-repeat;
 }
 
