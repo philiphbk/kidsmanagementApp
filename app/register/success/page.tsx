@@ -31,7 +31,7 @@ export default function Success() {
             <button className=" bg-[#273472] rounded px-4 py-5 text-wrap text-white font-semibold">
               Go to Home
             </button>
-          </Link>
+          </Link> 
         </div>
       </div>
     </>
