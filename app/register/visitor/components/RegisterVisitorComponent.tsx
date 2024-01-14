@@ -9,7 +9,7 @@ import {
 } from "formik";
 import * as Yup from "yup";
 
-import { RegistrationFormValues } from "@/lib/definitions/form-interfaces";
+import { VisitorInformation } from "@/lib/definitions/form-interfaces";
 
 // import PreviewImage from "../components/PreviewImage";
 // import ImageUpload from "../components/ImageUpload";
@@ -53,16 +53,7 @@ const RegisterVisitorComponent = () => {
                 phoneNumberPrimary: Yup.string().required(
                     "Primary phone number is required!"
                 ),
-                phoneNumberSecondary: Yup.string(),
-                idName: Yup.string().required("ID name is required!"),
-                idPhoto: Yup.mixed()
-                    .required("ID photo is required!")
-                    .test("fileSize", "Image size should be less than 1MB", (value: any) => {
-                        return value && value.size <= 1000000;
-                    })
-                    .test("fileType", "Only images are allowed", (value: any) => {
-                        return value && value.type.includes("image");
-                    }),
+                relationship: Yup.string().required("Relationship is required!"),
             }),
             childInformation: Yup.array()
                 .of(
@@ -89,45 +80,12 @@ const RegisterVisitorComponent = () => {
                     })
                 )
                 .nullable(),
-            caregiverInformation: Yup.array()
-                .of(
-                    Yup.object().shape({
-                        firstName: Yup.string().required("First name is required!"),
-                        lastName: Yup.string().required("Last name is required!"),
-                        email: Yup.string()
-                            .email("Invalid email address!")
-                            .required("Email is required!"),
-                        gender: Yup.string().required("Gender is required!"),
-                        phoneNumberPrimary: Yup.string().required(
-                            "Primary phone number is required!"
-                        ),
-                        phoneNumberSecondary: Yup.string(),
-                        relationshipWithChild: Yup.string().required(
-                            "Relationship with child is required!"
-                        ),
-                        relationshipWithParent: Yup.string().required(
-                            "Relationship with parent is required!"
-                        ),
-                        photograph: Yup.mixed()
-                            .test(
-                                "fileSize",
-                                "Image size should be less than 1MB",
-                                (value: any) => {
-                                    return value && value.size <= 1000000;
-                                }
-                            )
-                            .test("fileType", "Only images are allowed", (value: any) => {
-                                return value && value.type.includes("image");
-                            }),
-                    })
-                )
-                .nullable(),
         })
         .nullable();
 
     const handleSubmit = async (
-        values: RegistrationFormValues,
-        actions: FormikHelpers<RegistrationFormValues>
+        values: VisitorInformation,
+        actions: FormikHelpers<VisitorInformation>
     ) => {
         if (step < totalSteps) {
             nextStep();
@@ -151,10 +109,8 @@ const RegisterVisitorComponent = () => {
     useEffect(() => {
         if (step === 1) {
             setCurrentTitle("Parent Information");
-        } else if (step === 2) {
-            setCurrentTitle("Child’s Information");
         } else {
-            setCurrentTitle("Caretaker Information");
+            setCurrentTitle("Child’s Information");
         }
     }, [step])
 
@@ -174,17 +130,15 @@ const RegisterVisitorComponent = () => {
                         </div>
 
                         <main className="form_container flex flex-col items-center w-full h-full mb-14">
-                            <Formik<RegistrationFormValues>
+                            <Formik<VisitorInformation>
                                 initialValues={{
                                     parentInformation: {
                                         firstName: "",
                                         lastName: "",
                                         email: "",
                                         gender: "",
-                                        phoneNumberPrimary: "",
-                                        phoneNumberSecondary: "",
-                                        idName: "",
-                                        idPhoto: "", // Image data for the ID picture
+                                        phoneNumber: "", 
+                                        relationshipWithChild: "",
                                     },
                                     childInformation: [
                                         {
@@ -194,21 +148,7 @@ const RegisterVisitorComponent = () => {
                                             dateOfBirth: new Date(),
                                             ageGroup: "",
                                             photograph: "", // Image data for the photograph
-                                            relationship: "",
                                             specialNeeds: "",
-                                        },
-                                    ],
-                                    caregiverInformation: [
-                                        {
-                                            firstName: "",
-                                            lastName: "",
-                                            email: "",
-                                            gender: "",
-                                            phoneNumberPrimary: "",
-                                            phoneNumberSecondary: "",
-                                            relationshipWithChild: "",
-                                            relationshipWithParent: "",
-                                            photograph: "", // Compulsory if relationship with parent is 'Others'
                                         },
                                     ],
                                 }}
@@ -233,12 +173,6 @@ const RegisterVisitorComponent = () => {
                                         {step === 2 && (
                                             <>
                                                 <ChildInformation />
-                                            </>
-                                        )}
-
-                                        {step === 3 && (
-                                            <>
-                                                <CaretakerInformation />
                                             </>
                                         )}
 
@@ -267,4 +201,4 @@ const RegisterVisitorComponent = () => {
     );
 }
 
-export default RegisterMemberComponent;
+export default RegisterVisitorComponent;
