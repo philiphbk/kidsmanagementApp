@@ -170,7 +170,7 @@ const RegisterMemberComponent = () => {
                 </>
             ) : (
                 <>
-                    <div className="h-screen w-screen flex flex-col items-center p-10">
+                    <div className="h-screen w-screen flex flex-col items-center mx-auto p-5 md:p-10">
                         <div className="flex flex-col gap-6 items-center">
                             <HodLogoOnly />
                             <h1 className="platform_title">HOD Kids Pick-Up Platform</h1>
@@ -218,8 +218,8 @@ const RegisterMemberComponent = () => {
                                 // validationSchema={RegistrationSchema}
                                 onSubmit={handleSubmit}
                             >
-                                {({ errors, touched }) => (
-                                    <Form className="mt-14 p-10 flex flex-col justify-center max-w-[564px] w-full bg-white rounded-2xl">
+                                {({ values, errors, touched }) => (
+                                    <Form className="mt-14 px-5 py-6 md:p-10 flex flex-col justify-center max-w-[564px] w-full bg-white rounded-2xl">
                                         <div className="steps mb-2 w-16">
                                             Step {step}/{totalSteps}
                                         </div>
@@ -245,7 +245,7 @@ const RegisterMemberComponent = () => {
                                             </>
                                         )}
 
-                                        <div className="buttons flex gap-6 justify-end">
+                                        <div className="buttons mt-10 flex flex-col md-flex-row gap-6 justify-end">
                                             {step > 1 && (
                                                 <button
                                                     type="button"

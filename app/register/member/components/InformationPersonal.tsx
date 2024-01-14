@@ -4,7 +4,7 @@ import { ErrorMessage, Field } from "formik";
 const PersonalInformation = () => {
     return (
         <section className="personal_info">
-            <div className="flex gap-6">
+            <div className="flex gap-x-6 flex-col md:flex-row">
                 <div className="input_group">
                     <label htmlFor="firstName">First Name</label>
                     <Field

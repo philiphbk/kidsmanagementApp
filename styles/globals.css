@@ -11,7 +11,6 @@ body {
     font-family: var(--fontUbuntu);
     background-color: #f9f9f9;
     overflow-x: hidden;
-    padding: 20px;
 }
 
 .platform_title {
@@ -31,7 +30,7 @@ body {
 }
 
 .input_group {
-    @apply flex flex-col gap-2 w-full mb-6 last:mb-10;
+    @apply flex flex-col gap-2 w-full mb-6;
 }
 
 .input_group label {
