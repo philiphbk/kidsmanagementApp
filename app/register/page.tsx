@@ -12,12 +12,12 @@ export const meta: Metadata = {
 
 export default function Register() {
   return (
-    <div className="success_container flex flex-col justify-center p-60">
+    <div className="success_container flex flex-col justify-center py-36">
       <div className="flex justify-center">
         <Image src={HODLogo} width={100} height={100} alt="hodlogo" />
       </div>
-      <h1 className=" flex items-center justify-center mb-7 font-extrabold text-5xl text-center text-[#273472]">
-        Welcome to Junior Church Kids App
+      <h1 className=" flex items-center justify-center mb-7 font-extrabold text-6xl text-center text-[#273472]">
+        Welcome <br/> to <br/>Junior Church Kids App
       </h1>
       <div className=" flex gap-9 items-center justify-center">
         <Link
