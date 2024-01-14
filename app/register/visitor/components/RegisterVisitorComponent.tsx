@@ -109,7 +109,7 @@ const RegisterVisitorComponent = () => {
     useEffect(() => {
         if (step === 1) {
             setCurrentTitle("Parent Information");
-        } else (step === 2) {
+        } else {
             setCurrentTitle("Child’s Information");
         }
     }, [step])

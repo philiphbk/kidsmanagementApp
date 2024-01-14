@@ -88,23 +88,21 @@ const ChildInformation = () => {
           ))}
         </Field>
       </div>
-    </section>
 
-    {/* special needs */}
-    <section className="special_needs">
-      <h3 className="section_title">Special Needs</h3>
-
-      <div className="input_group">
-        <label htmlFor="specialNeeds">Special Needs</label>
-        <Field
-          name="specialNeeds"
-          id="specialNeeds"
-          type="text"
-          className="hod_input"
-          aria-placeholder="Enter special needs"
-          aria-label="Special Needs"
-        />
-        <ErrorMessage name="specialNeeds" />
+      {/* special needs */}
+      <div className="special_needs">
+        <div className="input_group">
+          <label htmlFor="specialNeeds">Special Needs</label>
+          <Field
+            name="specialNeeds"
+            id="specialNeeds"
+            type="text"
+            className="hod_input"
+            aria-placeholder="Enter special needs"
+            aria-label="Special Needs"
+          />
+          <ErrorMessage name="specialNeeds" />
+        </div>
       </div>
     </section>
   );
