@@ -1,16 +1,22 @@
+import Image from 'next/image';
 import { useState } from 'react'
 
 interface ImageData {
     base64String: string | null;
 }
 
+interface ImageInputUploader {
+    id?: string,
+    ariaLabel?: string
+}
 
-export default function ImageUploader() {
+export default function ImageUploader({ id, ariaLabel }: ImageInputUploader) {
 
     const [imageData, setImageData] = useState<ImageData>({ base64String: null });
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
+
         if (file) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -22,12 +28,26 @@ export default function ImageUploader() {
         }
     };
 
-  return (
-    <div>
-        <input type="file" accept='image/*' onChange={handleImageChange} />
-        {imageData.base64String && (
-            <img src={imageData.base64String} alt="preview" width="200" height="200" />
-        )}
-    </div>
-  )
+    return (
+        <div>
+            <input
+                name={id}
+                id={id}
+                type="file"
+                accept='image/*'
+                className="hod_input"
+                style={{
+                    paddingTop: "14px",
+                    paddingBottom: "14px"
+                }}
+                aria-label={ariaLabel}
+                aria-placeholder={ariaLabel}
+                onChange={handleImageChange}
+            />
+
+            {imageData.base64String && (
+                <Image src={imageData.base64String} alt="preview" width="200" height="200" />
+            )}
+        </div>
+    )
 }

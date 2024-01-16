@@ -4,7 +4,7 @@ import RegisterVisitorComponent from "@/app/register/visitor/components/Register
 export default function VisitorRegistration() {
   return (
     <>
-      <RegisterVisitorComponent />      
+      <RegisterVisitorComponent />
     </>
   )
 }

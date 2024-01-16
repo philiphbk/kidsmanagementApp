@@ -4,10 +4,11 @@ import { useState, useEffect } from "react";
 
 import {
     //   useFormik,
-    // useFormikContext,
+    useFormikContext,
     Formik,
     FormikHelpers,
     Form,
+    FieldArray
 } from "formik";
 import * as Yup from "yup";
 
@@ -19,9 +20,12 @@ import { RegistrationFormValues } from "@/lib/definitions/form-interfaces";
 
 import HodLogoOnly from "@/app/register/components/HodLogo";
 import FormHeader from "@/app/register/components/FormHeader";
-import PersonalInformation from "@/app/register/member/components/InformationPersonal";
-import ChildInformation from "@/app/register/member/components/InformationChild";
-import CaretakerInformation from "@/app/register/member/components/InformationCaretaker";
+import PersonalInformation from "./InformationPersonal";
+import ChildInformationComponent from "./InformationChild";
+import CaregiverInformationComponent from "./InformationCaregiver";
+import { BsPlusCircle, BsTrash3 } from "react-icons/bs";
+import NewChildInstanceTitle from "../../components/NewChildInstanceTitle";
+
 
 const RegisterMemberComponent = () => {
     const [step, setStep] = useState(1);
@@ -128,6 +132,53 @@ const RegisterMemberComponent = () => {
         })
         .nullable();
 
+    const initialValues = {
+        parentInformation: {
+            firstName: "",
+            lastName: "",
+            email: "",
+            gender: "",
+            roleInChurch: "",
+            departmentInChurch: "",
+            phoneNumberPrimary: "",
+            phoneNumberSecondary: "",
+            idName: "",
+            idPhoto: "", // Image data for the ID picture
+        },
+        childInformation: [
+            {
+                firstName: "",
+                lastName: "",
+                gender: "",
+                dateOfBirth: new Date(),
+                ageGroup: "",
+                photograph: "", // Image data for the photograph
+                relationshipWithChildType: "",
+                relationshipWithChild: "",
+                specialNeeds: "",
+            },
+        ],
+        caregiverInformation: [
+            {
+                firstName: "",
+                lastName: "",
+                email: "",
+                gender: "",
+                roleInChurch: "",
+                departmentInChurch: "",
+                phoneNumberPrimary: "",
+                phoneNumberSecondary: "",
+                relationshipWithChildType: "",
+                relationshipWithChild: "",
+                relationshipWithParentType: "",
+                relationshipWithParent: "",
+                churchLocation: "",
+                churchBranchInLocation: "",
+                photograph: "", // Compulsory if relationship with parent is 'Others'
+            }
+        ],
+    }
+
     const handleSubmit = async (
         values: RegistrationFormValues,
         actions: FormikHelpers<RegistrationFormValues>
@@ -170,7 +221,7 @@ const RegisterMemberComponent = () => {
                 </>
             ) : (
                 <>
-                    <div className="h-screen w-screen flex flex-col items-center p-10">
+                    <div className="h-screen w-screen flex flex-col items-center mx-auto p-5 md:p-10">
                         <div className="flex flex-col gap-6 items-center">
                             <HodLogoOnly />
                             <h1 className="platform_title">HOD Kids Pick-Up Platform</h1>
@@ -178,48 +229,12 @@ const RegisterMemberComponent = () => {
 
                         <main className="form_container flex flex-col items-center w-full h-full mb-14">
                             <Formik<RegistrationFormValues>
-                                initialValues={{
-                                    parentInformation: {
-                                        firstName: "",
-                                        lastName: "",
-                                        email: "",
-                                        gender: "",
-                                        phoneNumberPrimary: "",
-                                        phoneNumberSecondary: "",
-                                        idName: "",
-                                        idPhoto: "", // Image data for the ID picture
-                                    },
-                                    childInformation: [
-                                        {
-                                            firstName: "",
-                                            lastName: "",
-                                            gender: "",
-                                            dateOfBirth: new Date(),
-                                            ageGroup: "",
-                                            photograph: "", // Image data for the photograph
-                                            relationship: "",
-                                            specialNeeds: "",
-                                        },
-                                    ],
-                                    caregiverInformation: [
-                                        {
-                                            firstName: "",
-                                            lastName: "",
-                                            email: "",
-                                            gender: "",
-                                            phoneNumberPrimary: "",
-                                            phoneNumberSecondary: "",
-                                            relationshipWithChild: "",
-                                            relationshipWithParent: "",
-                                            photograph: "", // Compulsory if relationship with parent is 'Others'
-                                        },
-                                    ],
-                                }}
+                                initialValues={initialValues}
                                 // validationSchema={RegistrationSchema}
                                 onSubmit={handleSubmit}
                             >
-                                {({ errors, touched }) => (
-                                    <Form className="mt-14 p-10 flex flex-col justify-center max-w-[564px] w-full bg-white rounded-2xl">
+                                {({ values, errors, touched }) => (
+                                    <Form className="mt-14 px-5 py-6 md:p-10 flex flex-col justify-center max-w-[564px] w-full bg-white rounded-2xl">
                                         <div className="steps mb-2 w-16">
                                             Step {step}/{totalSteps}
                                         </div>
@@ -229,23 +244,79 @@ const RegisterMemberComponent = () => {
 
                                         {step === 1 && (
                                             <>
-                                                <PersonalInformation />
+                                                <PersonalInformation
+                                                    {...values.parentInformation}
+                                                    errors={errors}
+                                                    touched={touched}
+                                                />
                                             </>
                                         )}
 
                                         {step === 2 && (
                                             <>
-                                                <ChildInformation />
+                                                <FieldArray
+                                                    name="childInformation"
+                                                    render={({ push, remove }) => (
+                                                        <>
+                                                            {values.childInformation && values.childInformation.length > 0 &&
+                                                                values.childInformation.map((child, index) => (
+                                                                    <div key={index}>
+                                                                        <NewChildInstanceTitle
+                                                                            index={index}
+                                                                            remove={remove}
+                                                                            desc="Child"
+                                                                        />
+
+                                                                        <ChildInformationComponent index={index} />
+                                                                    </div>
+                                                                ))}
+
+                                                            <button
+                                                                type="button"
+                                                                className="flex gap-2 items-center text-hod-secondary text-base font-normal"
+                                                                onClick={() => push(initialValues.childInformation)}
+                                                            >
+                                                                <BsPlusCircle className="text-hod-secondary" /> Include another child
+                                                            </button>
+                                                        </>
+                                                    )}
+                                                />
                                             </>
                                         )}
 
                                         {step === 3 && (
                                             <>
-                                                <CaretakerInformation />
+                                                <FieldArray
+                                                    name="caregiverInformation"
+                                                    render={({ push, remove }) => (
+                                                        <>
+                                                            {values.caregiverInformation && values.caregiverInformation.length > 0 &&
+                                                                values.caregiverInformation.map((child, index) => (
+                                                                    <div key={index}>
+                                                                        <NewChildInstanceTitle
+                                                                            index={index}
+                                                                            remove={remove}
+                                                                            desc="Caregiver"
+                                                                        />
+
+                                                                        <CaregiverInformationComponent index={index} />
+                                                                    </div>
+                                                                ))}
+
+                                                            <button
+                                                                type="button"
+                                                                className="flex gap-2 items-center text-hod-secondary text-base font-normal"
+                                                                onClick={() => push(initialValues.childInformation)}
+                                                            >
+                                                                <BsPlusCircle className="text-hod-secondary" /> Include new caregiver
+                                                            </button>
+                                                        </>
+                                                    )}
+                                                />
                                             </>
                                         )}
 
-                                        <div className="buttons flex gap-6 justify-end">
+                                        <div className="mt-10 flex flex-col md:flex-row gap-6 justify-end">
                                             {step > 1 && (
                                                 <button
                                                     type="button"

@@ -1,55 +1,61 @@
+export const newChildTitle = [
+  "First", "Second", "Third", "Fourth", "Fifth",
+  "Sixth", "Seventh", "Eight", "Ninth", "Tenth",
+  "Eleventh", "Twelfth", "Thirteenth", "Fourteenth", "Fifteenth"
+]
+
 export const genderData = [
   {
-    id: "m",
-    value: "male",
+    id: "male",
+    value: "male"
   },
   {
-    id: "f",
-    value: "female",
+    id: "female",
+    value: "female"
   },
-];
+]
 
-export const roleInChurch = [
+export const roleInChurchData = [
   {
     id: "pastor",
-    value: "pastor",
+    value: "pastor"
   },
   {
     id: "director",
-    value: "director",
+    value: "director"
   },
   {
     id: "hod",
-    value: "hod",
+    value: "hod"
   },
   {
     id: "asst_hod",
-    value: "assistant hod",
+    value: "assistant hod"
   },
   {
     id: "member",
-    value: "member",
+    value: "member"
   },
   {
     id: "visitor",
-    value: "visitor",
+    value: "visitor"
   },
-];
+]
 
-export const departmentInChurch = [
+export const departmentInChurchData = [
   {
     id: "empf",
-    value: "EMPF",
+    value: "EMPF"
   },
   {
     id: "music",
-    value: "music",
+    value: "music"
   },
   {
     id: "tech",
-    value: "tech",
+    value: "tech"
   },
-];
+]
 
 export const meansOfId = [
   {
@@ -66,44 +72,139 @@ export const meansOfId = [
   },
 ];
 
-export const relationshipWithChild = [
+export const ageGroupData = [
   {
-    id: "father",
-    value: "father",
+    id: "creche",
+    value: "Creche (6 months - 1 year)"
   },
   {
-    id: "mother",
-    value: "mother",
+    id: "age_1_3",
+    value: "Ages 1 - 3"
+  },
+  {
+    id: "age_4_5",
+    value: "Ages 4 - 5"
+  },
+  {
+    id: "age_6_8",
+    value: "Ages 6 - 8"
+  },
+  {
+    id: "age_9_12",
+    value: "Ages 9 - 12"
+  },
+]
+
+export const relationshipTypeData = [
+  {
+    id: "parent",
+    type: "Parent",
   },
   {
     id: "guardian",
-    value: "guardian",
+    type: "Guardian",
   },
   {
-    id: "others",
-    value: "others",
+    id: "other",
+    type: "Other",
   },
-];
+]
 
-export const ageGroup = [
+export const relationshipData = [
   {
-    id: "Creche (6 months - 1 year)",
-    value: "Creche (6 months - 1 year) ",
+    type: "parent",
+    relationship: [
+      {
+        id: "father",
+        value: "Father"
+      },
+      {
+        id: "mother",
+        value: "Mother"
+      },
+    ]
   },
   {
-    id: "Ages 1 - 3",
-    value: "Ages 1 - 3",
+    type: "guardian",
+    relationship: [
+      {
+        id: "grand_dad",
+        value: "Grand Dad"
+      },
+      {
+        id: "grand_mom",
+        value: "Grand Mum"
+      },
+      {
+        id: "brother",
+        value: "Brother"
+      },
+      {
+        id: "sister",
+        value: "Sister"
+      },
+      {
+        id: "uncle",
+        value: "Uncle"
+      },
+      {
+        id: "aunt",
+        value: "Aunt"
+      },
+    ]
   },
   {
-    id: "Ages 4 - 5",
-    value: "Ages 4 - 5",
+    type: "other",
+    relationship: []
+  },
+]
+
+export const locationTypeData = [
+  {
+    id: "lagos",
+    value: "Lagos",
   },
   {
-    id: "Ages 6 - 8",
-    value: "Ages 6 - 8",
+    id: "ogun",
+    value: "Ogun",
   },
   {
-    id: "Ages 9 - 12",
-    value: "Ages 9 - 12",
+    id: "united_kingdom",
+    value: "United Kingdom",
   },
-];
+]
+
+export const branchAndCenterData = [
+  {
+    locationId: "lagos",
+    branches: [
+      {
+        id: "ikeja",
+        value: "Ikeja"
+      },
+      {
+        id: "victoria_island",
+        value: "Victoria Island"
+      },
+    ]
+  },
+  {
+    locationId: "ogun",
+    branches: [
+      {
+        id: "arepo",
+        value: "Arepo"
+      },
+    ]
+  },
+  {
+    locationId: "united_kingdom",
+    branches: [
+      {
+        id: "manchester",
+        value: "Manchester"
+      },
+    ]
+  },
+]
+
