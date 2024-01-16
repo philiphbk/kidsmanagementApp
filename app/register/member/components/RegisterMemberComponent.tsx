@@ -221,20 +221,20 @@ const RegisterMemberComponent = () => {
                 </>
             ) : (
                 <>
-                    <div className="h-screen w-screen flex flex-col items-center mx-auto p-5 md:p-10">
+                    <div className="registration_container">
                         <div className="flex flex-col gap-6 items-center">
                             <HodLogoOnly />
                             <h1 className="platform_title">HOD Kids Pick-Up Platform</h1>
                         </div>
 
-                        <main className="form_container flex flex-col items-center w-full h-full mb-14">
+                        <main className="form_container flex flex-col items-center w-full h-full">
                             <Formik<RegistrationFormValues>
                                 initialValues={initialValues}
                                 // validationSchema={RegistrationSchema}
                                 onSubmit={handleSubmit}
                             >
                                 {({ values, errors, touched }) => (
-                                    <Form className="mt-14 px-5 py-6 md:p-10 flex flex-col justify-center max-w-[564px] w-full bg-white rounded-2xl">
+                                    <Form className="form">
                                         <div className="steps mb-2 w-16">
                                             Step {step}/{totalSteps}
                                         </div>
@@ -316,7 +316,7 @@ const RegisterMemberComponent = () => {
                                             </>
                                         )}
 
-                                        <div className="mt-10 flex flex-col md:flex-row gap-6 justify-end">
+                                        <div className="form_button_container">
                                             {step > 1 && (
                                                 <button
                                                     type="button"
