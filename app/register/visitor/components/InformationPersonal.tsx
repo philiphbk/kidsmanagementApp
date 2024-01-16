@@ -1,56 +1,79 @@
-import { departmentInChurch, genderData, meansOfId, roleInChurch } from "@/lib/data/dummy-data";
-import { ErrorMessage, Field } from "formik";
+import { FC, useState, ChangeEvent } from "react";
+import { genderData, relationshipTypeData, relationshipData } from "@/lib/data/dummy-data";
+import { ErrorMessage, Field, useFormikContext } from "formik";
+import { VisitorInformation, VisitorParent } from "@/lib/definitions/form-interfaces";
 
 const PersonalInformation = () => {
+    const formikContext = useFormikContext<VisitorParent>();
+
+    const [currentType, setCurrentType] = useState("");
+
+    const handleRelationshipChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        const { name, value, id } = e.target;
+
+        if (id.includes("relationshipWithChildType")) {
+            setCurrentType(value);
+            formikContext.setFieldValue(`parentInformation.relationshipWithChild`, "");
+        }
+
+        // Update fields in formik context based on the selected value
+        formikContext.setFieldValue(name, value);
+    };
+
+    const relationshipDataFiltered = relationshipData?.find((relationship) => relationship.type === currentType);
+
+
     return (
         <section className="personal_info">
-            <div className="flex gap-6">
+            {/* full name */}
+            <div className="flex gap-x-6 flex-col md:flex-row">
                 <div className="input_group">
                     <label htmlFor="firstName">First Name</label>
                     <Field
-                        name="firstName"
+                        name="parentInformation.firstName"
                         id="firstName"
                         type="text"
                         className="hod_input"
                         aria-placeholder="Enter first name"
                         aria-label="First Name"
                     />
-                    <ErrorMessage name="firstName" />
+                    <ErrorMessage name="parentInformation.firstName" />
                 </div>
 
                 <div className="input_group">
                     <label htmlFor="lastName">Last Name</label>
                     <Field
-                        name="lastName"
+                        name="parentInformation.lastName"
                         id="lastName"
                         type="text"
                         className="hod_input"
                         aria-placeholder="Enter last name"
                         aria-label="Last Name"
                     />
-                    <ErrorMessage name="lastName" />
+                    <ErrorMessage name="parentInformation.lastName" />
                 </div>
             </div>
 
+            {/* email */}
             <div className="input_group">
-                <label htmlFor="email">Email Address</label>
+                <label htmlFor="parentInformation.email">Email Address</label>
                 <Field
-                    name="email"
-                    id="email"
+                    name="parentInformation.email"
+                    id="parentInformation.email"
                     type="email"
                     className="hod_input"
                     aria-placeholder="Enter email"
                     aria-label="Email Address"
                 />
-                <ErrorMessage name="email" />
+                <ErrorMessage name="parentInformation.email" />
             </div>
 
             {/* gender */}
             <div className="input_group">
-                <label htmlFor="gender">Gender</label>
+                <label htmlFor="parentInformation.gender">Gender</label>
                 <Field
-                    name="gender"
-                    id="gender"
+                    name="parentInformation.gender"
+                    id="parentInformation.gender"
                     as="select"
                     className="hod_input"
                     aria-label="Gender"
@@ -66,114 +89,96 @@ const PersonalInformation = () => {
                         </option>
                     ))}
                 </Field>
+                <ErrorMessage name="parentInformation.gender" />
             </div>
 
-            {/* role */}
+            {/* primary phone */}
             <div className="input_group">
-                <label htmlFor="role">Role in church</label>
+                <label htmlFor="parentInformation.phoneNumber">Primary Phone Number</label>
                 <Field
-                    name="role"
-                    id="role"
-                    as="select"
-                    className="hod_input"
-                    aria-label="Role in church"
-                >
-                    <option value="" disabled>select role in church</option>
-
-                    {roleInChurch?.map(role => (
-                        <option
-                            key={role.id}
-                            value={role.id}
-                        >
-                            {role.value}
-                        </option>
-                    ))}
-                </Field>
-            </div>
-
-            {/* ministry */}
-            <div className="input_group">
-                <label htmlFor="department">Department in church</label>
-                <Field
-                    name="department"
-                    id="department"
-                    as="select"
-                    className="hod_input"
-                    aria-label="Department in church"
-                >
-                    <option value="" disabled>select department in church</option>
-
-                    {departmentInChurch?.map(dept => (
-                        <option
-                            key={dept.id}
-                            value={dept.id}
-                        >
-                            {dept.value}
-                        </option>
-                    ))}
-                </Field>
-            </div>
-
-            <div className="input_group">
-                <label htmlFor="primaryPhone">Primary Phone Number</label>
-                <Field
-                    name="phoneNumberPrimary"
-                    id="phoneNumberPrimary"
+                    name="parentInformation.phoneNumber"
+                    id="parentInformation.phoneNumber"
                     type="text"
                     className="hod_input"
                     aria-placeholder="Enter primary phone number"
                     aria-label="Primary Phone Number"
                 />
-                <ErrorMessage name="primaryPhone" />
+                <ErrorMessage name="parentInformation.phoneNumber" />
             </div>
 
-            <div className="input_group">
-                <label htmlFor="secondaryPhone">Secondary Phone Number</label>
-                <Field
-                    name="phoneNumberSecondary"
-                    id="phoneNumberSecondary"
-                    type="text"
-                    className="hod_input"
-                    aria-placeholder="Enter secondary phone number"
-                    aria-label="Secondary Phone Number"
-                />
-                <ErrorMessage name="secondaryPhone" />
-            </div>
+            {/* relationship with child */}
+            <div className="flex gap-x-6 flex-col md:flex-row">
+                <div className="input_group">
+                    <label htmlFor="parentInformation.relationshipWithChildType">Relationship with child</label>
+                    <Field
+                        name="parentInformation.relationshipWithChildType"
+                        id="parentInformation.relationshipWithChildType"
+                        as="select"
+                        className="hod_input"
+                        aria-label="Relationship with child"
+                        onChange={handleRelationshipChange}
+                    >
+                        <option value="" disabled>select relationship</option>
 
-            {/* means of id */}
-            <div className="input_group">
-                <label htmlFor="idName">Means of identification</label>
-                <Field
-                    name="idName"
-                    id="idName"
-                    as="select"
-                    className="hod_input"
-                    aria-label="Means of identification"
-                >
-                    <option value="" disabled>select means of identification</option>
+                        {relationshipTypeData?.map(relationship => (
+                            <option
+                                key={relationship.id}
+                                value={relationship.id}
+                            >
+                                {relationship.type}
+                            </option>
+                        ))}
+                    </Field>
+                    <ErrorMessage
+                        name="parentInformation.relationshipWithChildType"
+                    />
+                </div>
 
-                    {meansOfId?.map(item => (
-                        <option
-                            key={item.id}
-                            value={item.id}
-                        >
-                            {item.value}
-                        </option>
-                    ))}
-                </Field>
-            </div>
+                <div className="input_group">
+                    <label htmlFor="parentInformation.relationshipWithChild">Specify Relationship</label>
 
-            <div className="input_group">
-                <label htmlFor="identificationNumber">Identification Number</label>
-                <Field
-                    name="identificationNumber"
-                    id="identificationNumber"
-                    type="text"
-                    className="hod_input"
-                    aria-placeholder="Enter identification number"
-                    aria-label="Identification Number"
-                />
-                <ErrorMessage name="identificationNumber" />
+                    {currentType !== "other" ? (
+                        <>
+                            <Field
+                                name="parentInformation.relationshipWithChild"
+                                id="parentInformation.relationshipWithChild"
+                                as="select"
+                                className="hod_input"
+                                aria-label="Specify Relationship"
+                                onChange={handleRelationshipChange}
+                            // disabled={!currentType}
+                            >
+                                <option value="" disabled>choose relationship</option>
+
+                                {relationshipDataFiltered?.relationship?.map((item: { id: string, value: string }) => (
+                                    <option
+                                        key={item.id}
+                                        value={item.id}
+                                    >
+                                        {item.value}
+                                    </option>
+                                ))}
+                            </Field>
+                            <ErrorMessage
+                                name="parentInformation.relationshipWithChild"
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <Field
+                                name="parentInformation.relationshipWithChild"
+                                id="parentInformation.relationshipWithChild"
+                                type="text"
+                                className="hod_input"
+                                aria-placeholder="Specify Relationship"
+                                aria-label="Specify Relationship"
+                            />
+                            <ErrorMessage
+                                name="parentInformation.relationshipWithChild"
+                            />
+                        </>
+                    )}
+                </div>
             </div>
         </section>
     );

@@ -3,11 +3,14 @@ export interface FormHeaderType {
     description?: string
 }
 
+// member registration interface
 export interface ParentInformation {
     firstName: string;
     lastName: string;
     email: string;
     gender: string;
+    roleInChurch: string;
+    departmentInChurch: string;
     phoneNumberPrimary: string;
     phoneNumberSecondary?: string;
     idName: string;
@@ -21,7 +24,8 @@ export interface ChildInformation {
     dateOfBirth: Date;
     ageGroup: string;
     photograph: string;// Image data for the photograph
-    relationship: string;
+    relationshipWithChildType: string;
+    relationshipWithChild: string;
     specialNeeds?: string;
 }
 
@@ -30,10 +34,16 @@ export interface CaregiverInformation {
     lastName: string;
     email: string;
     gender: string;
+    roleInChurch: string;
+    departmentInChurch: string;
     phoneNumberPrimary: string;
     phoneNumberSecondary?: string;
+    relationshipWithChildType: string;
     relationshipWithChild: string;
+    relationshipWithParentType: string;
     relationshipWithParent: string;
+    churchLocation: string;
+    churchBranchInLocation: string;
     photograph: string; // Compulsory if relationship with parent is 'Others'
 }
 
@@ -55,17 +65,20 @@ export interface RegistrationFormValues {
     caregiverInformation: CaregiverInformation[];
 }
 
+// visitor registration interface
 export interface VisitorParent {
     firstName: string;
     lastName: string;
     email: string;
     phoneNumber: string;
     gender: string;
+    relationshipWithChildType: string;
     relationshipWithChild: string;
 }
 
 export interface VisitorChild {
     firstName: string;
+    lastName: string;
     gender: string;
     dateOfBirth: Date;
     ageGroup: string;

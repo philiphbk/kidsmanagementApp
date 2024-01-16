@@ -1,56 +1,87 @@
-import { departmentInChurch, genderData, meansOfId, roleInChurch } from "@/lib/data/dummy-data";
-import { ErrorMessage, Field } from "formik";
+import { ErrorMessage, Field, FormikErrors, FormikTouched } from "formik";
 
-const PersonalInformation = () => {
+import { departmentInChurchData, genderData, meansOfId, roleInChurchData } from "@/lib/data/dummy-data";
+import ImageUploader from "../../components/ImageUploader";
+
+import { ParentInformation, RegistrationFormValues } from "@/lib/definitions/form-interfaces";
+// import { FormikPropsInterface } from "./RegisterMemberComponent";
+
+interface PropsInterface {
+    errors: FormikErrors<RegistrationFormValues>;
+    touched: FormikTouched<RegistrationFormValues>;
+}
+
+interface PersonalInformationProps extends ParentInformation, PropsInterface { }
+
+const PersonalInformation: React.FC<PersonalInformationProps> = ({
+    firstName,
+    lastName,
+    email,
+    gender,
+    roleInChurch,
+    departmentInChurch,
+    phoneNumberPrimary,
+    phoneNumberSecondary,
+    idName,
+    idPhoto,
+    errors,
+    touched
+}) => {
     return (
         <section className="personal_info">
+            {/* full name */}
             <div className="flex gap-x-6 flex-col md:flex-row">
                 <div className="input_group">
-                    <label htmlFor="firstName">First Name</label>
+                    <label htmlFor="parentInformation.firstName">First Name</label>
                     <Field
-                        name="firstName"
-                        id="firstName"
+                        name="parentInformation.firstName"
+                        id="parentInformation.firstName"
                         type="text"
                         className="hod_input"
                         aria-placeholder="Enter first name"
                         aria-label="First Name"
                     />
-                    <ErrorMessage name="firstName" />
+                    <ErrorMessage name="parentInformation.firstName" />
+                    {/* {errors?.parentInformation?.firstName
+                        && touched?.parentInformation?.firstName ? (
+                        <div>{errors?.parentInformation?.firstName}</div>
+                    ) : null} */}
                 </div>
 
                 <div className="input_group">
-                    <label htmlFor="lastName">Last Name</label>
+                    <label htmlFor="parentInformation.lastName">Last Name</label>
                     <Field
-                        name="lastName"
-                        id="lastName"
+                        name="parentInformation.lastName"
+                        id="parentInformation.lastName"
                         type="text"
                         className="hod_input"
                         aria-placeholder="Enter last name"
                         aria-label="Last Name"
                     />
-                    <ErrorMessage name="lastName" />
+                    <ErrorMessage name="parentInformation.lastName" />
                 </div>
             </div>
 
+            {/* email */}
             <div className="input_group">
-                <label htmlFor="email">Email Address</label>
+                <label htmlFor="parentInformation.email">Email Address</label>
                 <Field
-                    name="email"
-                    id="email"
+                    name="parentInformation.email"
+                    id="parentInformation.email"
                     type="email"
                     className="hod_input"
                     aria-placeholder="Enter email"
                     aria-label="Email Address"
                 />
-                <ErrorMessage name="email" />
+                <ErrorMessage name="parentInformation.email" />
             </div>
 
             {/* gender */}
             <div className="input_group">
-                <label htmlFor="gender">Gender</label>
+                <label htmlFor="parentInformation.gender">Gender</label>
                 <Field
-                    name="gender"
-                    id="gender"
+                    name="parentInformation.gender"
+                    id="parentInformation.gender"
                     as="select"
                     className="hod_input"
                     aria-label="Gender"
@@ -66,21 +97,22 @@ const PersonalInformation = () => {
                         </option>
                     ))}
                 </Field>
+                <ErrorMessage name="parentInformation.gender" />
             </div>
 
             {/* role */}
             <div className="input_group">
-                <label htmlFor="role">Role in church</label>
+                <label htmlFor="parentInformation.roleInChurch">Role in church</label>
                 <Field
-                    name="role"
-                    id="role"
+                    name="parentInformation.roleInChurch"
+                    id="parentInformation.roleInChurch"
                     as="select"
                     className="hod_input"
                     aria-label="Role in church"
                 >
                     <option value="" disabled>select role in church</option>
 
-                    {roleInChurch?.map(role => (
+                    {roleInChurchData?.map(role => (
                         <option
                             key={role.id}
                             value={role.id}
@@ -89,21 +121,22 @@ const PersonalInformation = () => {
                         </option>
                     ))}
                 </Field>
+                <ErrorMessage name="parentInformation.roleInChurch" />
             </div>
 
             {/* ministry */}
             <div className="input_group">
-                <label htmlFor="department">Department in church</label>
+                <label htmlFor="parentInformation.departmentInChurch">Department in church</label>
                 <Field
-                    name="department"
-                    id="department"
+                    name="parentInformation.departmentInChurch"
+                    id="parentInformation.departmentInChurch"
                     as="select"
                     className="hod_input"
                     aria-label="Department in church"
                 >
                     <option value="" disabled>select department in church</option>
 
-                    {departmentInChurch?.map(dept => (
+                    {departmentInChurchData?.map(dept => (
                         <option
                             key={dept.id}
                             value={dept.id}
@@ -112,40 +145,43 @@ const PersonalInformation = () => {
                         </option>
                     ))}
                 </Field>
+                <ErrorMessage name="parentInformation.departmentInChurch" />
             </div>
 
+            {/* primary phone */}
             <div className="input_group">
-                <label htmlFor="primaryPhone">Primary Phone Number</label>
+                <label htmlFor="parentInformation.phoneNumberPrimary">Primary Phone Number</label>
                 <Field
-                    name="phoneNumberPrimary"
-                    id="phoneNumberPrimary"
+                    name="parentInformation.phoneNumberPrimary"
+                    id="parentInformation.phoneNumberPrimary"
                     type="text"
                     className="hod_input"
                     aria-placeholder="Enter primary phone number"
                     aria-label="Primary Phone Number"
                 />
-                <ErrorMessage name="primaryPhone" />
+                <ErrorMessage name="parentInformation.phoneNumberPrimary" />
             </div>
 
+            {/* secondary phone */}
             <div className="input_group">
-                <label htmlFor="secondaryPhone">Secondary Phone Number</label>
+                <label htmlFor="parentInformation.phoneNumberSecondary">Secondary Phone Number</label>
                 <Field
-                    name="phoneNumberSecondary"
-                    id="phoneNumberSecondary"
+                    name="parentInformation.phoneNumberSecondary"
+                    id="parentInformation.phoneNumberSecondary"
                     type="text"
                     className="hod_input"
                     aria-placeholder="Enter secondary phone number"
                     aria-label="Secondary Phone Number"
                 />
-                <ErrorMessage name="secondaryPhone" />
+                <ErrorMessage name="parentInformation.phoneNumberSecondary" />
             </div>
 
             {/* means of id */}
             <div className="input_group">
-                <label htmlFor="idName">Means of identification</label>
+                <label htmlFor="parentInformation.idName">Means of identification</label>
                 <Field
-                    name="idName"
-                    id="idName"
+                    name="parentInformation.idName"
+                    id="parentInformation.idName"
                     as="select"
                     className="hod_input"
                     aria-label="Means of identification"
@@ -161,19 +197,28 @@ const PersonalInformation = () => {
                         </option>
                     ))}
                 </Field>
+                <ErrorMessage name="parentInformation.idName" />
             </div>
 
+            {/* id number - not referenced in interface */}
             <div className="input_group">
-                <label htmlFor="identificationNumber">Identification Number</label>
+                <label htmlFor="parentInformation.identificationNumber">Identification Number</label>
                 <Field
-                    name="identificationNumber"
-                    id="identificationNumber"
+                    name="parentInformation.identificationNumber"
+                    id="parentInformation.identificationNumber"
                     type="text"
-                    className="hod_input"
+                    className="hod_input py-3.5"
                     aria-placeholder="Enter identification number"
                     aria-label="Identification Number"
                 />
-                <ErrorMessage name="identificationNumber" />
+                <ErrorMessage name="parentInformation.identificationNumber" />
+            </div>
+
+            {/* photograph */}
+            <div className="input_group">
+                <label htmlFor="parentInformation.idPhoto">Upload Photo</label>
+                <ImageUploader id="parentInformation.idPhoto" ariaLabel="Upload Photo" />
+                <ErrorMessage name="parentInformation.idPhoto" />
             </div>
         </section>
     );
