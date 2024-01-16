@@ -1,7 +1,7 @@
-import { FC, useState, ChangeEvent } from "react";
+import { useState, ChangeEvent } from "react";
 import { genderData, relationshipTypeData, relationshipData } from "@/lib/data/dummy-data";
 import { ErrorMessage, Field, useFormikContext } from "formik";
-import { VisitorInformation, VisitorParent } from "@/lib/definitions/form-interfaces";
+import { VisitorParent } from "@/lib/definitions/form-interfaces";
 
 const PersonalInformation = () => {
     const formikContext = useFormikContext<VisitorParent>();

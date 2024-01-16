@@ -1,6 +1,6 @@
 export interface FormHeaderType {
-    title: string,
-    description?: string
+    title: string;
+    description?: string;
 }
 
 // member registration interface
@@ -89,4 +89,27 @@ export interface VisitorChild {
 export interface VisitorInformation {
     parentInformation: VisitorParent;
     childInformation: VisitorChild[];
+}
+
+type StaticImageData = { src: string; height: number; width: number; blurDataURL?: string; }
+
+export interface ChildDropOffProfile {
+    id: number;
+    name: string;
+    pictureUrl?: string | StaticImageData;
+    dropOffTime: string;
+}
+
+export interface LatestDropOffsProps {
+    childrenDropOffProfiles: ChildDropOffProfile[];
+}
+
+export interface ChildPickUpProfile {
+    id: number;
+    name: string;
+    pictureUrl?: string | StaticImageData;
+    pickUpTime: string;
+}
+export interface LatestPickupsProps {
+    childrenPickUpProfiles: ChildPickUpProfile[];
 }

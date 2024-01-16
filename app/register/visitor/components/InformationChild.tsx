@@ -1,6 +1,5 @@
 import { ErrorMessage, Field } from "formik";
 import { genderData, ageGroupData } from "@/lib/data/dummy-data";
-import { VisitorChild } from "@/lib/definitions/form-interfaces";
 
 import ImageUploader from "../../components/ImageUploader";
 
