@@ -1,11 +1,11 @@
 // db.ts
-import { createPool, Pool } from 'mysql2/promise';
+import { createPool, Pool } from "mysql2/promise";
 
 const pool: Pool = createPool({
-  host: 'your-mysql-host',
-  user: 'your-mysql-username',
-  password: 'your-mysql-password',
-  database: 'your-database-name',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
