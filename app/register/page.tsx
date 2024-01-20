@@ -2,13 +2,13 @@ import Link from "next/link";
 import HODLogo from "@/public/images/hodlogo1.png";
 import Image from "next/image";
 
-import { Metadata } from "next";
+// import { Metadata } from "next";
 
-export const meta: Metadata = {
-  title: "Welcome Register",
-  description: "Register your child(ren) for Junior Church",
-  icons: "@/public/images/hodlogo1.png"
-};
+// export const meta: Metadata = {
+//   title: "Welcome Register",
+//   description: "Register your child(ren) for Junior Church",
+//   icons: "@/public/images/hodlogo1.png"
+// };
 
 export default function Register() {
   return (
