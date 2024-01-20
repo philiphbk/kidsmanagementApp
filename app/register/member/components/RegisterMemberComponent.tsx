@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react";
 
 import {
-    //   useFormik,
-    useFormikContext,
-    Formik,
-    FormikHelpers,
-    Form,
-    FieldArray
+  //   useFormik,
+  useFormikContext,
+  Formik,
+  FormikHelpers,
+  Form,
+  FieldArray,
 } from "formik";
 import * as Yup from "yup";
 
@@ -26,194 +26,201 @@ import CaregiverInformationComponent from "./InformationCaregiver";
 import { BsPlusCircle, BsTrash3 } from "react-icons/bs";
 import NewChildInstanceTitle from "../../components/NewChildInstanceTitle";
 
-
 const RegisterMemberComponent = () => {
-    const [step, setStep] = useState(1);
-    const totalSteps = 3;
-    const [currentTitle, setCurrentTitle] = useState("Personal Information");
+  const [step, setStep] = useState(1);
+  const totalSteps = 3;
+  const [currentTitle, setCurrentTitle] = useState("Personal Information");
 
-    // const formik = useFormikContext<RegistrationFormValues>();
+  // const formik = useFormikContext<RegistrationFormValues>();
 
-    const nextStep = () => {
-        if (step < totalSteps) {
-            setStep(step + 1);
-        }
-    };
-
-    const previousStep = () => {
-        if (step > 1) {
-            setStep(step - 1);
-        }
-    };
-
-    const [registrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
-
-    const RegistrationSchema = Yup.object()
-        .shape({
-            parentInformation: Yup.object().shape({
-                firstName: Yup.string().required("First name is required!"),
-                lastName: Yup.string().required("Last name is required!"),
-                email: Yup.string()
-                    .email("Invalid email address!")
-                    .required("Email is required!"),
-                gender: Yup.string().required("Gender is required!"),
-                phoneNumberPrimary: Yup.string().required(
-                    "Primary phone number is required!"
-                ),
-                phoneNumberSecondary: Yup.string(),
-                idName: Yup.string().required("ID name is required!"),
-                idPhoto: Yup.mixed()
-                    .required("ID photo is required!")
-                    .test("fileSize", "Image size should be less than 1MB", (value: any) => {
-                        return value && value.size <= 1000000;
-                    })
-                    .test("fileType", "Only images are allowed", (value: any) => {
-                        return value && value.type.includes("image");
-                    }),
-            }),
-            childInformation: Yup.array()
-                .of(
-                    Yup.object().shape({
-                        firsName: Yup.string().required("First name is required!"),
-                        lastName: Yup.string().required("Last name is required!"),
-                        gender: Yup.string().required("Gender is required!"),
-                        dateOfBirth: Yup.date().required("Date of birth is required!"),
-                        ageGroup: Yup.string().required("Age group is required!"),
-                        photograph: Yup.mixed()
-                            .required("Photograph is required!")
-                            .test(
-                                "fileSize",
-                                "Image size should be less than 1MB",
-                                (value: any) => {
-                                    return value && value.size <= 1000000;
-                                }
-                            )
-                            .test("fileType", "Only images are allowed", (value: any) => {
-                                return value && value.type.includes("image");
-                            }),
-                        relationship: Yup.string().required("Relationship is required!"),
-                        specialNeeds: Yup.string(),
-                    })
-                )
-                .nullable(),
-            caregiverInformation: Yup.array()
-                .of(
-                    Yup.object().shape({
-                        firstName: Yup.string().required("First name is required!"),
-                        lastName: Yup.string().required("Last name is required!"),
-                        email: Yup.string()
-                            .email("Invalid email address!")
-                            .required("Email is required!"),
-                        gender: Yup.string().required("Gender is required!"),
-                        phoneNumberPrimary: Yup.string().required(
-                            "Primary phone number is required!"
-                        ),
-                        phoneNumberSecondary: Yup.string(),
-                        relationshipWithChild: Yup.string().required(
-                            "Relationship with child is required!"
-                        ),
-                        relationshipWithParent: Yup.string().required(
-                            "Relationship with parent is required!"
-                        ),
-                        photograph: Yup.mixed()
-                            .test(
-                                "fileSize",
-                                "Image size should be less than 1MB",
-                                (value: any) => {
-                                    return value && value.size <= 1000000;
-                                }
-                            )
-                            .test("fileType", "Only images are allowed", (value: any) => {
-                                return value && value.type.includes("image");
-                            }),
-                    })
-                )
-                .nullable(),
-        })
-        .nullable();
-
-    const initialValues = {
-        parentInformation: {
-            firstName: "",
-            lastName: "",
-            email: "",
-            gender: "",
-            roleInChurch: "",
-            departmentInChurch: "",
-            phoneNumberPrimary: "",
-            phoneNumberSecondary: "",
-            idName: "",
-            idPhoto: "", // Image data for the ID picture
-        },
-        childInformation: [
-            {
-                firstName: "",
-                lastName: "",
-                gender: "",
-                dateOfBirth: new Date(),
-                ageGroup: "",
-                photograph: "", // Image data for the photograph
-                relationshipWithChildType: "",
-                relationshipWithChild: "",
-                specialNeeds: "",
-            },
-        ],
-        caregiverInformation: [
-            {
-                firstName: "",
-                lastName: "",
-                email: "",
-                gender: "",
-                roleInChurch: "",
-                departmentInChurch: "",
-                phoneNumberPrimary: "",
-                phoneNumberSecondary: "",
-                relationshipWithChildType: "",
-                relationshipWithChild: "",
-                relationshipWithParentType: "",
-                relationshipWithParent: "",
-                churchLocation: "",
-                churchBranchInLocation: "",
-                photograph: "", // Compulsory if relationship with parent is 'Others'
-            }
-        ],
+  const nextStep = () => {
+    if (step < totalSteps) {
+      setStep(step + 1);
     }
+  };
 
-    const handleSubmit = async (
-        values: RegistrationFormValues,
-        actions: FormikHelpers<RegistrationFormValues>
-    ) => {
-        if (step < totalSteps) {
-            nextStep();
-            actions.setTouched({});
-            actions.setSubmitting(false);
-        } else {
-            actions.setSubmitting(true)
-            console.log("is submitting!", values);
-            // const formData = new FormData();
+  const previousStep = () => {
+    if (step > 1) {
+      setStep(step - 1);
+    }
+  };
 
-            try {
-                console.log("Registration form submitted!");
-                setStep(1);
-                actions.resetForm();
-            } catch (err) {
-                console.log(err);
+  const [registrationSuccessful, setRegistrationSuccessful] =
+    useState<boolean>(false);
+
+  const RegistrationSchema = Yup.object()
+    .shape({
+      parentInformation: Yup.object().shape({
+        firstName: Yup.string().required("First name is required!"),
+        lastName: Yup.string().required("Last name is required!"),
+        email: Yup.string()
+          .email("Invalid email address!")
+          .required("Email is required!"),
+        gender: Yup.string().required("Gender is required!"),
+        phoneNumberPrimary: Yup.string().required(
+          "Primary phone number is required!"
+        ),
+        phoneNumberSecondary: Yup.string(),
+        idName: Yup.string().required("ID name is required!"),
+        idPhoto: Yup.mixed()
+          .required("ID photo is required!")
+          .test(
+            "fileSize",
+            "Image size should be less than 1MB",
+            (value: any) => {
+              return value && value.size <= 1000000;
             }
-        }
-    };
+          )
+          .test("fileType", "Only images are allowed", (value: any) => {
+            return value && value.type.includes("image");
+          }),
+      }),
+      childInformation: Yup.array()
+        .of(
+          Yup.object().shape({
+            firsName: Yup.string().required("First name is required!"),
+            lastName: Yup.string().required("Last name is required!"),
+            gender: Yup.string().required("Gender is required!"),
+            dateOfBirth: Yup.date().required("Date of birth is required!"),
+            ageGroup: Yup.string().required("Age group is required!"),
+            photograph: Yup.mixed()
+              .required("Photograph is required!")
+              .test(
+                "fileSize",
+                "Image size should be less than 1MB",
+                (value: any) => {
+                  return value && value.size <= 1000000;
+                }
+              )
+              .test("fileType", "Only images are allowed", (value: any) => {
+                return value && value.type.includes("image");
+              }),
+            relationship: Yup.string().required("Relationship is required!"),
+            specialNeeds: Yup.string(),
+          })
+        )
+        .nullable(),
+      caregiverInformation: Yup.array()
+        .of(
+          Yup.object().shape({
+            firstName: Yup.string().required("First name is required!"),
+            lastName: Yup.string().required("Last name is required!"),
+            email: Yup.string()
+              .email("Invalid email address!")
+              .required("Email is required!"),
+            gender: Yup.string().required("Gender is required!"),
+            phoneNumberPrimary: Yup.string().required(
+              "Primary phone number is required!"
+            ),
+            phoneNumberSecondary: Yup.string(),
+            relationshipWithChild: Yup.string().required(
+              "Relationship with child is required!"
+            ),
+            relationshipWithParent: Yup.string().required(
+              "Relationship with parent is required!"
+            ),
+            photograph: Yup.mixed()
+              .test(
+                "fileSize",
+                "Image size should be less than 1MB",
+                (value: any) => {
+                  return value && value.size <= 1000000;
+                }
+              )
+              .test("fileType", "Only images are allowed", (value: any) => {
+                return value && value.type.includes("image");
+              }),
+          })
+        )
+        .nullable(),
+    })
+    .nullable();
 
-    useEffect(() => {
-        if (step === 1) {
-            setCurrentTitle("Parent Information");
-        } else if (step === 2) {
-            setCurrentTitle("Child’s Information");
-        } else {
-            setCurrentTitle("Caretaker Information");
-        }
-    }, [step])
+  const initialValues = {
+    parentInformation: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      gender: "",
+      roleInChurch: "",
+      departmentInChurch: "",
+      phoneNumberPrimary: "",
+      phoneNumberSecondary: "",
+      idName: "",
+      idPhoto: "", // Image data for the ID picture
+    },
+    childInformation: [
+      {
+        firstName: "",
+        lastName: "",
+        gender: "",
+        dateOfBirth: new Date(),
+        ageGroup: "",
+        photograph: "", // Image data for the photograph
+        relationshipWithChildType: "",
+        relationshipWithChild: "",
+        specialNeeds: "",
+      },
+    ],
+    caregiverInformation: [
+      {
+        firstName: "",
+        lastName: "",
+        email: "",
+        gender: "",
+        roleInChurch: "",
+        departmentInChurch: "",
+        phoneNumberPrimary: "",
+        phoneNumberSecondary: "",
+        relationshipWithChildType: "",
+        relationshipWithChild: "",
+        relationshipWithParentType: "",
+        relationshipWithParent: "",
+        churchLocation: "",
+        churchBranchInLocation: "",
+        photograph: "", // Compulsory if relationship with parent is 'Others'
+      },
+    ],
+  };
 
-    return (
+  const handleSubmit = async (
+    values: RegistrationFormValues,
+    actions: FormikHelpers<RegistrationFormValues>
+  ) => {
+    if (step < totalSteps) {
+      nextStep();
+      actions.setTouched({});
+      actions.setSubmitting(false);
+    } else {
+      actions.setSubmitting(true);
+      console.log("is submitting!", values);
+      // const formData = new FormData();
+
+      try {
+        console.log("Registration form submitted!");
+        setStep(1);
+        actions.resetForm();
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (step === 1) {
+      setCurrentTitle("Parent Information");
+    } else if (step === 2) {
+      setCurrentTitle("Child’s Information");
+    } else {
+      setCurrentTitle("Caretaker Information");
+    }
+  }, [step]);
+
+  return (
+    <>
+      {registrationSuccessful ? (
         <>
+
             {registrationSuccessful ? (
                 <>
                     <p>Registration is successful</p>
@@ -238,83 +245,97 @@ const RegisterMemberComponent = () => {
                                         <div className="steps mb-2 w-16">
                                             Step {step}/{totalSteps}
                                         </div>
+                    <FormHeader title={currentTitle} />
+                    <hr className="text-hod-text-gray2 mt-6 mb-10" />
 
-                                        <FormHeader title={currentTitle} />
-                                        <hr className="text-hod-text-gray2 mt-6 mb-10" />
+                    {step === 1 && (
+                      <>
+                        <PersonalInformation
+                          {...values.parentInformation}
+                          errors={errors}
+                          touched={touched}
+                        />
+                      </>
+                    )}
 
-                                        {step === 1 && (
-                                            <>
-                                                <PersonalInformation
-                                                    {...values.parentInformation}
-                                                    errors={errors}
-                                                    touched={touched}
-                                                />
-                                            </>
-                                        )}
+                    {step === 2 && (
+                      <>
+                        <FieldArray
+                          name="childInformation"
+                          render={({ push, remove }) => (
+                            <>
+                              {values.childInformation &&
+                                values.childInformation.length > 0 &&
+                                values.childInformation.map((child, index) => (
+                                  <div key={index}>
+                                    <NewChildInstanceTitle
+                                      index={index}
+                                      remove={remove}
+                                      desc="Child"
+                                    />
 
-                                        {step === 2 && (
-                                            <>
-                                                <FieldArray
-                                                    name="childInformation"
-                                                    render={({ push, remove }) => (
-                                                        <>
-                                                            {values.childInformation && values.childInformation.length > 0 &&
-                                                                values.childInformation.map((child, index) => (
-                                                                    <div key={index}>
-                                                                        <NewChildInstanceTitle
-                                                                            index={index}
-                                                                            remove={remove}
-                                                                            desc="Child"
-                                                                        />
+                                    <ChildInformationComponent index={index} />
+                                  </div>
+                                ))}
 
-                                                                        <ChildInformationComponent index={index} />
-                                                                    </div>
-                                                                ))}
+                              <button
+                                type="button"
+                                className="flex gap-2 items-center text-hod-secondary text-base font-normal"
+                                onClick={() =>
+                                  values.childInformation.forEach((child) => {
+                                    push(child);
+                                  })
+                                }
+                              >
+                                <BsPlusCircle className="text-hod-secondary" />{" "}
+                                Include another child
+                              </button>
+                            </>
+                          )}
+                        />
+                      </>
+                    )}
 
-                                                            <button
-                                                                type="button"
-                                                                className="flex gap-2 items-center text-hod-secondary text-base font-normal"
-                                                                onClick={() => push(initialValues.childInformation)}
-                                                            >
-                                                                <BsPlusCircle className="text-hod-secondary" /> Include another child
-                                                            </button>
-                                                        </>
-                                                    )}
-                                                />
-                                            </>
-                                        )}
+                    {step === 3 && (
+                      <>
+                        <FieldArray
+                          name="caregiverInformation"
+                          render={({ push, remove }) => (
+                            <>
+                              {values.caregiverInformation &&
+                                values.caregiverInformation.length > 0 &&
+                                values.caregiverInformation.map(
+                                  (child, index) => (
+                                    <div key={index}>
+                                      <NewChildInstanceTitle
+                                        index={index}
+                                        remove={remove}
+                                        desc="Caregiver"
+                                      />
 
-                                        {step === 3 && (
-                                            <>
-                                                <FieldArray
-                                                    name="caregiverInformation"
-                                                    render={({ push, remove }) => (
-                                                        <>
-                                                            {values.caregiverInformation && values.caregiverInformation.length > 0 &&
-                                                                values.caregiverInformation.map((child, index) => (
-                                                                    <div key={index}>
-                                                                        <NewChildInstanceTitle
-                                                                            index={index}
-                                                                            remove={remove}
-                                                                            desc="Caregiver"
-                                                                        />
+                                      <CaregiverInformationComponent
+                                        index={index}
+                                      />
+                                    </div>
+                                  )
+                                )}
 
-                                                                        <CaregiverInformationComponent index={index} />
-                                                                    </div>
-                                                                ))}
+                              <button
+                                type="button"
+                                className="flex gap-2 items-center text-hod-secondary text-base font-normal"
+                                onClick={() =>
+                                  push(initialValues.childInformation)
+                                }
+                              >
+                                <BsPlusCircle className="text-hod-secondary" />{" "}
+                                Include new caregiver
+                              </button>
+                            </>
+                          )}
+                        />
+                      </>
+                    )}
 
-                                                            <button
-                                                                type="button"
-                                                                className="flex gap-2 items-center text-hod-secondary text-base font-normal"
-                                                                onClick={() => push(initialValues.childInformation)}
-                                                            >
-                                                                <BsPlusCircle className="text-hod-secondary" /> Include new caregiver
-                                                            </button>
-                                                        </>
-                                                    )}
-                                                />
-                                            </>
-                                        )}
 
                                         <div className="form_button_container">
                                             {step > 1 && (
@@ -334,11 +355,17 @@ const RegisterMemberComponent = () => {
                                 )}
                             </Formik>
                         </main>
+
                     </div>
-                </>
-            )}
+                  </Form>
+                )}
+              </Formik>
+            </main>
+          </div>
         </>
-    );
-}
+      )}
+    </>
+  );
+};
 
 export default RegisterMemberComponent;

@@ -20,7 +20,7 @@ export default function LatestDropOffs<LatestDropOffsProps>({
               className="border rounded p-3 mb-3 flex items-center"
             >
               <Image
-                src={child.pictureUrl}
+                src={child.pictureUrl ?? ""}
                 alt={child.name}
                 className="rounded-full h-12 w-12 mr-4"
               />

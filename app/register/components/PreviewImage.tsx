@@ -7,7 +7,7 @@ interface PreviewImageProps {
 
 
 
-export default function PreviewImage<PreviewImageProps>({ file }) {
+export default function PreviewImage<PreviewImageProps>({ file }: {file: any}) {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   useEffect(() => {

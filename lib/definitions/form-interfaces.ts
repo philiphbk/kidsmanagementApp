@@ -96,7 +96,7 @@ type StaticImageData = { src: string; height: number; width: number; blurDataURL
 export interface ChildDropOffProfile {
     id: number;
     name: string;
-    pictureUrl?: string | StaticImageData;
+    pictureUrl?: string | StaticImageData | undefined;
     dropOffTime: string;
 }
 
@@ -107,7 +107,7 @@ export interface LatestDropOffsProps {
 export interface ChildPickUpProfile {
     id: number;
     name: string;
-    pictureUrl?: string | StaticImageData;
+    pictureUrl?: string | StaticImageData | undefined;
     pickUpTime: string;
 }
 export interface LatestPickupsProps {
