@@ -40,7 +40,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={ubuntu.className}>{children}</body>
+      <body className={`${ubuntu.className} antialiased`}>{children}</body>
     </html>
   );
 }

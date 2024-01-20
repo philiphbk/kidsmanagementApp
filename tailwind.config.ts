@@ -14,6 +14,7 @@ const config: Config = {
       },
       colors: {
         'hod-primary': '#273472',
+        'hod-primary-light': '#d5dbf5',
         'hod-secondary': '#D01D22',
         'hod-black1': '#151723',
         'hod-black2': '#212327',
