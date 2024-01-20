@@ -1,15 +1,15 @@
 import Image from "next/image";
 import HODLogo from "@/public/images/hodlogo1.png";
 import Tick from "@/public/images/Circle.png";
-
-import { Metadata } from "next";
 import Link from "next/link";
 
-export const meta: Metadata = {
-  title: "Success Registration",
-  description: "Registration successful",
-  icons: "@/public/images/hodlogo1.png",
-};
+
+// import { Metadata } from "next";
+// export const meta: Metadata = {
+//   title: "Success Registration",
+//   description: "Registration successful",
+//   icons: "@/public/images/hodlogo1.png",
+// };
 
 export default function Success() {
   return (

@@ -4,21 +4,33 @@ import * as Yup from "yup";
 import PreviewImage from "./PreviewImage";
 import axios from "axios";
 
+interface FileObject {
+  size: number;
+  type: string;
+  // Add any other properties if needed
+}
+
+export const ImageUploadSchema = Yup.object().shape({
+  image: Yup.mixed<FileObject>()
+    .required("An image is required")
+    .test(
+      "fileSize",
+      "File too large",
+      (value) => value && value.size <= 2000000
+    )
+    .test(
+      "fileType",
+      "Unsupported File Format",
+      (value) => value && ["image/jpg", "image/jpeg", "image/png"].includes(value.type)
+    ),
+});
+
 export default function ImageUpload() {
   const formik = useFormik({
     initialValues: {
       image: "",
     },
-    validationSchema: Yup.object({
-      image: Yup.mixed()
-        .required("Image is required!")
-        .test("fileSize", "Image size should be less than 1MB", (value) => {
-          return value && value.size <= 1000000;
-        })
-        .test("fileType", "Only images are allowed", (value) => {
-          return value && value.type.includes("image");
-        }),
-    }),
+    validationSchema: ImageUploadSchema,
     onSubmit: async () => {
       console.log(formik.values);
       const { image } = formik.values;
@@ -46,7 +58,8 @@ export default function ImageUpload() {
             name="image"
             id="image"
             onChange={(e) => {
-                formik.setFieldValue("image", e.target.files[0]);
+                const file = e.target.files && e.target.files[0];
+                formik.setFieldValue("image", file);
             }}
             placeholder="Choose an image"
         />
