@@ -220,31 +220,28 @@ const RegisterMemberComponent = () => {
     <>
       {registrationSuccessful ? (
         <>
+          <p>Registration is successful</p>
+          {alert("Registration is successful")}
+        </>
+      ) : (
+        <>
+          <div className="registration_container">
+            <div className="flex flex-col gap-6 items-center">
+              <HodLogoOnly />
+              <h1 className="platform_title">HOD Kids Pick-Up Platform</h1>
+            </div>
 
-            {registrationSuccessful ? (
-                <>
-                    <p>Registration is successful</p>
-                    {alert("Registration is successful")}
-                </>
-            ) : (
-                <>
-                    <div className="registration_container">
-                        <div className="flex flex-col gap-6 items-center">
-                            <HodLogoOnly />
-                            <h1 className="platform_title">HOD Kids Pick-Up Platform</h1>
-                        </div>
-
-                        <main className="form_container flex flex-col items-center w-full h-full">
-                            <Formik<RegistrationFormValues>
-                                initialValues={initialValues}
-                                // validationSchema={RegistrationSchema}
-                                onSubmit={handleSubmit}
-                            >
-                                {({ values, errors, touched }) => (
-                                    <Form className="form">
-                                        <div className="steps mb-2 w-16">
-                                            Step {step}/{totalSteps}
-                                        </div>
+            <main className="form_container flex flex-col items-center w-full h-full">
+              <Formik<RegistrationFormValues>
+                initialValues={initialValues}
+                // validationSchema={RegistrationSchema}
+                onSubmit={handleSubmit}
+              >
+                {({ values, errors, touched }) => (
+                  <Form className="form">
+                    <div className="steps mb-2 w-16">
+                      Step {step}/{totalSteps}
+                    </div>
                     <FormHeader title={currentTitle} />
                     <hr className="text-hod-text-gray2 mt-6 mb-10" />
 
@@ -336,26 +333,22 @@ const RegisterMemberComponent = () => {
                       </>
                     )}
 
-
-                                        <div className="form_button_container">
-                                            {step > 1 && (
-                                                <button
-                                                    type="button"
-                                                    className="hod_button hod_button_secondary"
-                                                    onClick={previousStep}
-                                                >
-                                                    Previous
-                                                </button>
-                                            )}
-                                            <button type="submit" className="hod_button hod_button_primary">
-                                                {step < totalSteps ? "Next" : "Submit"}
-                                            </button>
-                                        </div>
-                                    </Form>
-                                )}
-                            </Formik>
-                        </main>
-
+                    <div className="form_button_container">
+                      {step > 1 && (
+                        <button
+                          type="button"
+                          className="hod_button hod_button_secondary"
+                          onClick={previousStep}
+                        >
+                          Previous
+                        </button>
+                      )}
+                      <button
+                        type="submit"
+                        className="hod_button hod_button_primary"
+                      >
+                        {step < totalSteps ? "Next" : "Submit"}
+                      </button>
                     </div>
                   </Form>
                 )}
