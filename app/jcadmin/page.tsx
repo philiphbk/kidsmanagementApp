@@ -6,7 +6,7 @@
 //   icons: "@/public/images/hodlogo1.png"
 // };
 
-export default function Admin() {
+export default function JCAdmin() {
   return (
     <div>
       Admin Page
