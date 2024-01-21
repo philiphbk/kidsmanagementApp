@@ -1,24 +1,31 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import pool from "../db";
+import { connectWithRetry } from "../db";
 
+
+// initializeDatabase();
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { method, body } = req;
 
+  const { method, body } = req;
+  const connection = await connectWithRetry();
   switch (method) {
     case "GET":
       try {
-        const [rows] = await pool.query("SELECT * FROM registration");
-        res.status(200).json(rows);
-      } catch (error) {
-        res.status(500).json({ error: "Internal Server Error" });
+        
+        const [rows] = await connection.execute("SELECT * FROM registration", []);
+        connection.end();
+        res.status(200).json({result : rows});
+      } catch (error: any) {
+        console.log(error);
+        console.log(error.error);
+        res.status(500).json({ error });
       }
       break;
     case "POST":
       try {
-        await pool.query("INSERT INTO parent SET ?", body);
+        await connection.query("INSERT INTO parent SET ?", body);
         console.log("API Response:", res);
         res.status(201).end();
       } catch (error) {
@@ -28,7 +35,7 @@ export default async function handler(
     case "PUT":
       try {
         const { id, ...updateData } = body; // Assuming 'id' is sent in the request body
-        await pool.query("UPDATE parent SET ? WHERE id = ?", [updateData, id]);
+        await connection.query("UPDATE parent SET ? WHERE id = ?", [updateData, id]);
         res.status(200).end();
       } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
@@ -37,7 +44,7 @@ export default async function handler(
     case "DELETE":
       try {
         const { id } = body; // Assuming 'id' is sent in the request body
-        await pool.query("DELETE FROM parent WHERE id = ?", [id]);
+        await connection.query("DELETE FROM parent WHERE id = ?", [id]);
         res.status(200).end();
       } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
