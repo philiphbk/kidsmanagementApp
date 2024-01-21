@@ -1,6 +1,6 @@
 // pages/api/parent.ts
 import { NextApiRequest, NextApiResponse } from 'next';
-import pool from './db';
+import pool from '../db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method, body } = req;
@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   switch (method) {
     case 'GET':
       try {
-        const [rows] = await pool.query('SELECT * FROM child');
+        const [rows] = await pool.query('SELECT * FROM parent');
         res.status(200).json(rows);
       } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       break;
     case 'POST':
       try {
-        await pool.query('INSERT INTO child SET ?', body);
+        await pool.query('INSERT INTO parent SET ?', body);
         res.status(201).end();
       } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     case 'PUT':
         try {
             const { id, ...updateData } = body; // Assuming 'id' is sent in the request body
-            await pool.query('UPDATE child SET ? WHERE id = ?', [updateData, id]);
+            await pool.query('UPDATE parent SET ? WHERE id = ?', [updateData, id]);
             res.status(200).end();
           } catch (error) {
             res.status(500).json({ error: 'Internal Server Error' });
@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     case 'DELETE':
         try {
             const { id } = body; // Assuming 'id' is sent in the request body
-            await pool.query('DELETE FROM child WHERE id = ?', [id]);
+            await pool.query('DELETE FROM parent WHERE id = ?', [id]);
             res.status(200).end();
           } catch (error) {
             res.status(500).json({ error: 'Internal Server Error' });

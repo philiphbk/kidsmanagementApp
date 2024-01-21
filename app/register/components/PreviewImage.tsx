@@ -26,7 +26,7 @@ export default function PreviewImage<PreviewImageProps>({ file }: {file: any}) {
   return (
     <div>
       {previewImage ? (
-        <Image src={previewImage} alt="preview" width="200" height="200" />
+        <Image src={previewImage} alt="preview" width="100" height="100" />
       ) : (
         <p>No image selected</p>
       )}

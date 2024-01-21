@@ -145,7 +145,7 @@ const RegisterVisitorComponent = () => {
             {registrationSuccessful ? (
                 <>
                     <p>Registration is successful</p>
-                    {alert("Registration is successful")}
+                    {/* {alert("Registration is successful")} */}
                 </>
             ) : (
                 <>

@@ -5,12 +5,18 @@
 :root {
     --fontUbuntu: var(--font-ubuntu);
     --fontInter: var(--font-inter);
+    --fontPoppins: var(--font-poppins);
 }
 
 body {
-    font-family: var(--fontUbuntu);
-    background-color: #f9f9f9;
+    font-family: var(--font-poppins);
+    background: url("../public/images/backimg.png");
     overflow-x: hidden;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .platform_title {
@@ -21,10 +27,6 @@ body {
     @apply h-full w-full flex flex-col items-center mx-auto px-5 py-10 md:px-10 md:p-14;
 }
 
-.form_container,
-.success_container {
-    background: url("../public/images/backimg.png"), #f9f9f9 no-repeat;
-}
 
 .form {
     @apply mt-14 px-5 py-8 md:p-10 flex flex-col justify-center max-w-[564px] w-full bg-white rounded-2xl;
