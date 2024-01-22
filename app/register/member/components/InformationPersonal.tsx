@@ -20,6 +20,7 @@ import {
 } from "@/lib/definitions/form-interfaces";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import ImageFileUploader from "../../components/ImageFileUploader";
 // import { FormikPropsInterface } from "./RegisterMemberComponent";
 
 interface PropsInterface {
@@ -31,7 +32,7 @@ interface ImageData {
   base64String: string | null;
 }
 
-interface PersonalInformationProps extends ParentInformation, PropsInterface {}
+interface PersonalInformationProps extends ParentInformation, PropsInterface { }
 
 const PersonalInformation: React.FC<PersonalInformationProps> = ({
   firstName,
@@ -47,35 +48,36 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
   errors,
   touched,
 }) => {
-  const formikContext = useFormikContext<ParentInformation>();
+  // const formikContext = useFormikContext<Partial<ParentInformation>>();
 
-  const [imageData, setImageData] = useState<ImageData>({ base64String: null });
+  // const [imageData, setImageData] = useState<ImageData>({ base64String: "" });
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    const { name, value, id } = e.target;
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
 
-    if (file) {
-      console.log(e, file);
+  //   if (file) {
+  //     console.log(e, file);
 
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        setImageData({ base64String: reader.result as string });
-        console.log(reader.result);
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(file);
+  //     reader.onload = () => {
+  //       console.log(reader.result);
+  //       setImageData({ base64String: reader.result as string });
 
-        // formikContext.setFieldValue("parentInformation.idPhoto", reader.result);
-        formikContext.setFieldValue(id, value);
-      };
-    } else {
-      setImageData({ base64String: null });
-      //   formikContext.setFieldValue("parentInformation.idPhoto", null);
-    }
-  };
+  //       formikContext.setFieldValue("parentInformation.idPhoto", reader.result as string);
+  //     };
+  //   } else {
+  //     setImageData({ base64String: "" });
+  //   }
+  // };
 
-  useEffect(() => {
-    console.log(idPhoto);
-  }, [idPhoto, imageData]);
+  // useEffect(() => {
+  //   if (imageData?.base64String) {
+  //     formikContext.setFieldValue("parentInformation.idPhoto", imageData.base64String as string);
+  //     console.log(idPhoto);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [idPhoto, imageData]);
 
   return (
     <section className="personal_info">
@@ -256,43 +258,24 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
 
       {/* id number - not referenced in interface */}
       <div className="input_group">
-        <label htmlFor="parentInformation.identificationNumber">
+        <label htmlFor="parentInformation.idNumber">
           Identification Number
         </label>
         <Field
-          name="parentInformation.identificationNumber"
-          id="parentInformation.identificationNumber"
+          name="parentInformation.idNumber"
+          id="parentInformation.idNumber"
           type="text"
-          className="hod_input py-3.5"
+          className="hod_input"
           aria-placeholder="Enter identification number"
           aria-label="Identification Number"
         />
-        <ErrorMessage name="parentInformation.identificationNumber" />
+        <ErrorMessage name="parentInformation.idNumber" />
       </div>
 
       {/* photograph */}
       <div className="input_group">
         <label htmlFor="parentInformation.idPhoto">Upload Photo</label>
-        {/* <ImageUploader id="parentInformation.idPhoto" ariaLabel="Upload Photo" /> */}
-        <Field
-          name="parentInformation.idPhoto"
-          id="parentInformation.idPhoto"
-          type="file"
-          accept="image/*"
-          className="hod_input py-3.5"
-          aria-label="Upload Photo"
-          onChange={handleFileChange}
-        />
-        <span>
-          {imageData.base64String && (
-            <Image
-              src={imageData.base64String}
-              alt="preview"
-              width="90"
-              height="90"
-            />
-          )}
-        </span>
+        <ImageFileUploader id="parentInformation.idPhoto" ariaLabel="Upload Photo" />
 
         <ErrorMessage name="parentInformation.idPhoto" />
       </div>

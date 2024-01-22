@@ -6,6 +6,7 @@ import { ageGroupData, genderData, relationshipData, relationshipTypeData } from
 import { ChildInformation } from "@/lib/definitions/form-interfaces";
 
 import ImageUploader from "../../components/ImageUploader";
+import ImageFileUploader from "../../components/ImageFileUploader";
 
 // interface PropsInterface {
 //     errors: FormikErrors<RegistrationFormValues>;
@@ -121,7 +122,7 @@ const ChildInformationComponent = ({ index }: { index: number }) => {
             {/* photograph */}
             <div className="input_group">
                 <label htmlFor={`childInformation[${index}].photograph`}>Upload a clear photograph</label>
-                <ImageUploader id={`childInformation[${index}].photograph`} ariaLabel="Upload a clear photograph" />
+                <ImageFileUploader id={`childInformation[${index}].photograph`} ariaLabel="Upload a clear photograph" />
                 <ErrorMessage
                     name={`childInformation[${index}].photograph`}
                 />
