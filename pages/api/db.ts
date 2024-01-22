@@ -27,17 +27,16 @@
 
 import { createPool, Pool, PoolConnection } from "mysql2/promise";
 import { ConnectionRefusedError } from "sequelize";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const connectionOptions = {
-  // Your other connection options
-  // host: process.env.DB_HOST || "localhost",
-  //   user: process.env.DB_USER || "root",
-  //   password: process.env.DB_PASS || "",
-  //   database: process.env.DB_NAME || "test",
-  host: "DESKTOP-76C3JL7",
-  user: "DESKTOP-76C3JL7\\Philip",
-  password: "philip95",
-  database: "kidsApp",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
+  port: Number(process.env.DB_PORT),
   waitForConnections: true,
   connectionLimit: 10,
   connectTimeout: 100000000,
@@ -66,7 +65,7 @@ export async function connectWithRetry(): Promise<PoolConnection> {
     } finally {
       // Close the connection if it was created but there was an error
       if (connection) {
-        connection.end();
+        connection.release();
       }
     }
 

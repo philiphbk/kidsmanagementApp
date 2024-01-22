@@ -15,7 +15,7 @@ export default async function handler(
       try {
         
         const [rows] = await connection.execute("SELECT * FROM registration", []);
-        connection.end();
+        connection.release();
         res.status(200).json({result : rows});
       } catch (error: any) {
         console.log(error);
@@ -28,6 +28,7 @@ export default async function handler(
         await connection.query("INSERT INTO parent SET ?", body);
         console.log("API Response:", res);
         res.status(201).end();
+
       } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
       }
