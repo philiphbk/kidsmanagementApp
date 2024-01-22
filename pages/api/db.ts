@@ -1,30 +1,3 @@
-// import mysql from "mysql2/promise";
-// import dotenv from "dotenv";
-
-// dotenv.config();
-
-// export async function initializeDatabase() {
-
-//   try {
-//     const connection =  await mysql.createConnection({
-//       host: process.env.DB_HOST || "localhost",
-//       user: process.env.DB_USER || "root",
-//       password: process.env.DB_PASS || "",
-//       database: process.env.DB_NAME || "test",
-//       waitForConnections: true,
-//       connectionLimit: 10,
-//       connectTimeout: 100000000,
-//       queueLimit: 0,
-//     });
-//     console.log("Database initialized successfully.");
-//     connection.end();
-//   } catch (error) {
-//     console.error("Error initializing database:", error);
-//   }
-// }
-
-// initializeDatabase();
-
 import { createPool, Pool, PoolConnection } from "mysql2/promise";
 import { ConnectionRefusedError } from "sequelize";
 import dotenv from "dotenv";
