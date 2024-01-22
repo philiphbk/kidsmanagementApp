@@ -14,6 +14,7 @@ export interface ParentInformation {
     phoneNumberPrimary: string;
     phoneNumberSecondary?: string;
     idName: string;
+    idNumber: string;
     idPhoto: string; // Image data for the ID picture
 }
 

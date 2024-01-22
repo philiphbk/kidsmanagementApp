@@ -15,6 +15,7 @@ import {
 import ImageUploader from "../../components/ImageUploader";
 
 import { CaregiverInformation, RegistrationFormValues } from "@/lib/definitions/form-interfaces";
+import ImageFileUploader from "../../components/ImageFileUploader";
 
 // interface PropsInterface {
 //     errors: FormikErrors<RegistrationFormValues>;
@@ -408,10 +409,10 @@ const CaregiverInformationComponent = ({ index }: { index: number }) => {
             </div>
 
             <div className="input_group">
-                <label htmlFor={`caregiverInformation[${index}].idPhoto`}>Upload Photo</label>
-                <ImageUploader id={`caregiverInformation[${index}].idPhoto`} ariaLabel="Upload Photo" />
+                <label htmlFor={`caregiverInformation[${index}].photograph`}>Upload Photo</label>
+                <ImageFileUploader id={`caregiverInformation[${index}].photograph`} ariaLabel="Upload Photo" />
                 <ErrorMessage
-                    name={`caregiverInformation[${index}].idPhoto`}
+                    name={`caregiverInformation[${index}].photograph`}
                 />
             </div>
         </section>
