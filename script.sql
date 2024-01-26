@@ -1,128 +1,112 @@
-
-CREATE DATABASE
-IF NOT EXISTS kids_app;
-
--- Create table for Parent information
-CREATE TABLE Parent
-(
-    parent_id int
-    AUTOINCREMENT,
-    first_name VARCHAR
-    (255) NOT NULL,
-    last_name VARCHAR
-    (255) NOT NULL,
+-- Create Parent table
+CREATE TABLE Parent (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    firstName VARCHAR
+(255),
+    lastName VARCHAR
+(255),
     email VARCHAR
-    (255) NOT NULL,
+(255),
     gender VARCHAR
-    (10) NOT NULL,
-    role_in_church VARCHAR
-    (50) NOT NULL,
-    department_in_church VARCHAR
-    (50) NOT NULL,
-    phone_number_primary VARCHAR
-    (15) NOT NULL,
-    phone_number_secondary VARCHAR
-    (15),
-    id_name VARCHAR
-    (50) NOT NULL,
-    id_photo VARCHAR
-    (255),
-    identification_number VARCHAR
-    (20) NOT NULL,
-    PRIMARY KEY
-    (parent_id)
+(10),
+    roleInChurch VARCHAR
+(255),
+    departmentInChurch VARCHAR
+(255),
+    phoneNumberPrimary VARCHAR
+(20),
+    phoneNumberSecondary VARCHAR
+(20),
+    idName VARCHAR
+(255),
+    idNumber VARCHAR
+(255),
+    idPhoto VARCHAR
+(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON
+UPDATE CURRENT_TIMESTAMP
 );
 
-    -- Create table for Child information
-    CREATE TABLE Child
-    (
-        child_id int
-        AUTOINCREMENT,
-    parent_id INT,
-    first_name VARCHAR
-        (255) NOT NULL,
-    last_name VARCHAR
-        (255) NOT NULL,
+-- Create Child table
+CREATE TABLE Child (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    firstName VARCHAR
+(255),
+    lastName VARCHAR
+(255),
     gender VARCHAR
-        (10) NOT NULL,
-    date_of_birth DATE NOT NULL,
-    age_group VARCHAR
-        (50) NOT NULL,
+(10),
+    dateOfBirth DATE,
+    ageGroup VARCHAR
+(255),
     photograph VARCHAR
-        (255),
-    relationship_with_child_type VARCHAR
-        (50) NOT NULL,
-    relationship_with_child VARCHAR
-        (50) NOT NULL,
-    special_needs VARCHAR
-        (255),
-    PRIMARY KEY
-        (child_id),
-    FOREIGN KEY
-        (parent_id) REFERENCES Parent
-        (parent_id)
+(255),
+    relationshipWithChildType VARCHAR
+(255),
+    relationshipWithChild VARCHAR
+(255),
+    specialNeeds VARCHAR
+(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON
+UPDATE CURRENT_TIMESTAMP
 );
 
-        -- Create table for Caregiver information
-        CREATE TABLE Caregiver
-        (
-            caregiver_id int
-            AUTOINCREMENT,
-    parent_id INT,
-    first_name VARCHAR
-            (255),
-    last_name VARCHAR
-            (255),
+-- Create Caregiver table
+CREATE TABLE Caregiver (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    firstName VARCHAR
+(255),
+    lastName VARCHAR
+(255),
     email VARCHAR
-            (255),
+(255),
     gender VARCHAR
-            (10),
-    role_in_church VARCHAR
-            (50),
-    department_in_church VARCHAR
-            (50),
-    phone_number_primary VARCHAR
-            (15),
-    phone_number_secondary VARCHAR
-            (15),
-    relationship_with_child_type VARCHAR
-            (50),
-    relationship_with_child VARCHAR
-            (50),
-    relationship_with_parent_type VARCHAR
-            (50),
-    relationship_with_parent VARCHAR
-            (50),
-    church_location VARCHAR
-            (255),
-    church_branch_in_location VARCHAR
-            (255),
+(10),
+    roleInChurch VARCHAR
+(255),
+    departmentInChurch VARCHAR
+(255),
+    phoneNumberPrimary VARCHAR
+(20),
+    phoneNumberSecondary VARCHAR
+(20),
+    relationshipWithChildType VARCHAR
+(255),
+    relationshipWithChild VARCHAR
+(255),
+    relationshipWithParentType VARCHAR
+(255),
+    relationshipWithParent VARCHAR
+(255),
+    churchLocation VARCHAR
+(255),
+    churchBranchInLocation VARCHAR
+(255),
     photograph VARCHAR
-            (255),
-    PRIMARY KEY
-            (caregiver_id),
-    FOREIGN KEY
-            (parent_id) REFERENCES Parent
-            (parent_id)
+(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON
+UPDATE CURRENT_TIMESTAMP
 );
 
-            -- Create table for Registration information
-            CREATE TABLE Registration
-            (
-                registration_id int
-                AUTOINCREMENT,
+-- Create Registration table
+CREATE TABLE Registration (
+    id INT PRIMARY KEY AUTO_INCREMENT,
     parent_id INT,
     child_id INT,
     caregiver_id INT,
-    primary key
-                (registration_id),
     FOREIGN KEY
-                (parent_id) REFERENCES Parent
-                (parent_id),
+(parent_id) REFERENCES Parent
+(id),
     FOREIGN KEY
-                (child_id) REFERENCES Child
-                (child_id),
+(child_id) REFERENCES Child
+(id),
     FOREIGN KEY
-                (caregiver_id) REFERENCES Caregiver
-                (caregiver_id)
+(caregiver_id) REFERENCES Caregiver
+(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON
+UPDATE CURRENT_TIMESTAMP
 );

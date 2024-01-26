@@ -12,16 +12,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const [rows] = await connection.execute('SELECT * FROM parent', []);
         connection.release();
         res.status(200).json(rows);
-      } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
+      } catch (error: any) {
+        console.log(error);
+        console.log(error.error);
+        res.status(500).json({ error });
       }
       break;
     case 'POST':
       try {
         await connection.query('INSERT INTO parent SET ?', body);
         res.status(201).end();
-      } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
+      } catch (error: any) {
+        res.status(500).json({ error });
       }
       break;
     case 'PUT':
@@ -29,8 +31,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const { id, ...updateData } = body; // Assuming 'id' is sent in the request body
             await connection.query('UPDATE parent SET ? WHERE id = ?', [updateData, id]);
             res.status(200).end();
-          } catch (error) {
-            res.status(500).json({ error: 'Internal Server Error' });
+          } catch (error : any) {
+
+            res.status(500).json({ error });
           }
           break;
     case 'DELETE':
@@ -38,8 +41,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const { id } = body; // Assuming 'id' is sent in the request body
             await connection.query('DELETE FROM parent WHERE id = ?', [id]);
             res.status(200).end();
-          } catch (error) {
-            res.status(500).json({ error: 'Internal Server Error' });
+          } catch (error : any) {
+            res.status(500).json({ error} );
           }
           break;
     default:

@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 
 import {
-  //   useFormik,
   useFormikContext,
   Formik,
   FormikHelpers,
@@ -20,9 +19,9 @@ import { RegistrationFormValues } from "@/lib/definitions/form-interfaces";
 
 import HodLogoOnly from "@/app/register/components/HodLogo";
 import FormHeader from "@/app/register/components/FormHeader";
-import PersonalInformation from "./InformationPersonal";
-import ChildInformationComponent from "./InformationChild";
-import CaregiverInformationComponent from "./InformationCaregiver";
+import ParentComponent from "./InformationParent";
+import ChildComponent from "./InformationChild";
+import CaregiverComponent from "./InformationCaregiver";
 import { BsPlusCircle, BsTrash3 } from "react-icons/bs";
 import NewChildInstanceTitle from "../../components/NewChildInstanceTitle";
 import { formatDateToYMD } from "@/lib/utils/utils";
@@ -32,7 +31,6 @@ const RegisterMemberComponent = () => {
   const totalSteps = 3;
   const [currentTitle, setCurrentTitle] = useState("Personal Information");
 
-  // const formik = useFormikContext<RegistrationFormValues>();
 
   const nextStep = () => {
     if (step < totalSteps) {
@@ -78,7 +76,7 @@ const RegisterMemberComponent = () => {
 
   const RegistrationSchema = Yup.object()
     .shape({
-      parentInformation: Yup.object().shape({
+      parent: Yup.object().shape({
         firstName: Yup.string().required("First name is required!"),
         lastName: Yup.string().required("Last name is required!"),
         email: Yup.string()
@@ -111,7 +109,7 @@ const RegisterMemberComponent = () => {
         //   (file?: any) => file && file.size < MAX_FILE_SIZE
         // ),
       }),
-      childInformation: Yup.array()
+      child: Yup.array()
         .of(
           Yup.object().shape({
             firsName: Yup.string().required("First name is required!"),
@@ -141,7 +139,7 @@ const RegisterMemberComponent = () => {
           })
         )
         .nullable(),
-      caregiverInformation: Yup.array()
+      caregiver: Yup.array()
         .of(
           Yup.object().shape({
             firstName: Yup.string().required("First name is required!"),
@@ -196,7 +194,7 @@ const RegisterMemberComponent = () => {
     .nullable();
 
   const initialValues = {
-    parentInformation: {
+    parent: {
       firstName: "",
       lastName: "",
       email: "",
@@ -209,7 +207,7 @@ const RegisterMemberComponent = () => {
       idNumber: "",
       idPhoto: "", // Image data for the ID picture
     },
-    childInformation: [
+    child: [
       {
         firstName: "",
         lastName: "",
@@ -222,7 +220,7 @@ const RegisterMemberComponent = () => {
         specialNeeds: "",
       },
     ],
-    caregiverInformation: [
+    caregiver: [
       {
         firstName: "",
         lastName: "",
@@ -324,8 +322,8 @@ const RegisterMemberComponent = () => {
 
                     {step === 1 && (
                       <>
-                        <PersonalInformation
-                          {...values.parentInformation}
+                        <ParentComponent
+                          {...values.parent}
                           errors={errors}
                           touched={touched}
                         />
@@ -335,12 +333,12 @@ const RegisterMemberComponent = () => {
                     {step === 2 && (
                       <>
                         <FieldArray
-                          name="childInformation"
+                          name="Child"
                           render={({ push, remove }) => (
                             <>
-                              {values.childInformation &&
-                                values.childInformation.length > 0 &&
-                                values.childInformation.map((child, index) => (
+                              {values.child &&
+                                values.child.length > 0 &&
+                                values.child.map((child, index) => (
                                   <div key={index}>
                                     <NewChildInstanceTitle
                                       index={index}
@@ -348,7 +346,7 @@ const RegisterMemberComponent = () => {
                                       desc="Child"
                                     />
 
-                                    <ChildInformationComponent index={index} />
+                                    <ChildComponent index={index} />
                                   </div>
                                 ))}
 
@@ -356,7 +354,7 @@ const RegisterMemberComponent = () => {
                                 type="button"
                                 className="flex gap-2 items-center text-hod-secondary text-base font-normal"
                                 onClick={() =>
-                                  values.childInformation.forEach((child) => {
+                                  values.child.forEach((child) => {
                                     push(child);
                                   })
                                 }
@@ -373,13 +371,13 @@ const RegisterMemberComponent = () => {
                     {step === 3 && (
                       <>
                         <FieldArray
-                          name="caregiverInformation"
+                          name="Caregiver"
                           render={({ push, remove }) => (
                             <>
-                              {values.caregiverInformation &&
-                                values.caregiverInformation.length > 0 &&
-                                values.caregiverInformation.map(
-                                  (child, index) => (
+                              {values.caregiver &&
+                                values.caregiver.length > 0 &&
+                                values.caregiver.map(
+                                  (caregiver, index) => (
                                     <div key={index}>
                                       <NewChildInstanceTitle
                                         index={index}
@@ -387,7 +385,7 @@ const RegisterMemberComponent = () => {
                                         desc="Caregiver"
                                       />
 
-                                      <CaregiverInformationComponent
+                                      <CaregiverComponent
                                         index={index}
                                       />
                                     </div>
@@ -398,7 +396,7 @@ const RegisterMemberComponent = () => {
                                 type="button"
                                 className="flex gap-2 items-center text-hod-secondary text-base font-normal"
                                 onClick={() =>
-                                  push(initialValues.childInformation)
+                                  push(initialValues.child)
                                 }
                               >
                                 <BsPlusCircle className="text-hod-secondary" />{" "}

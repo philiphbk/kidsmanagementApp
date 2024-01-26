@@ -3,7 +3,7 @@ import { ChangeEvent, useState, useEffect } from "react";
 import { ErrorMessage, Field, FormikErrors, FormikTouched, useFormikContext } from "formik";
 
 import { ageGroupData, genderData, relationshipData, relationshipTypeData } from "@/lib/data/dummy-data";
-import { ChildInformation } from "@/lib/definitions/form-interfaces";
+import { Child } from "@/lib/definitions/form-interfaces";
 
 import ImageUploader from "../../components/ImageUploader";
 import ImageFileUploader from "../../components/ImageFileUploader";
@@ -13,10 +13,10 @@ import ImageFileUploader from "../../components/ImageFileUploader";
 //     touched: FormikTouched<RegistrationFormValues>;
 // }
 
-// interface ChildInformationProps extends ChildInformation, PropsInterface { }
+// interface ChildProps extends Child, PropsInterface { }
 
-const ChildInformationComponent = ({ index }: { index: number }) => {
-    const formikContext = useFormikContext<ChildInformation>();
+const ChildComponent = ({ index }: { index: number }) => {
+    const formikContext = useFormikContext<Child>();
 
     const [currentType, setCurrentType] = useState("");
 
@@ -25,7 +25,7 @@ const ChildInformationComponent = ({ index }: { index: number }) => {
 
         if (id.includes("relationshipWithChildType")) {
             setCurrentType(value);
-            formikContext.setFieldValue(`childInformation[${index}].relationshipWithChild`, "");
+            formikContext.setFieldValue(`Child[${index}].relationshipWithChild`, "");
         }
 
         console.log(e, name, value)
@@ -41,37 +41,37 @@ const ChildInformationComponent = ({ index }: { index: number }) => {
             {/* full name */}
             <div className="flex gap-x-6 flex-col md:flex-row">
                 <div className="input_group">
-                    <label htmlFor={`childInformation[${index}].firstName`}>First Name</label>
+                    <label htmlFor={`Child[${index}].firstName`}>First Name</label>
                     <Field
-                        // name="childInformation.firstName"
-                        name={`childInformation[${index}].firstName`}
-                        id={`childInformation[${index}].firstName`}
+                        // name="Child.firstName"
+                        name={`Child[${index}].firstName`}
+                        id={`Child[${index}].firstName`}
                         type="text"
                         className="hod_input"
                         aria-placeholder="Enter first name"
                         aria-label="First Name"
                     />
                     <ErrorMessage
-                        name={`childInformation[${index}].firstName`}
+                        name={`Child[${index}].firstName`}
                     />
-                    {/* {errors?.childInformation?.firstName
-                        && touched?.childInformation?.firstName ? (
-                        <div>{errors?.childInformation?.firstName}</div>
+                    {/* {errors?.Child?.firstName
+                        && touched?.Child?.firstName ? (
+                        <div>{errors?.Child?.firstName}</div>
                     ) : null} */}
                 </div>
 
                 <div className="input_group">
-                    <label htmlFor={`childInformation[${index}].lastName`}>Last Name</label>
+                    <label htmlFor={`Child[${index}].lastName`}>Last Name</label>
                     <Field
-                        name={`childInformation[${index}].lastName`}
-                        id={`childInformation[${index}].lastName`}
+                        name={`Child[${index}].lastName`}
+                        id={`Child[${index}].lastName`}
                         type="text"
                         className="hod_input"
                         aria-placeholder="Enter last name"
                         aria-label="Last Name"
                     />
                     <ErrorMessage
-                        name={`childInformation[${index}].lastName`}
+                        name={`Child[${index}].lastName`}
                     />
                 </div>
             </div>
@@ -79,25 +79,25 @@ const ChildInformationComponent = ({ index }: { index: number }) => {
             {/* date of birth and gender */}
             <div className="flex gap-x-6 flex-col md:flex-row">
                 <div className="input_group">
-                    <label htmlFor={`childInformation[${index}].dateOfBirth`}>Date of birth</label>
+                    <label htmlFor={`Child[${index}].dateOfBirth`}>Date of birth</label>
                     <Field
-                        name={`childInformation[${index}].dateOfBirth`}
-                        id={`childInformation[${index}].dateOfBirth`}
+                        name={`Child[${index}].dateOfBirth`}
+                        id={`Child[${index}].dateOfBirth`}
                         type="date"
                         className="hod_input"
                         aria-placeholder="Enter date of birth name"
                         aria-label="Date of birth"
                     />
                     <ErrorMessage
-                        name={`childInformation[${index}].dateOfBirth`}
+                        name={`Child[${index}].dateOfBirth`}
                     />
                 </div>
 
                 <div className="input_group">
-                    <label htmlFor={`childInformation[${index}].gender`}>Gender</label>
+                    <label htmlFor={`Child[${index}].gender`}>Gender</label>
                     <Field
-                        name={`childInformation[${index}].gender`}
-                        id={`childInformation[${index}].gender`}
+                        name={`Child[${index}].gender`}
+                        id={`Child[${index}].gender`}
                         as="select"
                         className="hod_input"
                         aria-label="Gender"
@@ -114,26 +114,26 @@ const ChildInformationComponent = ({ index }: { index: number }) => {
                         ))}
                     </Field>
                     <ErrorMessage
-                        name={`childInformation[${index}].gender`}
+                        name={`Child[${index}].gender`}
                     />
                 </div>
             </div>
 
             {/* photograph */}
             <div className="input_group">
-                <label htmlFor={`childInformation[${index}].photograph`}>Upload a clear photograph</label>
-                <ImageFileUploader id={`childInformation[${index}].photograph`} ariaLabel="Upload a clear photograph" />
+                <label htmlFor={`Child[${index}].photograph`}>Upload a clear photograph</label>
+                <ImageFileUploader id={`Child[${index}].photograph`} ariaLabel="Upload a clear photograph" />
                 <ErrorMessage
-                    name={`childInformation[${index}].photograph`}
+                    name={`Child[${index}].photograph`}
                 />
             </div>
 
             {/* age group */}
             <div className="input_group">
-                <label htmlFor={`childInformation[${index}].ageGroup`}>Age Group</label>
+                <label htmlFor={`Child[${index}].ageGroup`}>Age Group</label>
                 <Field
-                    name={`childInformation[${index}].ageGroup`}
-                    id={`childInformation[${index}].ageGroup`}
+                    name={`Child[${index}].ageGroup`}
+                    id={`Child[${index}].ageGroup`}
                     as="select"
                     className="hod_input"
                     aria-label="Age Group"
@@ -150,17 +150,17 @@ const ChildInformationComponent = ({ index }: { index: number }) => {
                     ))}
                 </Field>
                 <ErrorMessage
-                    name={`childInformation[${index}].ageGroup`}
+                    name={`Child[${index}].ageGroup`}
                 />
             </div>
 
             {/* relationship with child */}
             <div className="flex gap-x-6 flex-col md:flex-row">
                 <div className="input_group">
-                    <label htmlFor={`childInformation[${index}].relationshipWithChildType`}>Relationship with child</label>
+                    <label htmlFor={`Child[${index}].relationshipWithChildType`}>Relationship with child</label>
                     <Field
-                        name={`childInformation[${index}].relationshipWithChildType`}
-                        id={`childInformation[${index}].relationshipWithChildType`}
+                        name={`Child[${index}].relationshipWithChildType`}
+                        id={`Child[${index}].relationshipWithChildType`}
                         as="select"
                         className="hod_input"
                         aria-label="Relationship with child"
@@ -178,18 +178,18 @@ const ChildInformationComponent = ({ index }: { index: number }) => {
                         ))}
                     </Field>
                     <ErrorMessage
-                        name={`childInformation[${index}].relationshipWithChildType`}
+                        name={`Child[${index}].relationshipWithChildType`}
                     />
                 </div>
 
                 <div className="input_group">
-                    <label htmlFor={`childInformation[${index}].relationshipWithChild`}>Specify Relationship</label>
+                    <label htmlFor={`Child[${index}].relationshipWithChild`}>Specify Relationship</label>
 
                     {currentType !== "other" ? (
                         <>
                             <Field
-                                name={`childInformation[${index}].relationshipWithChild`}
-                                id={`childInformation[${index}].relationshipWithChild`}
+                                name={`Child[${index}].relationshipWithChild`}
+                                id={`Child[${index}].relationshipWithChild`}
                                 as="select"
                                 className="hod_input"
                                 aria-label="Specify Relationship"
@@ -208,21 +208,21 @@ const ChildInformationComponent = ({ index }: { index: number }) => {
                                 ))}
                             </Field>
                             <ErrorMessage
-                                name={`childInformation[${index}].relationshipWithChild`}
+                                name={`Child[${index}].relationshipWithChild`}
                             />
                         </>
                     ) : (
                         <>
                             <Field
-                                name={`childInformation[${index}].relationshipWithChild`}
-                                id={`childInformation[${index}].relationshipWithChild`}
+                                name={`Child[${index}].relationshipWithChild`}
+                                id={`Child[${index}].relationshipWithChild`}
                                 type="text"
                                 className="hod_input"
                                 aria-placeholder="Specify Relationship"
                                 aria-label="Specify Relationship"
                             />
                             <ErrorMessage
-                                name={`childInformation[${index}].relationshipWithChild`}
+                                name={`Child[${index}].relationshipWithChild`}
                             />
                         </>
                     )}
@@ -231,23 +231,23 @@ const ChildInformationComponent = ({ index }: { index: number }) => {
 
             {/* special need */}
             <div className="input_group">
-                <label htmlFor={`childInformation[${index}].specialNeeds`}>
+                <label htmlFor={`Child[${index}].specialNeeds`}>
                     Special Needs <span className="font-normal text-hod-text-gray2 text-base leading-6 italic">(Any special type of care for the child)</span>
                 </label>
                 <Field
-                    name={`childInformation[${index}].specialNeeds`}
-                    id={`childInformation[${index}].specialNeeds`}
+                    name={`Child[${index}].specialNeeds`}
+                    id={`Child[${index}].specialNeeds`}
                     type="text"
                     className="hod_input"
                     aria-placeholder="Enter any special needs for the child"
                     aria-label="Special Needs"
                 />
                 <ErrorMessage
-                    name={`childInformation[${index}].specialNeeds`}
+                    name={`Child[${index}].specialNeeds`}
                 />
             </div>
         </div>
     );
 };
 
-export default ChildInformationComponent;
+export default ChildComponent;

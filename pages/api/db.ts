@@ -5,11 +5,16 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const connectionOptions = {
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
-  port: Number(process.env.DB_PORT),
+  // host: process.env.DB_HOST,
+  // user: process.env.DB_USER,
+  // password: process.env.DB_PASS,
+  // database: process.env.DB_NAME,
+  // port: Number(process.env.DB_PORT),
+  host: "localhost",
+  user: "root",
+  password: "95@PhilipFaj",
+  database: "kidsappdb",
+  port: 3390,
   waitForConnections: true,
   connectionLimit: 10,
   connectTimeout: 100000000,
