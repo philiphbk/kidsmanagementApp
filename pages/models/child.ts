@@ -28,12 +28,12 @@ const buildMakeChild = () => {
     if (!photograph) {
       throw new Error('Child must have a photograph.')
     }
-    if (!parent.length) {
-      throw new Error('Child must have a parent.')
-    }
-    if (!caregiver) {
-      throw new Error('Child must have a caregiver.')
-    }
+    // if (!parent.length) {
+    //   throw new Error('Child must have a parent.')
+    // }
+    // if (!caregiver) {
+    //   throw new Error('Child must have a caregiver.')
+    // }
 
     return Object.freeze({
       getFirstName: () => firstName,

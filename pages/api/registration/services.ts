@@ -1,26 +1,30 @@
 import { makeCareGiver, makeChild, makeParent } from "../../models";
 
 const register: any = {
-  parent: async (parentInformation: any) => {
-    const parent = makeParent(parentInformation);
+  parent: async (parents: any) => {
+    const parent = makeParent(parents);
     const allowedParentData = parent.getCreateParentData();
-    await parent.save(allowedParentData)
+    await parent.save(allowedParentData);
   },
 
-  child: async (childInformation: any) => {
-    const child = makeChild(childInformation);
-    const allowedChildData = child.getCreateChildData();
-    await child.save(allowedChildData)
+  child: async (childList: any[]) => {
+    for (const ward of childList) {
+      const child = makeChild(ward);
+      const allowedChildData = child.getCreateChildData();
+      await child.save(allowedChildData);
+    }
   },
 
-  careGiver: async (careGiverInformation: any) => {
-    if (!careGiverInformation) {
+  careGiver: async (careGiverList: any[]) => {
+    if (!careGiverList.length) {
       return;
     }
-    const careGiver = makeCareGiver(careGiverInformation);
-    const allowedCareGiverData = careGiver.getCareGiverData()
-    return careGiver.save(allowedCareGiverData);
-  }
+    for (const careGiver of careGiverList) {
+      const careGiverResult = makeCareGiver(careGiver);
+      const allowedCareGiverData = careGiverResult.getCareGiverData();
+      return careGiverResult.save(allowedCareGiverData);
+    }
+  },
 };
 
 export default register;
