@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 
 import {
-  //   useFormik,
   useFormikContext,
   Formik,
   FormikHelpers,
@@ -20,18 +19,18 @@ import { RegistrationFormValues } from "@/lib/definitions/form-interfaces";
 
 import HodLogoOnly from "@/app/register/components/HodLogo";
 import FormHeader from "@/app/register/components/FormHeader";
-import PersonalInformation from "./InformationPersonal";
-import ChildInformationComponent from "./InformationChild";
-import CaregiverInformationComponent from "./InformationCaregiver";
+import ParentComponent from "./InformationParent";
+import ChildComponent from "./InformationChild";
+import CaregiverComponent from "./InformationCaregiver";
 import { BsPlusCircle, BsTrash3 } from "react-icons/bs";
 import NewChildInstanceTitle from "../../components/NewChildInstanceTitle";
+import { formatDateToYMD } from "@/lib/utils/utils";
 
 const RegisterMemberComponent = () => {
   const [step, setStep] = useState(1);
   const totalSteps = 3;
   const [currentTitle, setCurrentTitle] = useState("Personal Information");
 
-  // const formik = useFormikContext<RegistrationFormValues>();
 
   const nextStep = () => {
     if (step < totalSteps) {
@@ -48,35 +47,36 @@ const RegisterMemberComponent = () => {
   const [registrationSuccessful, setRegistrationSuccessful] =
     useState<boolean>(false);
 
-  const MAX_FILE_SIZE = 1000000; // 1MB
-  const validFileExtensions = [
-    "image/jpg",
-    "image/gif",
-    "image/png",
-    "image/jpeg",
-    "image/svg",
-    "image/webp",
-  ];
+  // const MAX_FILE_SIZE = 1000000; // 1MB
+  // const validFileExtensions = [
+  //   "image/jpg",
+  //   "image/gif",
+  //   "image/jfif",
+  //   "image/png",
+  //   "image/jpeg",
+  //   "image/svg",
+  //   "image/webp",
+  // ];
 
-  const checkIfFilesAreTooBig = (file?: any): boolean => {
-    let valid = true;
-    if (file && file.size < MAX_FILE_SIZE) {
-      valid = false;
-    }
-    return valid;
-  };
+  // const checkIfFilesAreTooBig = (file?: any): boolean => {
+  //   let valid = true;
+  //   if (file && file.size < MAX_FILE_SIZE) {
+  //     valid = false;
+  //   }
+  //   return valid;
+  // };
 
-  const checkIfFilesAreCorrectType = (file?: any): boolean => {
-    let valid = true;
-    if (file && validFileExtensions.includes(file.type)) {
-      valid = false;
-    }
-    return valid;
-  };
+  // const checkIfFilesAreCorrectType = (file?: any): boolean => {
+  //   let valid = true;
+  //   if (file && validFileExtensions.includes(file.type)) {
+  //     valid = false;
+  //   }
+  //   return valid;
+  // };
 
   const RegistrationSchema = Yup.object()
     .shape({
-      parentInformation: Yup.object().shape({
+      parent: Yup.object().shape({
         firstName: Yup.string().required("First name is required!"),
         lastName: Yup.string().required("Last name is required!"),
         email: Yup.string()
@@ -94,20 +94,22 @@ const RegisterMemberComponent = () => {
         ),
         phoneNumberSecondary: Yup.string(),
         idName: Yup.string().required(
-          "Please upload a means of Identification!"
+          "Please select a means of Identification!"
         ),
-        idPhoto: Yup.mixed()
-          .required("Photo is required!")
-          .test("fileType", "Only images are allowed", (file?: any) =>
-            checkIfFilesAreCorrectType(file)
-          )
-          .test(
-            "fileSize",
-            "Image size should not be greater than 1MB",
-            (file?: any) => checkIfFilesAreTooBig(file)
-          ),
+        idNumber: Yup.string().required(
+          "Please enter your ID Number!"
+        ),
+        // idPhoto: Yup.mixed()
+        // .test("fileType", "Only images are allowed", (file?: any) =>
+        //   file && validFileExtensions.includes(file.type)
+        // )
+        // .test(
+        //   "fileSize",
+        //   "Image size should not be greater than 1MB",
+        //   (file?: any) => file && file.size < MAX_FILE_SIZE
+        // ),
       }),
-      childInformation: Yup.array()
+      child: Yup.array()
         .of(
           Yup.object().shape({
             firsName: Yup.string().required("First name is required!"),
@@ -115,18 +117,18 @@ const RegisterMemberComponent = () => {
             gender: Yup.string().required("Gender is required!"),
             dateOfBirth: Yup.date().required("Date of birth is required!"),
             ageGroup: Yup.string().required("Age group is required!"),
-            photograph: Yup.mixed()
-              .required("Photograph is required!")
-              .test(
-                "fileSize",
-                "Image size should be less than 1MB",
-                (value: any) => {
-                  return value && value.size <= 1000000;
-                }
-              )
-              .test("fileType", "Only images are allowed", (value: any) => {
-                return value && value.type.includes("image");
-              }),
+            // photograph: Yup.mixed()
+            //   .required("Photograph is required!")
+            //   .test(
+            //     "fileSize",
+            //     "Image size should be less than 1MB",
+            //     (value: any) => {
+            //       return value && value.size <= 1000000;
+            //     }
+            //   )
+            //   .test("fileType", "Only images are allowed", (value: any) => {
+            //     return value && value.type.includes("image");
+            //   }),
             relationshipWithChildType: Yup.string().required(
               "Type of relationship with child is required!"
             ),
@@ -137,7 +139,7 @@ const RegisterMemberComponent = () => {
           })
         )
         .nullable(),
-      caregiverInformation: Yup.array()
+      caregiver: Yup.array()
         .of(
           Yup.object().shape({
             firstName: Yup.string().required("First name is required!"),
@@ -174,17 +176,17 @@ const RegisterMemberComponent = () => {
             churchBranchInLocation: Yup.string().required(
               "Please select the branch in the location selected!"
             ),
-            photograph: Yup.mixed()
-              .test(
-                "fileSize",
-                "Image size should be less than 1MB",
-                (value: any) => {
-                  return value && value.size <= 1000000;
-                }
-              )
-              .test("fileType", "Only images are allowed", (value: any) => {
-                return value && value.type.includes("image");
-              }),
+            // photograph: Yup.mixed()
+            //   .test(
+            //     "fileSize",
+            //     "Image size should be less than 1MB",
+            //     (value: any) => {
+            //       return value && value.size <= 1000000;
+            //     }
+            //   )
+            //   .test("fileType", "Only images are allowed", (value: any) => {
+            //     return value && value.type.includes("image");
+            //   }),
           })
         )
         .nullable(),
@@ -192,7 +194,7 @@ const RegisterMemberComponent = () => {
     .nullable();
 
   const initialValues = {
-    parentInformation: {
+    parent: {
       firstName: "",
       lastName: "",
       email: "",
@@ -202,9 +204,10 @@ const RegisterMemberComponent = () => {
       phoneNumberPrimary: "",
       phoneNumberSecondary: "",
       idName: "",
+      idNumber: "",
       idPhoto: "", // Image data for the ID picture
     },
-    childInformation: [
+    child: [
       {
         firstName: "",
         lastName: "",
@@ -217,7 +220,7 @@ const RegisterMemberComponent = () => {
         specialNeeds: "",
       },
     ],
-    caregiverInformation: [
+    caregiver: [
       {
         firstName: "",
         lastName: "",
@@ -243,6 +246,7 @@ const RegisterMemberComponent = () => {
     actions: FormikHelpers<RegistrationFormValues>
   ) => {
     if (step < totalSteps) {
+      console.log("is clicked!");
       nextStep();
       actions.setTouched({});
       actions.setSubmitting(false);
@@ -258,19 +262,16 @@ const RegisterMemberComponent = () => {
             "Content-Type": "application/json",
           },
         });
-        const data = await response.json();
 
-        if (response.status !== 200) {
-          throw new Error(data.message);
-        }
-
-        if (data) {
+        if (response.ok) {
+          const data = await response.json();
           console.log(data, "Registration form submitted!");
 
           setStep(1);
           actions.resetForm();
           setRegistrationSuccessful(true);
         }
+
       } catch (err) {
         console.log(err);
       } finally {
@@ -308,10 +309,10 @@ const RegisterMemberComponent = () => {
             <main className="form_container flex flex-col items-center w-full h-full">
               <Formik<RegistrationFormValues>
                 initialValues={initialValues}
-                validationSchema={RegistrationSchema}
+                // validationSchema={RegistrationSchema}
                 onSubmit={handleSubmit}
               >
-                {({ values, errors, touched }) => (
+                {({ values, errors, touched, isSubmitting }) => (
                   <Form className="form">
                     <div className="steps mb-2 w-16">
                       Step {step}/{totalSteps}
@@ -321,8 +322,8 @@ const RegisterMemberComponent = () => {
 
                     {step === 1 && (
                       <>
-                        <PersonalInformation
-                          {...values.parentInformation}
+                        <ParentComponent
+                          {...values.parent}
                           errors={errors}
                           touched={touched}
                         />
@@ -332,12 +333,12 @@ const RegisterMemberComponent = () => {
                     {step === 2 && (
                       <>
                         <FieldArray
-                          name="childInformation"
+                          name="Child"
                           render={({ push, remove }) => (
                             <>
-                              {values.childInformation &&
-                                values.childInformation.length > 0 &&
-                                values.childInformation.map((child, index) => (
+                              {values.child &&
+                                values.child.length > 0 &&
+                                values.child.map((child, index) => (
                                   <div key={index}>
                                     <NewChildInstanceTitle
                                       index={index}
@@ -345,7 +346,7 @@ const RegisterMemberComponent = () => {
                                       desc="Child"
                                     />
 
-                                    <ChildInformationComponent index={index} />
+                                    <ChildComponent index={index} />
                                   </div>
                                 ))}
 
@@ -353,7 +354,7 @@ const RegisterMemberComponent = () => {
                                 type="button"
                                 className="flex gap-2 items-center text-hod-secondary text-base font-normal"
                                 onClick={() =>
-                                  values.childInformation.forEach((child) => {
+                                  values.child.forEach((child) => {
                                     push(child);
                                   })
                                 }
@@ -370,13 +371,13 @@ const RegisterMemberComponent = () => {
                     {step === 3 && (
                       <>
                         <FieldArray
-                          name="caregiverInformation"
+                          name="Caregiver"
                           render={({ push, remove }) => (
                             <>
-                              {values.caregiverInformation &&
-                                values.caregiverInformation.length > 0 &&
-                                values.caregiverInformation.map(
-                                  (child, index) => (
+                              {values.caregiver &&
+                                values.caregiver.length > 0 &&
+                                values.caregiver.map(
+                                  (caregiver, index) => (
                                     <div key={index}>
                                       <NewChildInstanceTitle
                                         index={index}
@@ -384,7 +385,7 @@ const RegisterMemberComponent = () => {
                                         desc="Caregiver"
                                       />
 
-                                      <CaregiverInformationComponent
+                                      <CaregiverComponent
                                         index={index}
                                       />
                                     </div>
@@ -395,7 +396,7 @@ const RegisterMemberComponent = () => {
                                 type="button"
                                 className="flex gap-2 items-center text-hod-secondary text-base font-normal"
                                 onClick={() =>
-                                  push(initialValues.childInformation)
+                                  push(initialValues.child)
                                 }
                               >
                                 <BsPlusCircle className="text-hod-secondary" />{" "}
@@ -420,8 +421,10 @@ const RegisterMemberComponent = () => {
                       <button
                         type="submit"
                         className="hod_button hod_button_primary"
+                        disabled={isSubmitting}
                       >
-                        {step < totalSteps ? "Next" : "Submit"}
+                        {isSubmitting ? "Submitting..." : (step < totalSteps ? "Next" : "Submit")}
+
                       </button>
                     </div>
                   </Form>

@@ -15,11 +15,12 @@ import {
 import ImageUploader from "../../components/ImageUploader";
 
 import {
-  ParentInformation,
+  Parent,
   RegistrationFormValues,
 } from "@/lib/definitions/form-interfaces";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import ImageFileUploader from "../../components/ImageFileUploader";
 // import { FormikPropsInterface } from "./RegisterMemberComponent";
 
 interface PropsInterface {
@@ -31,9 +32,9 @@ interface ImageData {
   base64String: string | null;
 }
 
-interface PersonalInformationProps extends ParentInformation, PropsInterface {}
+interface ParentProps extends Parent, PropsInterface { }
 
-const PersonalInformation: React.FC<PersonalInformationProps> = ({
+const ParentComponent: React.FC<ParentProps> = ({
   firstName,
   lastName,
   email,
@@ -47,91 +48,92 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
   errors,
   touched,
 }) => {
-  const formikContext = useFormikContext<ParentInformation>();
+  // const formikContext = useFormikContext<Partial<Parent>>();
 
-  const [imageData, setImageData] = useState<ImageData>({ base64String: null });
+  // const [imageData, setImageData] = useState<ImageData>({ base64String: "" });
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    const { name, value, id } = e.target;
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
 
-    if (file) {
-      console.log(e, file);
+  //   if (file) {
+  //     console.log(e, file);
 
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        setImageData({ base64String: reader.result as string });
-        console.log(reader.result);
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(file);
+  //     reader.onload = () => {
+  //       console.log(reader.result);
+  //       setImageData({ base64String: reader.result as string });
 
-        // formikContext.setFieldValue("parentInformation.idPhoto", reader.result);
-        formikContext.setFieldValue(id, value);
-      };
-    } else {
-      setImageData({ base64String: null });
-      //   formikContext.setFieldValue("parentInformation.idPhoto", null);
-    }
-  };
+  //       formikContext.setFieldValue("Parent.idPhoto", reader.result as string);
+  //     };
+  //   } else {
+  //     setImageData({ base64String: "" });
+  //   }
+  // };
 
-  useEffect(() => {
-    console.log(idPhoto);
-  }, [idPhoto, imageData]);
+  // useEffect(() => {
+  //   if (imageData?.base64String) {
+  //     formikContext.setFieldValue("Parent.idPhoto", imageData.base64String as string);
+  //     console.log(idPhoto);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [idPhoto, imageData]);
 
   return (
     <section className="personal_info">
       {/* full name */}
       <div className="flex gap-x-6 flex-col md:flex-row">
         <div className="input_group">
-          <label htmlFor="parentInformation.firstName">First Name</label>
+          <label htmlFor="Parent.firstName">First Name</label>
           <Field
-            name="parentInformation.firstName"
-            id="parentInformation.firstName"
+            name="Parent.firstName"
+            id="Parent.firstName"
             type="text"
             className="hod_input"
             aria-placeholder="Enter first name"
             aria-label="First Name"
           />
-          <ErrorMessage name="parentInformation.firstName" />
-          {/* {errors?.parentInformation?.firstName
-                        && touched?.parentInformation?.firstName ? (
-                        <div>{errors?.parentInformation?.firstName}</div>
+          <ErrorMessage name="Parent.firstName" />
+          {/* {errors?.Parent?.firstName
+                        && touched?.Parent?.firstName ? (
+                        <div>{errors?.Parent?.firstName}</div>
                     ) : null} */}
         </div>
 
         <div className="input_group">
-          <label htmlFor="parentInformation.lastName">Last Name</label>
+          <label htmlFor="Parent.lastName">Last Name</label>
           <Field
-            name="parentInformation.lastName"
-            id="parentInformation.lastName"
+            name="Parent.lastName"
+            id="Parent.lastName"
             type="text"
             className="hod_input"
             aria-placeholder="Enter last name"
             aria-label="Last Name"
           />
-          <ErrorMessage name="parentInformation.lastName" />
+          <ErrorMessage name="Parent.lastName" />
         </div>
       </div>
 
       {/* email */}
       <div className="input_group">
-        <label htmlFor="parentInformation.email">Email Address</label>
+        <label htmlFor="Parent.email">Email Address</label>
         <Field
-          name="parentInformation.email"
-          id="parentInformation.email"
+          name="Parent.email"
+          id="Parent.email"
           type="email"
           className="hod_input"
           aria-placeholder="Enter email"
           aria-label="Email Address"
         />
-        <ErrorMessage name="parentInformation.email" />
+        <ErrorMessage name="Parent.email" />
       </div>
 
       {/* gender */}
       <div className="input_group">
-        <label htmlFor="parentInformation.gender">Gender</label>
+        <label htmlFor="Parent.gender">Gender</label>
         <Field
-          name="parentInformation.gender"
-          id="parentInformation.gender"
+          name="Parent.gender"
+          id="Parent.gender"
           as="select"
           className="hod_input"
           aria-label="Gender"
@@ -146,15 +148,15 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
             </option>
           ))}
         </Field>
-        <ErrorMessage name="parentInformation.gender" />
+        <ErrorMessage name="Parent.gender" />
       </div>
 
       {/* role */}
       <div className="input_group">
-        <label htmlFor="parentInformation.roleInChurch">Role in church</label>
+        <label htmlFor="Parent.roleInChurch">Role in church</label>
         <Field
-          name="parentInformation.roleInChurch"
-          id="parentInformation.roleInChurch"
+          name="Parent.roleInChurch"
+          id="Parent.roleInChurch"
           as="select"
           className="hod_input"
           aria-label="Role in church"
@@ -169,17 +171,17 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
             </option>
           ))}
         </Field>
-        <ErrorMessage name="parentInformation.roleInChurch" />
+        <ErrorMessage name="Parent.roleInChurch" />
       </div>
 
       {/* ministry */}
       <div className="input_group">
-        <label htmlFor="parentInformation.departmentInChurch">
+        <label htmlFor="Parent.departmentInChurch">
           Department in church
         </label>
         <Field
-          name="parentInformation.departmentInChurch"
-          id="parentInformation.departmentInChurch"
+          name="Parent.departmentInChurch"
+          id="Parent.departmentInChurch"
           as="select"
           className="hod_input"
           aria-label="Department in church"
@@ -194,49 +196,49 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
             </option>
           ))}
         </Field>
-        <ErrorMessage name="parentInformation.departmentInChurch" />
+        <ErrorMessage name="Parent.departmentInChurch" />
       </div>
 
       {/* primary phone */}
       <div className="input_group">
-        <label htmlFor="parentInformation.phoneNumberPrimary">
+        <label htmlFor="Parent.phoneNumberPrimary">
           Primary Phone Number
         </label>
         <Field
-          name="parentInformation.phoneNumberPrimary"
-          id="parentInformation.phoneNumberPrimary"
+          name="Parent.phoneNumberPrimary"
+          id="Parent.phoneNumberPrimary"
           type="text"
           className="hod_input"
           aria-placeholder="Enter primary phone number"
           aria-label="Primary Phone Number"
         />
-        <ErrorMessage name="parentInformation.phoneNumberPrimary" />
+        <ErrorMessage name="Parent.phoneNumberPrimary" />
       </div>
 
       {/* secondary phone */}
       <div className="input_group">
-        <label htmlFor="parentInformation.phoneNumberSecondary">
+        <label htmlFor="Parent.phoneNumberSecondary">
           Secondary Phone Number
         </label>
         <Field
-          name="parentInformation.phoneNumberSecondary"
-          id="parentInformation.phoneNumberSecondary"
+          name="Parent.phoneNumberSecondary"
+          id="Parent.phoneNumberSecondary"
           type="text"
           className="hod_input"
           aria-placeholder="Enter secondary phone number"
           aria-label="Secondary Phone Number"
         />
-        <ErrorMessage name="parentInformation.phoneNumberSecondary" />
+        <ErrorMessage name="Parent.phoneNumberSecondary" />
       </div>
 
       {/* means of id */}
       <div className="input_group">
-        <label htmlFor="parentInformation.idName">
+        <label htmlFor="Parent.idName">
           Means of identification
         </label>
         <Field
-          name="parentInformation.idName"
-          id="parentInformation.idName"
+          name="Parent.idName"
+          id="Parent.idName"
           as="select"
           className="hod_input"
           aria-label="Means of identification"
@@ -251,53 +253,34 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
             </option>
           ))}
         </Field>
-        <ErrorMessage name="parentInformation.idName" />
+        <ErrorMessage name="Parent.idName" />
       </div>
 
       {/* id number - not referenced in interface */}
       <div className="input_group">
-        <label htmlFor="parentInformation.identificationNumber">
+        <label htmlFor="Parent.idNumber">
           Identification Number
         </label>
         <Field
-          name="parentInformation.identificationNumber"
-          id="parentInformation.identificationNumber"
+          name="Parent.idNumber"
+          id="Parent.idNumber"
           type="text"
-          className="hod_input py-3.5"
+          className="hod_input"
           aria-placeholder="Enter identification number"
           aria-label="Identification Number"
         />
-        <ErrorMessage name="parentInformation.identificationNumber" />
+        <ErrorMessage name="Parent.idNumber" />
       </div>
 
       {/* photograph */}
       <div className="input_group">
-        <label htmlFor="parentInformation.idPhoto">Upload Photo</label>
-        {/* <ImageUploader id="parentInformation.idPhoto" ariaLabel="Upload Photo" /> */}
-        <Field
-          name="parentInformation.idPhoto"
-          id="parentInformation.idPhoto"
-          type="file"
-          accept="image/*"
-          className="hod_input py-3.5"
-          aria-label="Upload Photo"
-          onChange={handleFileChange}
-        />
-        <span>
-          {imageData.base64String && (
-            <Image
-              src={imageData.base64String}
-              alt="preview"
-              width="90"
-              height="90"
-            />
-          )}
-        </span>
+        <label htmlFor="Parent.idPhoto">Upload Photo</label>
+        <ImageFileUploader id="Parent.idPhoto" ariaLabel="Upload Photo" />
 
-        <ErrorMessage name="parentInformation.idPhoto" />
+        <ErrorMessage name="Parent.idPhoto" />
       </div>
     </section>
   );
 };
 
-export default PersonalInformation;
+export default ParentComponent;

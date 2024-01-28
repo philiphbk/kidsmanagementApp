@@ -19,6 +19,11 @@ body {
     background-repeat: no-repeat;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 .platform_title {
     @apply font-normal text-2xl text-hod-black2 text-center;
 }
@@ -26,7 +31,6 @@ body {
 .registration_container {
     @apply h-full w-full flex flex-col items-center mx-auto px-5 py-10 md:px-10 md:p-14;
 }
-
 
 .form {
     @apply mt-14 px-5 py-8 md:p-10 flex flex-col justify-center max-w-[564px] w-full bg-white rounded-2xl;
@@ -50,11 +54,11 @@ body {
 }
 
 .form_button_container {
-    @apply mt-6 md:mt-10 flex flex-col md:flex-row gap-6 justify-end;
+    @apply mt-6 md:mt-8 flex flex-col md:flex-row gap-6 justify-end;
 }
 
 .hod_button {
-    @apply w-auto flex gap-2.5 py-4 px-9 rounded-lg text-base font-normal hover:opacity-85 transition-opacity;
+    @apply w-auto flex gap-2.5 py-4 px-9 rounded-lg text-base font-normal disabled:opacity-85 hover:opacity-85 transition-opacity;
 }
 
 .hod_button_primary {
