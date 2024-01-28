@@ -57,6 +57,9 @@ const ParentComponent: React.FC<ParentProps> = ({
   errors,
   touched,
 }) => {
+  console.log("errors", errors);
+  console.log("touched", touched);
+
   // const formikContext = useFormikContext<Partial<Parent>>();
 
   // const [imageData, setImageData] = useState<ImageData>({ base64String: "" });
@@ -65,12 +68,10 @@ const ParentComponent: React.FC<ParentProps> = ({
   //   const file = e.target.files?.[0];
 
   //   if (file) {
-  //     console.log(e, file);
 
   //     const reader = new FileReader();
   //     reader.readAsDataURL(file);
   //     reader.onload = () => {
-  //       console.log(reader.result);
   //       setImageData({ base64String: reader.result as string });
 
   //       formikContext.setFieldValue("parent.idPhoto", reader.result as string);
@@ -83,21 +84,20 @@ const ParentComponent: React.FC<ParentProps> = ({
   // useEffect(() => {
   //   if (imageData?.base64String) {
   //     formikContext.setFieldValue("parent.idPhoto", imageData.base64String as string);
-  //     console.log(idPhoto);
   //   }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [idPhoto, imageData]);
   const { setFieldValue } = useFormikContext();
-  const [field] = useField("parent.departmentInChurch");
+  // const [field] = useField("parent.departmentInChurch");
 
   const options: OptionType[] = departmentInChurchData.map((dept) => ({
     value: dept.id,
     label: dept.value,
   }));
 
-  const handleChange = (selectedOption: SingleValue<OptionType>) => {
-    setFieldValue("parent.departmentInChurch", selectedOption?.value);
-  };
+  // const handleChange = (selectedOption: SingleValue<OptionType>) => {
+  //   setFieldValue("parent.departmentInChurch", selectedOption?.value);
+  // };
 
   return (
     <section className="personal_info">
@@ -130,7 +130,7 @@ const ParentComponent: React.FC<ParentProps> = ({
             aria-placeholder="Enter last name"
             aria-label="Last Name"
           />
-          <ErrorMessage name="parent.lastName" />
+          {/* <ErrorMessage name="parent.lastName" /> */}
         </div>
       </div>
 
@@ -196,11 +196,18 @@ const ParentComponent: React.FC<ParentProps> = ({
 
       {/* ministry */}
       <div className="input_group">
+        {errors.parent?.departmentInChurch && (
+          <span className="text-red">{errors.parent?.departmentInChurch}</span>
+        )}
         <label htmlFor="parent.departmentInChurch">Department in church</label>
         <Select
-          {...field}
+          // {...field}
           options={options}
-          onChange={handleChange}
+          // defaultValue={options[0].value}
+          onChange={(e) => {
+            setFieldValue("parent.departmentInChurch", e?.value);
+          }}
+          name="parent.departmentInChurch"
           classNames={{
             control: (state) =>
               state.isFocused
@@ -212,23 +219,6 @@ const ParentComponent: React.FC<ParentProps> = ({
           isClearable
           isSearchable
         />
-        {/* <Field
-          name="parent.departmentInChurch"
-          id="parent.departmentInChurch"
-          as="select"
-          className="hod_input"
-          aria-label="Department in church"
-        >
-          <option value="" disabled>
-            select department in church
-          </option>
-
-          {departmentInChurchData?.map((dept) => (
-            <option key={dept.id} value={dept.id}>
-              {dept.value}
-            </option>
-          ))}
-        </Field> */}
         <ErrorMessage name="parent.departmentInChurch" />
       </div>
 

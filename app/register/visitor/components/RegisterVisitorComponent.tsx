@@ -152,7 +152,7 @@ const RegisterVisitorComponent = () => {
           <div className="registration_container">
             <div className="flex flex-col gap-6 items-center">
               <HodLogoOnly />
-              <h1 className="platform_title">HOD Kids Pick-Up Platform</h1>
+              <h1 className="platform_title">Junior Church Monitor</h1>
             </div>
 
             <main className="form_container flex flex-col items-center w-full h-full">

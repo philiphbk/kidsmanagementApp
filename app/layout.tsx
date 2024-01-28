@@ -13,8 +13,8 @@ const ubuntu = Ubuntu({
 
 export const metadata: Metadata = {
   title: {
-    default: "HOD Kids Pick-Up Platform",
-    template: "%s | HOD Kids Pick-Up Platform"
+    default: "Junior Church Monitor",
+    template: "%s | Junior Church Monitor"
   },
   description: "a simple app to help parents organize and monitor pickups",
   icons: {
