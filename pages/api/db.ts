@@ -1,6 +1,5 @@
 import { createPool, Pool, PoolConnection } from "mysql2/promise";
 import { ConnectionRefusedError } from "sequelize";
-import dotenv from "dotenv";
 
 dotenv.config();
 
