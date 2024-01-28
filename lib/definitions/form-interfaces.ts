@@ -8,6 +8,11 @@ export enum Gender {
   female = 'female'
 }
 
+export enum ParentType {
+  biological = 'biological',
+  guardian = 'guardian'
+}
+
 // member registration interface
 export interface CreateParentData {
   firstName: string;
@@ -21,6 +26,7 @@ export interface CreateParentData {
   idName: string;
   idNumber: string;
   idPhoto: string; // Image data for the ID picture
+  type: ParentType;
 }
 
 export interface Parent extends CreateParentData {
@@ -39,6 +45,16 @@ export interface Child {
   specialNeeds?: string;
 }
 
+enum CareGiverType {
+  grandDad = 'grandDad',
+  grandMon = 'grandDad',
+  uncle = 'uncle',
+  aunt = 'aunt',
+  brother = 'brother',
+  sister = 'sister',
+  other = 'other'
+}
+
 export interface Caregiver {
   firstName: string;
   lastName: string;
@@ -55,6 +71,7 @@ export interface Caregiver {
   churchLocation: string;
   churchBranchInLocation: string;
   photograph: string; // Compulsory if relationship with parent is 'Others'
+  type: CareGiverType;
 }
 
 export interface RoleFormValues {

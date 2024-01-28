@@ -49,6 +49,7 @@ const buildMakeParent = () => {
       getIdName: () => parent.idName,
       getIdNumber: () => parent.idNumber,
       getIdPhoto: () => parent.idPhoto,
+      getType: () => parent.type,
 
       getCreateParentData: (): CreateParentData => {
         return {
@@ -63,6 +64,7 @@ const buildMakeParent = () => {
           idName: parent.idName,
           idNumber: parent.idNumber,
           idPhoto: parent.idPhoto,
+          type: parent.type
         }
       },
 

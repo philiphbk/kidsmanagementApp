@@ -3,7 +3,7 @@ import { db } from "../api/db";
 
 const buildCareGiver = () => {
   return function makeCareGiver(careGiver: Caregiver) {
-    const { firstName, lastName, email, gender, roleInChurch, departmentInChurch, phoneNumberPrimary, phoneNumberSecondary, relationshipWithChild, relationshipWithChildType, relationshipWithParent, relationshipWithParentType, churchBranchInLocation, churchLocation, photograph } = careGiver;
+    const { firstName, lastName, email, gender, roleInChurch, departmentInChurch, phoneNumberPrimary, phoneNumberSecondary, relationshipWithChild, relationshipWithChildType, relationshipWithParent, relationshipWithParentType, churchBranchInLocation, churchLocation, photograph, type } = careGiver;
     if (!firstName) {
       throw new Error('Caregiver must have a first name.')
     }
@@ -63,7 +63,8 @@ const buildCareGiver = () => {
         relationshipWithParentType,
         churchBranchInLocation,
         churchLocation,
-        photograph
+        photograph,
+        type,
       }),
 
       save: async (data: Caregiver) => {
