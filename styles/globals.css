@@ -10,7 +10,8 @@
 
 body {
     font-family: var(--font-poppins);
-    background: url("../public/images/backimg.png");
+    /* background: url("../public/images/backimg.png"); */
+    background: white;
     overflow-x: hidden;
     background-size: cover;
     height: 100%;
