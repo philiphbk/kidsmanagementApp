@@ -40,8 +40,8 @@ export interface Child {
   dateOfBirth: Date;
   ageGroup: string;
   photograph: string; // Image data for the photograph
-  relationshipWithChildType: string;
-  relationshipWithChild: string;
+  parent: string[];
+  caregiver: string[];
   specialNeeds?: string;
 }
 

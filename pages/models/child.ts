@@ -3,7 +3,7 @@ import { db } from "../api/db";
 
 const buildMakeChild = () => {
   return function makeChild(childInfo: Child) {
-    const { firstName, lastName, gender, dateOfBirth, ageGroup, photograph, relationshipWithChildType, relationshipWithChild, specialNeeds } = childInfo;
+    const { firstName, lastName, gender, dateOfBirth, ageGroup, photograph, parent, caregiver, specialNeeds } = childInfo;
     if (!firstName) {
       throw new Error('Child must have a first name.')
     }
@@ -28,12 +28,13 @@ const buildMakeChild = () => {
     if (!photograph) {
       throw new Error('Child must have a photograph.')
     }
-    if (!relationshipWithChildType) {
-      throw new Error('How is this person related to the child?')
+    if (!parent.length) {
+      throw new Error('Child must have a parent.')
     }
-    if (!relationshipWithChild) {
-      throw new Error('Please specify the relationship.')
+    if (!caregiver) {
+      throw new Error('Child must have a caregiver.')
     }
+
     return Object.freeze({
       getFirstName: () => firstName,
       getLastName: () => lastName,
@@ -41,8 +42,8 @@ const buildMakeChild = () => {
       getDateOfBirth: () => dateOfBirth,
       getAgeGroup: () => ageGroup,
       getPhotograph: () => photograph,
-      getRelationshipWithChildType: () => relationshipWithChildType,
-      getRelationshipWithChild: () => relationshipWithChild,
+      parent: () => parent,
+      getRelationshipWithChild: () => caregiver,
       getSpecialNeeds: () => specialNeeds,
 
       getCreateChildData: () => ({
@@ -52,8 +53,8 @@ const buildMakeChild = () => {
         dateOfBirth,
         ageGroup,
         photograph,
-        relationshipWithChildType,
-        relationshipWithChild,
+        parent,
+        caregiver,
         specialNeeds
       }),
 
