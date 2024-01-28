@@ -1,4 +1,5 @@
-import { createPool, Pool, PoolConnection } from "mysql2/promise";
+import dotenv from "dotenv";
+import { Pool, PoolConnection, createPool } from "mysql2/promise";
 import { ConnectionRefusedError } from "sequelize";
 
 dotenv.config();
@@ -54,4 +55,45 @@ export async function connectWithRetry(): Promise<PoolConnection> {
   throw new Error(
     `Failed to establish a database connection after ${maxRetries} attempts.`
   );
+}
+
+export const db = (tableName: string) => {
+  const getOne = async (id: string) => {
+    try {
+      const connection = await connectWithRetry();
+      const [rows] = await connection.query(
+        `SELECT * FROM ${tableName} WHERE id = ?`, [id]
+      );
+      connection.release();
+      if (!rows) {
+        return null;
+      }
+      return rows;
+    } catch (error: any) {
+      console.log(`Error getting ${tableName} from DB: `, error);
+      throw error;
+    }
+  }
+
+  const create = async (data: any) => {
+    try {
+      const connection = await connectWithRetry();
+      const [rows] = await connection.query(
+        `INSERT INTO ${tableName} SET ?`, [data]
+      );
+      connection.release();
+      if (!rows) {
+        return null;
+      }
+      return rows;
+    } catch (error: any) {
+      console.log(`Error saving ${tableName} to DB: `, error);
+      return null;
+    }
+  }
+
+  return {
+    getOne,
+    create
+  }
 }
