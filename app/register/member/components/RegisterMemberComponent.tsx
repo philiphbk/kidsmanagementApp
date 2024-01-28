@@ -200,7 +200,7 @@ const RegisterMemberComponent = () => {
       firstName: "",
       lastName: "",
       email: "",
-      gender: Gender,
+      gender: Gender.male,
       roleInChurch: "",
       departmentInChurch: "",
       phoneNumberPrimary: "",
@@ -218,8 +218,8 @@ const RegisterMemberComponent = () => {
         dateOfBirth: new Date(),
         ageGroup: "",
         photograph: "", // Image data for the photograph
-        relationshipWithChildType: "",
-        relationshipWithChild: "",
+        parent: [],
+        caregiver: [],
         specialNeeds: "",
       },
     ],
@@ -311,55 +311,7 @@ const RegisterMemberComponent = () => {
 
             <main className="form_container flex flex-col items-center w-full h-full">
               <Formik<RegistrationFormValues>
-                initialValues={{
-                  parent: {
-                    firstName: "",
-                    lastName: "",
-                    email: "",
-                    gender: Gender.male,
-                    roleInChurch: "",
-                    departmentInChurch: "",
-                    phoneNumberPrimary: "",
-                    phoneNumberSecondary: "",
-                    idName: "",
-                    idNumber: "",
-                    idPhoto: "",
-                    type: ParentType.biological,
-                  },
-                  child: [
-                    {
-                      firstName: "",
-                      lastName: "",
-                      gender: "",
-                      dateOfBirth: new Date(),
-                      ageGroup: "",
-                      photograph: "", // Image data for the photograph
-                      parent: [""],
-                      caregiver: [""],
-                      specialNeeds: "",
-                    },
-                  ],
-                  caregiver: [
-                    {
-                      firstName: "",
-                      lastName: "",
-                      email: "",
-                      gender: "",
-                      roleInChurch: "",
-                      departmentInChurch: "",
-                      phoneNumberPrimary: "",
-                      phoneNumberSecondary: "",
-                      relationshipWithChildType: "",
-                      relationshipWithChild: "",
-                      relationshipWithParentType: "",
-                      relationshipWithParent: "",
-                      churchLocation: "",
-                      churchBranchInLocation: "",
-                      photograph: "",
-                      type: CareGiverType.grandDad, // Compulsory if relationship with parent is 'Others'
-                    },
-                  ],
-                }}
+                initialValues={initialValues}
                 // validationSchema={RegistrationSchema}
                 onSubmit={handleSubmit}
               >

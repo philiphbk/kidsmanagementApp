@@ -5,6 +5,7 @@ import {
   Field,
   FormikErrors,
   FormikTouched,
+  useField,
   useFormikContext,
 } from "formik";
 
@@ -19,6 +20,14 @@ import {
 } from "@/lib/data/dummy-data";
 
 import ImageUploader from "../../components/ImageUploader";
+
+import {
+  Department,
+  OptionType,
+  MySelectComponentProps,
+} from "@/lib/definitions/form-interfaces";
+
+import Select, { SingleValue } from "react-select";
 
 import {
   Caregiver,
@@ -71,6 +80,21 @@ const CaregiverComponent = ({ index }: { index: number }) => {
   const branchAndCenterFiltered = branchAndCenterData?.find(
     (branch) => branch.locationId === currentLocation
   );
+
+  const { setFieldValue } = useFormikContext();
+  const [field] = useField(`caregiver[${index}].departmentInChurch`);
+
+  const options: OptionType[] = departmentInChurchData.map((dept) => ({
+    value: dept.id,
+    label: dept.value,
+  }));
+
+  const handleChange = (selectedOption: SingleValue<OptionType>) => {
+    setFieldValue(
+      `caregiver[${index}].departmentInChurch`,
+      selectedOption?.value
+    );
+  };
 
   return (
     <section className="personal_info">
@@ -170,7 +194,22 @@ const CaregiverComponent = ({ index }: { index: number }) => {
         <label htmlFor={`caregiver[${index}].departmentInChurch`}>
           Department in church
         </label>
-        <Field
+        <Select
+          {...field}
+          options={options}
+          onChange={handleChange}
+          classNames={{
+            control: (state) =>
+              state.isFocused
+                ? "flex items-center gap-2 h-14 w-full px-2 py-2 rounded-lg bg-white border border-hod-bg-red-light"
+                : "flex items-center gap-2 h-14 w-full px-2 py-2 rounded-lg bg-white border border-hod-border-gray",
+          }}
+          aria-label="Department in church"
+          placeholder="Select department in church"
+          isClearable
+          isSearchable
+        />
+        {/* <Field
           name={`caregiver[${index}].departmentInChurch`}
           id={`caregiver[${index}].departmentInChurch`}
           as="select"
@@ -186,7 +225,7 @@ const CaregiverComponent = ({ index }: { index: number }) => {
               {dept.value}
             </option>
           ))}
-        </Field>
+        </Field> */}
         <ErrorMessage name={`caregiver[${index}].departmentInChurch`} />
       </div>
 
