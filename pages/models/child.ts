@@ -28,12 +28,12 @@ const buildMakeChild = () => {
     if (!photograph) {
       throw new Error('Child must have a photograph.')
     }
-    if (!parent.length) {
-      throw new Error('Child must have a parent.')
-    }
-    if (!caregiver) {
-      throw new Error('Child must have a caregiver.')
-    }
+    // if (!parent.length) {
+    //   throw new Error('Child must have a parent.')
+    // }
+    // if (!caregiver) {
+    //   throw new Error('Child must have a caregiver.')
+    // }
 
     return Object.freeze({
       getFirstName: () => firstName,
@@ -42,9 +42,9 @@ const buildMakeChild = () => {
       getDateOfBirth: () => dateOfBirth,
       getAgeGroup: () => ageGroup,
       getPhotograph: () => photograph,
-      parent: () => parent,
-      getRelationshipWithChild: () => caregiver,
-      getSpecialNeeds: () => specialNeeds,
+      parent: () => parent ? parent : null,
+      getRelationshipWithChild: () => caregiver ? caregiver : null,
+      getSpecialNeeds: () => specialNeeds ? specialNeeds : null,
 
       getCreateChildData: () => ({
         firstName,

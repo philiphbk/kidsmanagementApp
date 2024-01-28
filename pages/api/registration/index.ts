@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectWithRetry } from "../db";
 import registrationServices from "./services";
+import { Parent, Child, Caregiver } from "@/lib/definitions/form-interfaces";
 
 export default async function handler(
   req: NextApiRequest,
@@ -23,11 +24,11 @@ export default async function handler(
     case "POST":
       try {
         console.log(body);
-        const { parentInformation, childInformation, caregiverInformation } =
-          body;
-        await registrationServices.parent(parentInformation);
-        await registrationServices.child(childInformation);
-        await registrationServices.careGiver(caregiverInformation);
+        const { parent, child, caregiver } = body;
+
+        await registrationServices.parent(parent);
+        await registrationServices.child(child);
+        await registrationServices.careGiver(caregiver);
         res.status(201).end();
       } catch (error: any) {
         console.log(error);

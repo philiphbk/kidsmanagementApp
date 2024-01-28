@@ -320,6 +320,7 @@ const RegisterMemberComponent = () => {
 
             <main className="form_container flex flex-col items-center w-full h-full">
               <Formik<RegistrationFormValues>
+
                 initialValues={{
                   parent: {
                     firstName: "",

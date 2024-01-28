@@ -6,10 +6,10 @@ import {
 import { db } from "../api/db";
 
 const buildMakeParent = () => {
-  return function makeParent(parent: Parent) {
-    if (parent === undefined) {
-      throw new Error("Parent object is required.");
-    }
+  return function makeParent(parent: CreateParentData) {
+    // if (parent === undefined) {
+    //   throw new Error("Parent object is required.");
+    // }
     if (!parent.firstName) {
       throw new Error("Parent must have a first name.");
     }
@@ -28,9 +28,9 @@ const buildMakeParent = () => {
     if (!parent.gender) {
       throw new Error("Parent must have a gender.");
     }
-    if (Object.values(Gender).includes(parent.gender)) {
-      throw new Error("Please enter a valid gender.");
-    }
+    // if (Object.values(Gender).includes(parent.gender)) {
+    //   throw new Error("Please enter a valid gender.");
+    // }
     if (!parent.phoneNumberPrimary) {
       throw new Error("Parent must have a primary phone number.");
     }
