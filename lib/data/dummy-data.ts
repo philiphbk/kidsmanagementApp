@@ -44,17 +44,133 @@ export const roleInChurchData = [
 
 export const departmentInChurchData = [
   {
-    id: "empf",
-    value: "EMPF"
+    id: "1",
+    value: "Audio"
   },
   {
-    id: "music",
-    value: "music"
+    id: "2",
+    value: "Ambience & Aesthetics"
   },
   {
-    id: "tech",
-    value: "tech"
+    id: "3",
+    value: "BigDaddy's House"
   },
+  {
+    id: "4",
+    value: "Car Park"
+  },
+  {
+    id: "5",
+    value: "Camp David"
+  },
+  {
+    id: "6",
+    value: "Drama"
+  },
+  {
+    id: "7",	
+    value: "Directorate"
+  },
+  {
+    id: "8",
+    value: "Evangelism"
+  },
+  {
+    id: "9",
+    value: "Focused Groups"
+  },
+  {
+    id: "10",
+    value: "Follow Up"
+  },
+  {
+    id: "11",
+    value: "Greeters"
+  },
+  {
+    id: "12",
+    value: "HOD Academy"
+  },
+  {
+    id: "13",	
+    value: "Information & Data Insight"
+  },
+  {
+    id: "14",
+    value: "iForum"
+  },
+  {
+    id: "15",
+    value: "Isaachar Team"
+  },
+  {
+    id: "16",
+    value: "Junior Church"
+  },
+  {
+    id: "17",
+    value: "Media"
+  },
+  {
+    id: "18",
+    value: "Missions"
+  },
+  {
+    id: "19",
+    value: "Missions"
+  },
+  {
+    id: "20",
+    value: "Publicity"
+  },
+  {
+    id: "21",
+    value: "Prayer"
+  },{
+    id: "22",
+    value: "Protocol"
+  },{
+    id: "23",
+    value: "Pastorate"
+  },{
+    id: "24",
+    value: "Partnership"
+  },{
+    id: "25",
+    value: "River of Life"
+  },{
+    id: "26",
+    value: "Sanitation"
+  },{
+    id: "27",
+    value: "Security"
+  },{
+    id: "28",
+    value: "Social Media & Communication"
+  },{
+    id: "29",
+    value: "Tech Team"
+  },{
+    id: "30",
+    value: "TSOM"
+  },{
+    id: "31",
+    value: "Treasury"
+  },{
+    id: "32",
+    value: "Transportation"
+  },{
+    id: "33",
+    value: "Ushering"
+  },
+  {
+    id: "34",
+    value: "Visitation"
+  },
+  {
+    id: "35",
+    value: "Welfare"
+  }
 ]
 
 export const meansOfId = [

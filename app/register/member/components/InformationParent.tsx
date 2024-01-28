@@ -3,6 +3,7 @@ import {
   Field,
   FormikErrors,
   FormikTouched,
+  useField,
   useFormikContext,
 } from "formik";
 
@@ -13,6 +14,10 @@ import {
   roleInChurchData,
 } from "@/lib/data/dummy-data";
 import ImageUploader from "../../components/ImageUploader";
+
+import Select, { SingleValue } from "react-select";
+
+import { Department, OptionType, MySelectComponentProps } from "@/lib/definitions/form-interfaces";
 
 import {
   Parent,
@@ -32,7 +37,11 @@ interface ImageData {
   base64String: string | null;
 }
 
+
+
+
 interface ParentProps extends Parent, PropsInterface { }
+
 
 const ParentComponent: React.FC<ParentProps> = ({
   firstName,
@@ -78,6 +87,17 @@ const ParentComponent: React.FC<ParentProps> = ({
   //   }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [idPhoto, imageData]);
+  const { setFieldValue } = useFormikContext();
+  const [field] = useField('Parent.departmentInChurch');
+
+  const options: OptionType[] = departmentInChurchData.map(dept => ({
+    value: dept.id,
+    label: dept.value,
+  }));
+
+  const handleChange = (selectedOption: SingleValue<OptionType>) => {
+    setFieldValue('Parent.departmentInChurch', selectedOption?.value);
+  };
 
   return (
     <section className="personal_info">
@@ -179,7 +199,17 @@ const ParentComponent: React.FC<ParentProps> = ({
         <label htmlFor="Parent.departmentInChurch">
           Department in church
         </label>
-        <Field
+        <Select
+        {...field}
+        options={options}
+        onChange={handleChange}
+        className="hod_input"
+        aria-label="Department in church"
+        placeholder="Select department in church"
+        isClearable
+        isSearchable
+      />
+        {/* <Field
           name="Parent.departmentInChurch"
           id="Parent.departmentInChurch"
           as="select"
@@ -195,7 +225,7 @@ const ParentComponent: React.FC<ParentProps> = ({
               {dept.value}
             </option>
           ))}
-        </Field>
+        </Field> */}
         <ErrorMessage name="Parent.departmentInChurch" />
       </div>
 

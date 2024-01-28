@@ -18,6 +18,21 @@ export interface Parent {
   idPhoto: string; // Image data for the ID picture
 }
 
+export interface Department {
+  id: string;
+  value: string;
+}
+
+export interface OptionType {
+  label: string;
+  value: string;
+}
+
+export interface MySelectComponentProps {
+  departmentInChurchData: Department[];
+}
+
+
 export interface Child {
   firstName: string;
   lastName: string;
