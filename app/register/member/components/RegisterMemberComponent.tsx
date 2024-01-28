@@ -11,7 +11,12 @@ import {
 } from "formik";
 import * as Yup from "yup";
 
-import { RegistrationFormValues } from "@/lib/definitions/form-interfaces";
+import {
+  Gender,
+  ParentType,
+  RegistrationFormValues,
+  CareGiverType,
+} from "@/lib/definitions/form-interfaces";
 
 // import PreviewImage from "../components/PreviewImage";
 // import ImageUpload from "../components/ImageUpload";
@@ -30,7 +35,6 @@ const RegisterMemberComponent = () => {
   const [step, setStep] = useState(1);
   const totalSteps = 3;
   const [currentTitle, setCurrentTitle] = useState("Personal Information");
-
 
   const nextStep = () => {
     if (step < totalSteps) {
@@ -96,9 +100,7 @@ const RegisterMemberComponent = () => {
         idName: Yup.string().required(
           "Please select a means of Identification!"
         ),
-        idNumber: Yup.string().required(
-          "Please enter your ID Number!"
-        ),
+        idNumber: Yup.string().required("Please enter your ID Number!"),
         // idPhoto: Yup.mixed()
         // .test("fileType", "Only images are allowed", (file?: any) =>
         //   file && validFileExtensions.includes(file.type)
@@ -198,14 +200,15 @@ const RegisterMemberComponent = () => {
       firstName: "",
       lastName: "",
       email: "",
-      gender: "",
+      gender: Gender,
       roleInChurch: "",
       departmentInChurch: "",
       phoneNumberPrimary: "",
       phoneNumberSecondary: "",
       idName: "",
       idNumber: "",
-      idPhoto: "", // Image data for the ID picture
+      idPhoto: "",
+      type: ParentType.biological,
     },
     child: [
       {
@@ -236,7 +239,8 @@ const RegisterMemberComponent = () => {
         relationshipWithParent: "",
         churchLocation: "",
         churchBranchInLocation: "",
-        photograph: "", // Compulsory if relationship with parent is 'Others'
+        photograph: "",
+        type: CareGiverType.grandDad, // Compulsory if relationship with parent is 'Others'
       },
     ],
   };
@@ -271,7 +275,6 @@ const RegisterMemberComponent = () => {
           actions.resetForm();
           setRegistrationSuccessful(true);
         }
-
       } catch (err) {
         console.log(err);
       } finally {
@@ -308,7 +311,55 @@ const RegisterMemberComponent = () => {
 
             <main className="form_container flex flex-col items-center w-full h-full">
               <Formik<RegistrationFormValues>
-                initialValues={initialValues}
+                initialValues={{
+                  parent: {
+                    firstName: "",
+                    lastName: "",
+                    email: "",
+                    gender: Gender.male,
+                    roleInChurch: "",
+                    departmentInChurch: "",
+                    phoneNumberPrimary: "",
+                    phoneNumberSecondary: "",
+                    idName: "",
+                    idNumber: "",
+                    idPhoto: "",
+                    type: ParentType.biological,
+                  },
+                  child: [
+                    {
+                      firstName: "",
+                      lastName: "",
+                      gender: "",
+                      dateOfBirth: new Date(),
+                      ageGroup: "",
+                      photograph: "", // Image data for the photograph
+                      parent: [""],
+                      caregiver: [""],
+                      specialNeeds: "",
+                    },
+                  ],
+                  caregiver: [
+                    {
+                      firstName: "",
+                      lastName: "",
+                      email: "",
+                      gender: "",
+                      roleInChurch: "",
+                      departmentInChurch: "",
+                      phoneNumberPrimary: "",
+                      phoneNumberSecondary: "",
+                      relationshipWithChildType: "",
+                      relationshipWithChild: "",
+                      relationshipWithParentType: "",
+                      relationshipWithParent: "",
+                      churchLocation: "",
+                      churchBranchInLocation: "",
+                      photograph: "",
+                      type: CareGiverType.grandDad, // Compulsory if relationship with parent is 'Others'
+                    },
+                  ],
+                }}
                 // validationSchema={RegistrationSchema}
                 onSubmit={handleSubmit}
               >
@@ -354,9 +405,10 @@ const RegisterMemberComponent = () => {
                                 type="button"
                                 className="flex gap-2 items-center text-hod-secondary text-base font-normal"
                                 onClick={() =>
-                                  values.child.forEach((child) => {
-                                    push(child);
-                                  })
+                                  // values.child.forEach((child) => {
+                                  //   push(child);
+                                  // })
+                                  push(initialValues.child)
                                 }
                               >
                                 <BsPlusCircle className="text-hod-secondary" />{" "}
@@ -376,28 +428,22 @@ const RegisterMemberComponent = () => {
                             <>
                               {values.caregiver &&
                                 values.caregiver.length > 0 &&
-                                values.caregiver.map(
-                                  (caregiver, index) => (
-                                    <div key={index}>
-                                      <NewChildInstanceTitle
-                                        index={index}
-                                        remove={remove}
-                                        desc="Caregiver"
-                                      />
+                                values.caregiver.map((caregiver, index) => (
+                                  <div key={index}>
+                                    <NewChildInstanceTitle
+                                      index={index}
+                                      remove={remove}
+                                      desc="Caregiver"
+                                    />
 
-                                      <CaregiverComponent
-                                        index={index}
-                                      />
-                                    </div>
-                                  )
-                                )}
+                                    <CaregiverComponent index={index} />
+                                  </div>
+                                ))}
 
                               <button
                                 type="button"
                                 className="flex gap-2 items-center text-hod-secondary text-base font-normal"
-                                onClick={() =>
-                                  push(initialValues.child)
-                                }
+                                onClick={() => push(initialValues.child)}
                               >
                                 <BsPlusCircle className="text-hod-secondary" />{" "}
                                 Include new caregiver
@@ -423,8 +469,11 @@ const RegisterMemberComponent = () => {
                         className="hod_button hod_button_primary"
                         disabled={isSubmitting}
                       >
-                        {isSubmitting ? "Submitting..." : (step < totalSteps ? "Next" : "Submit")}
-
+                        {isSubmitting
+                          ? "Submitting..."
+                          : step < totalSteps
+                          ? "Next"
+                          : "Submit"}
                       </button>
                     </div>
                   </Form>

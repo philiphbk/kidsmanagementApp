@@ -45,7 +45,7 @@ const CaregiverComponent = ({ index }: { index: number }) => {
     if (id.includes("relationshipWithChildType")) {
       setCurrentType(value);
       formikContext.setFieldValue(
-        `Caregiver[${index}].relationshipWithChild`,
+        `caregiver[${index}].relationshipWithChild`,
         ""
       );
     }
@@ -53,7 +53,7 @@ const CaregiverComponent = ({ index }: { index: number }) => {
     if (id.includes("churchLocation")) {
       setCurrentLocation(value);
       formikContext.setFieldValue(
-        `Caregiver[${index}].churchBranchInLocation`,
+        `caregiver[${index}].churchBranchInLocation`,
         ""
       );
     }
@@ -77,58 +77,52 @@ const CaregiverComponent = ({ index }: { index: number }) => {
       {/* full name */}
       <div className="flex gap-x-6 flex-col md:flex-row">
         <div className="input_group">
-          <label htmlFor={`Caregiver[${index}].firstName`}>
-            First Name
-          </label>
+          <label htmlFor={`caregiver[${index}].firstName`}>First Name</label>
           <Field
-            name={`Caregiver[${index}].firstName`}
-            id={`Caregiver[${index}].firstName`}
+            name={`caregiver[${index}].firstName`}
+            id={`caregiver[${index}].firstName`}
             type="text"
             className="hod_input"
             aria-placeholder="Enter first name"
             aria-label="First Name"
           />
-          <ErrorMessage name={`Caregiver[${index}].firstName`} />
+          <ErrorMessage name={`caregiver[${index}].firstName`} />
         </div>
 
         <div className="input_group">
-          <label htmlFor={`Caregiver[${index}].lastName`}>
-            Last Name
-          </label>
+          <label htmlFor={`caregiver[${index}].lastName`}>Last Name</label>
           <Field
-            name={`Caregiver[${index}].lastName`}
-            id={`Caregiver[${index}].lastName`}
+            name={`caregiver[${index}].lastName`}
+            id={`caregiver[${index}].lastName`}
             type="text"
             className="hod_input"
             aria-placeholder="Enter last name"
             aria-label="Last Name"
           />
-          <ErrorMessage name={`Caregiver[${index}].lastName`} />
+          <ErrorMessage name={`caregiver[${index}].lastName`} />
         </div>
       </div>
 
       {/* email */}
       <div className="input_group">
-        <label htmlFor={`Caregiver[${index}].email`}>
-          Email Address
-        </label>
+        <label htmlFor={`caregiver[${index}].email`}>Email Address</label>
         <Field
-          name={`Caregiver[${index}].email`}
-          id={`Caregiver[${index}].email`}
+          name={`caregiver[${index}].email`}
+          id={`caregiver[${index}].email`}
           type="email"
           className="hod_input"
           aria-placeholder="Enter email"
           aria-label="Email Address"
         />
-        <ErrorMessage name={`Caregiver[${index}].email`} />
+        <ErrorMessage name={`caregiver[${index}].email`} />
       </div>
 
       {/* gender */}
       <div className="input_group">
-        <label htmlFor={`Caregiver[${index}].gender`}>Gender</label>
+        <label htmlFor={`caregiver[${index}].gender`}>Gender</label>
         <Field
-          name={`Caregiver[${index}].gender`}
-          id={`Caregiver[${index}].gender`}
+          name={`caregiver[${index}].gender`}
+          id={`caregiver[${index}].gender`}
           as="select"
           className="hod_input"
           aria-label="Gender"
@@ -143,17 +137,17 @@ const CaregiverComponent = ({ index }: { index: number }) => {
             </option>
           ))}
         </Field>
-        <ErrorMessage name={`Caregiver[${index}].gender`} />
+        <ErrorMessage name={`caregiver[${index}].gender`} />
       </div>
 
       {/* role */}
       <div className="input_group">
-        <label htmlFor={`Caregiver[${index}].roleInChurch`}>
+        <label htmlFor={`caregiver[${index}].roleInChurch`}>
           Role in church
         </label>
         <Field
-          name={`Caregiver[${index}].roleInChurch`}
-          id={`Caregiver[${index}].roleInChurch`}
+          name={`caregiver[${index}].roleInChurch`}
+          id={`caregiver[${index}].roleInChurch`}
           as="select"
           className="hod_input"
           aria-label="Role in church"
@@ -168,17 +162,17 @@ const CaregiverComponent = ({ index }: { index: number }) => {
             </option>
           ))}
         </Field>
-        <ErrorMessage name={`Caregiver[${index}].roleInChurch`} />
+        <ErrorMessage name={`caregiver[${index}].roleInChurch`} />
       </div>
 
       {/* ministry */}
       <div className="input_group">
-        <label htmlFor={`Caregiver[${index}].departmentInChurch`}>
+        <label htmlFor={`caregiver[${index}].departmentInChurch`}>
           Department in church
         </label>
         <Field
-          name={`Caregiver[${index}].departmentInChurch`}
-          id={`Caregiver[${index}].departmentInChurch`}
+          name={`caregiver[${index}].departmentInChurch`}
+          id={`caregiver[${index}].departmentInChurch`}
           as="select"
           className="hod_input"
           aria-label="Department in church"
@@ -193,56 +187,48 @@ const CaregiverComponent = ({ index }: { index: number }) => {
             </option>
           ))}
         </Field>
-        <ErrorMessage
-          name={`Caregiver[${index}].departmentInChurch`}
-        />
+        <ErrorMessage name={`caregiver[${index}].departmentInChurch`} />
       </div>
 
       <div className="input_group">
-        <label htmlFor={`Caregiver[${index}].phoneNumberPrimary`}>
+        <label htmlFor={`caregiver[${index}].phoneNumberPrimary`}>
           Primary Phone Number
         </label>
         <Field
-          name={`Caregiver[${index}].phoneNumberPrimary`}
-          id={`Caregiver[${index}].phoneNumberPrimary`}
+          name={`caregiver[${index}].phoneNumberPrimary`}
+          id={`caregiver[${index}].phoneNumberPrimary`}
           type="text"
           className="hod_input"
           aria-placeholder="Enter primary phone number"
           aria-label="Primary Phone Number"
         />
-        <ErrorMessage
-          name={`Caregiver[${index}].phoneNumberPrimary`}
-        />
+        <ErrorMessage name={`caregiver[${index}].phoneNumberPrimary`} />
       </div>
 
       <div className="input_group">
-        <label htmlFor={`Caregiver[${index}].phoneNumberSecondary`}>
+        <label htmlFor={`caregiver[${index}].phoneNumberSecondary`}>
           Secondary Phone Number
         </label>
         <Field
-          name={`Caregiver[${index}].phoneNumberSecondary`}
-          id={`Caregiver[${index}].phoneNumberSecondary`}
+          name={`caregiver[${index}].phoneNumberSecondary`}
+          id={`caregiver[${index}].phoneNumberSecondary`}
           type="text"
           className="hod_input"
           aria-placeholder="Enter secondary phone number"
           aria-label="Secondary Phone Number"
         />
-        <ErrorMessage
-          name={`Caregiver[${index}].phoneNumberSecondary`}
-        />
+        <ErrorMessage name={`caregiver[${index}].phoneNumberSecondary`} />
       </div>
 
       {/* relationship with child */}
       <div className="flex gap-x-6 flex-col md:flex-row">
         <div className="input_group">
-          <label
-            htmlFor={`Caregiver[${index}].relationshipWithChildType`}
-          >
+          <label htmlFor={`caregiver[${index}].relationshipWithChildType`}>
             Relationship with child
           </label>
           <Field
-            name={`Caregiver[${index}].relationshipWithChildType`}
-            id={`Caregiver[${index}].relationshipWithChildType`}
+            name={`caregiver[${index}].relationshipWithChildType`}
+            id={`caregiver[${index}].relationshipWithChildType`}
             as="select"
             className="hod_input"
             aria-label="Relationship with child"
@@ -259,22 +245,20 @@ const CaregiverComponent = ({ index }: { index: number }) => {
             ))}
           </Field>
           <ErrorMessage
-            name={`Caregiver[${index}].relationshipWithChildType`}
+            name={`caregiver[${index}].relationshipWithChildType`}
           />
         </div>
 
         <div className="input_group">
-          <label
-            htmlFor={`Caregiver[${index}].relationshipWithChild`}
-          >
+          <label htmlFor={`caregiver[${index}].relationshipWithChild`}>
             Specify Relationship
           </label>
 
           {currentType !== "other" ? (
             <>
               <Field
-                name={`Caregiver[${index}].relationshipWithChild`}
-                id={`Caregiver[${index}].relationshipWithChild`}
+                name={`caregiver[${index}].relationshipWithChild`}
+                id={`caregiver[${index}].relationshipWithChild`}
                 as="select"
                 className="hod_input"
                 aria-label="Specify Relationship"
@@ -294,21 +278,21 @@ const CaregiverComponent = ({ index }: { index: number }) => {
                 )}
               </Field>
               <ErrorMessage
-                name={`Caregiver[${index}].relationshipWithChild`}
+                name={`caregiver[${index}].relationshipWithChild`}
               />
             </>
           ) : (
             <>
               <Field
-                name={`Caregiver[${index}].relationshipWithChild`}
-                id={`Caregiver[${index}].relationshipWithChild`}
+                name={`caregiver[${index}].relationshipWithChild`}
+                id={`caregiver[${index}].relationshipWithChild`}
                 type="text"
                 className="hod_input"
                 aria-placeholder="Specify Relationship"
                 aria-label="Specify Relationship"
               />
               <ErrorMessage
-                name={`Caregiver[${index}].relationshipWithChild`}
+                name={`caregiver[${index}].relationshipWithChild`}
               />
             </>
           )}
@@ -318,14 +302,12 @@ const CaregiverComponent = ({ index }: { index: number }) => {
       {/* relationship with parent */}
       <div className="flex gap-x-6 flex-col md:flex-row">
         <div className="input_group">
-          <label
-            htmlFor={`Caregiver[${index}].relationshipWithParentType`}
-          >
+          <label htmlFor={`caregiver[${index}].relationshipWithParentType`}>
             Relationship with Parent
           </label>
           <Field
-            name={`Caregiver[${index}].relationshipWithParentType`}
-            id={`Caregiver[${index}].relationshipWithParentType`}
+            name={`caregiver[${index}].relationshipWithParentType`}
+            id={`caregiver[${index}].relationshipWithParentType`}
             as="select"
             className="hod_input"
             aria-label="Relationship with parent"
@@ -342,22 +324,20 @@ const CaregiverComponent = ({ index }: { index: number }) => {
             ))}
           </Field>
           <ErrorMessage
-            name={`Caregiver[${index}].relationshipWithParentType`}
+            name={`caregiver[${index}].relationshipWithParentType`}
           />
         </div>
 
         <div className="input_group">
-          <label
-            htmlFor={`Caregiver[${index}].relationshipWithParent`}
-          >
+          <label htmlFor={`caregiver[${index}].relationshipWithParent`}>
             Specify Relationship
           </label>
 
           {currentType !== "other" ? (
             <>
               <Field
-                name={`Caregiver[${index}].relationshipWithParent`}
-                id={`Caregiver[${index}].relationshipWithParent`}
+                name={`caregiver[${index}].relationshipWithParent`}
+                id={`caregiver[${index}].relationshipWithParent`}
                 as="select"
                 className="hod_input"
                 aria-label="Specify Relationship"
@@ -377,21 +357,21 @@ const CaregiverComponent = ({ index }: { index: number }) => {
                 )}
               </Field>
               <ErrorMessage
-                name={`Caregiver[${index}].relationshipWithParent`}
+                name={`caregiver[${index}].relationshipWithParent`}
               />
             </>
           ) : (
             <>
               <Field
-                name={`Caregiver[${index}].relationshipWithParent`}
-                id={`Caregiver[${index}].relationshipWithParent`}
+                name={`caregiver[${index}].relationshipWithParent`}
+                id={`caregiver[${index}].relationshipWithParent`}
                 type="text"
                 className="hod_input"
                 aria-placeholder="Specify Relationship"
                 aria-label="Specify Relationship"
               />
               <ErrorMessage
-                name={`Caregiver[${index}].relationshipWithParent`}
+                name={`caregiver[${index}].relationshipWithParent`}
               />
             </>
           )}
@@ -401,12 +381,12 @@ const CaregiverComponent = ({ index }: { index: number }) => {
       {/* church location and branch */}
       <div className="flex gap-x-6 flex-col md:flex-row">
         <div className="input_group">
-          <label htmlFor={`Caregiver[${index}].churchLocation`}>
+          <label htmlFor={`caregiver[${index}].churchLocation`}>
             Church Location
           </label>
           <Field
-            name={`Caregiver[${index}].churchLocation`}
-            id={`Caregiver[${index}].churchLocation`}
+            name={`caregiver[${index}].churchLocation`}
+            id={`caregiver[${index}].churchLocation`}
             as="select"
             className="hod_input"
             aria-label="Church Location"
@@ -422,21 +402,17 @@ const CaregiverComponent = ({ index }: { index: number }) => {
               </option>
             ))}
           </Field>
-          <ErrorMessage
-            name={`Caregiver[${index}].churchLocation`}
-          />
+          <ErrorMessage name={`caregiver[${index}].churchLocation`} />
         </div>
 
         <div className="input_group">
-          <label
-            htmlFor={`Caregiver[${index}].churchBranchInLocation`}
-          >
+          <label htmlFor={`caregiver[${index}].churchBranchInLocation`}>
             Branch / Center
           </label>
 
           <Field
-            name={`Caregiver[${index}].churchBranchInLocation`}
-            id={`Caregiver[${index}].churchBranchInLocation`}
+            name={`caregiver[${index}].churchBranchInLocation`}
+            id={`caregiver[${index}].churchBranchInLocation`}
             as="select"
             className="hod_input"
             aria-label="Branch / Center"
@@ -452,21 +428,17 @@ const CaregiverComponent = ({ index }: { index: number }) => {
               </option>
             ))}
           </Field>
-          <ErrorMessage
-            name={`Caregiver[${index}].churchBranchInLocation`}
-          />
+          <ErrorMessage name={`caregiver[${index}].churchBranchInLocation`} />
         </div>
       </div>
 
       <div className="input_group">
-        <label htmlFor={`Caregiver[${index}].photograph`}>
-          Upload Photo
-        </label>
+        <label htmlFor={`caregiver[${index}].photograph`}>Upload Photo</label>
         <ImageFileUploader
-          id={`Caregiver[${index}].photograph`}
+          id={`caregiver[${index}].photograph`}
           ariaLabel="Upload Photo"
         />
-        <ErrorMessage name={`Caregiver[${index}].photograph`} />
+        <ErrorMessage name={`caregiver[${index}].photograph`} />
       </div>
     </section>
   );

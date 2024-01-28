@@ -10,7 +10,7 @@ const connectionOptions = {
   // password: process.env.DB_PASS,
   // database: process.env.DB_NAME,
   // port: Number(process.env.DB_PORT),
-  host: "DESKTOP-76C3JL7",
+  host: "localhost",
   user: "root",
   password: "95@SeyiDami",
   database: "kidsappdb",

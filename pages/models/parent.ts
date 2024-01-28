@@ -1,40 +1,47 @@
-import { CreateParentData, Gender, Parent } from "@/lib/definitions/form-interfaces";
+import {
+  CreateParentData,
+  Gender,
+  Parent,
+} from "@/lib/definitions/form-interfaces";
 import { db } from "../api/db";
 
 const buildMakeParent = () => {
   return function makeParent(parent: Parent) {
+    if (parent === undefined) {
+      throw new Error("Parent object is required.");
+    }
     if (!parent.firstName) {
-      throw new Error('Parent must have a first name.')
+      throw new Error("Parent must have a first name.");
     }
     if (parent.firstName.length < 2) {
-      throw new Error('Parent first name must be longer than 2 characters.')
+      throw new Error("Parent first name must be longer than 2 characters.");
     }
     if (!parent.lastName) {
-      throw new Error('Parent must have a last name.')
+      throw new Error("Parent must have a last name.");
     }
     if (parent.lastName.length < 2) {
-      throw new Error('Parent last name must be longer than 2 characters.')
+      throw new Error("Parent last name must be longer than 2 characters.");
     }
     if (!parent.email) {
-      throw new Error('Parent must have an email.')
+      throw new Error("Parent must have an email.");
     }
     if (!parent.gender) {
-      throw new Error('Parent must have a gender.')
+      throw new Error("Parent must have a gender.");
     }
     if (Object.values(Gender).includes(parent.gender)) {
-      throw new Error('Please enter a valid gender.')
+      throw new Error("Please enter a valid gender.");
     }
     if (!parent.phoneNumberPrimary) {
-      throw new Error('Parent must have a primary phone number.')
+      throw new Error("Parent must have a primary phone number.");
     }
     if (!parent.idName) {
-      throw new Error('Please select a means of identification.')
+      throw new Error("Please select a means of identification.");
     }
     if (!parent.idNumber) {
-      throw new Error('Please enter the identification number.')
+      throw new Error("Please enter the identification number.");
     }
     if (!parent.idPhoto) {
-      throw new Error('Please upload a photo of the identification.')
+      throw new Error("Please upload a photo of the identification.");
     }
 
     return Object.freeze({
@@ -64,25 +71,25 @@ const buildMakeParent = () => {
           idName: parent.idName,
           idNumber: parent.idNumber,
           idPhoto: parent.idPhoto,
-          type: parent.type
-        }
+          type: parent.type,
+        };
       },
 
       getById: async (parentId: string) => {
-        const parentDb = db('parent')
-        const parent = await parentDb.getOne(parentId)
+        const parentDb = db("parent");
+        const parent = await parentDb.getOne(parentId);
         if (!parent) {
-          throw new Error('Parent not found.')
+          throw new Error("Parent not found.");
         }
-        return parent
+        return parent;
       },
 
       save: async (data: CreateParentData) => {
-        const parentDb = db('parent')
-        await parentDb.create(data)
-      }
-    })
-  }
-}
+        const parentDb = db("parent");
+        await parentDb.create(data);
+      },
+    });
+  };
+};
 
 export default buildMakeParent;

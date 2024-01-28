@@ -60,7 +60,7 @@ export interface Child {
   specialNeeds?: string;
 }
 
-enum CareGiverType {
+export enum CareGiverType {
   grandDad = 'grandDad',
   grandMon = 'grandDad',
   uncle = 'uncle',
