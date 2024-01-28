@@ -50,16 +50,16 @@ const RegisterMemberComponent = () => {
   const [registrationSuccessful, setRegistrationSuccessful] =
     useState<boolean>(false);
 
-  // const MAX_FILE_SIZE = 1000000; // 1MB
-  // const validFileExtensions = [
-  //   "image/jpg",
-  //   "image/gif",
-  //   "image/jfif",
-  //   "image/png",
-  //   "image/jpeg",
-  //   "image/svg",
-  //   "image/webp",
-  // ];
+  const MAX_FILE_SIZE = 1000000; // 1MB
+  const validFileExtensions = [
+    "image/jpg",
+    "image/gif",
+    "image/jfif",
+    "image/png",
+    "image/jpeg",
+    "image/svg",
+    "image/webp",
+  ];
 
   // const checkIfFilesAreTooBig = (file?: any): boolean => {
   //   let valid = true;
@@ -77,8 +77,7 @@ const RegisterMemberComponent = () => {
   //   return valid;
   // };
 
-
-  const RegistrationSchema = Yup.object()
+  const ParentRegistrationSchema = Yup.object()
     .shape({
       parent: Yup.object().shape({
         firstName: Yup.string().required("First name is required!"),
@@ -101,16 +100,32 @@ const RegisterMemberComponent = () => {
           "Please select a means of Identification!"
         ),
         idNumber: Yup.string().required("Please enter your ID Number!"),
+        idPhoto: Yup.mixed()
+          .test("fileSize", "File Size is too large", (value: any) => {
+            if (value) {
+              console.log("value.size", value.size <= 1024 * 1024);
+              return value.size <= 1024 * 1024;
+            }
+            return true;
+          })
+          .required(),
         // idPhoto: Yup.mixed()
-        // .test("fileType", "Only images are allowed", (file?: any) =>
-        //   file && validFileExtensions.includes(file.type)
-        // )
-        // .test(
-        //   "fileSize",
-        //   "Image size should not be greater than 1MB",
-        //   (file?: any) => file && file.size < MAX_FILE_SIZE
-        // ),
+        //   // .test(
+        //   //   "fileType",
+        //   //   "Only images are allowed",
+        //   //   (file?: any) => file && validFileExtensions.includes(file.type)
+        //   // )
+        //   .test(
+        //     "fileSize",
+        //     "Image size should not be greater than 1MB",
+        //     (file?: any) => file && file.size < MAX_FILE_SIZE
+        //   ),
       }),
+    })
+    .nullable();
+
+  const ChildRegistrationSchema = Yup.object()
+    .shape({
       child: Yup.array()
         .of(
           Yup.object().shape({
@@ -119,18 +134,18 @@ const RegisterMemberComponent = () => {
             gender: Yup.string().required("Gender is required!"),
             dateOfBirth: Yup.date().required("Date of birth is required!"),
             ageGroup: Yup.string().required("Age group is required!"),
-            // photograph: Yup.mixed()
-            //   .required("Photograph is required!")
-            //   .test(
-            //     "fileSize",
-            //     "Image size should be less than 1MB",
-            //     (value: any) => {
-            //       return value && value.size <= 1000000;
-            //     }
-            //   )
-            //   .test("fileType", "Only images are allowed", (value: any) => {
-            //     return value && value.type.includes("image");
-            //   }),
+            photograph: Yup.mixed()
+              .required("Photograph is required!")
+              .test(
+                "fileSize",
+                "Image size should be less than 1MB",
+                (value: any) => {
+                  return value && value.size <= 1000000;
+                }
+              ),
+            // .test("fileType", "Only images are allowed", (value: any) => {
+            //   return value && value.type.includes("image");
+            // }),
             relationshipWithChildType: Yup.string().required(
               "Type of relationship with child is required!"
             ),
@@ -141,6 +156,11 @@ const RegisterMemberComponent = () => {
           })
         )
         .nullable(),
+    })
+    .nullable();
+
+  const CareGiverRegistrationSchema = Yup.object()
+    .shape({
       caregiver: Yup.array()
         .of(
           Yup.object().shape({
@@ -178,23 +198,21 @@ const RegisterMemberComponent = () => {
             churchBranchInLocation: Yup.string().required(
               "Please select the branch in the location selected!"
             ),
-            // photograph: Yup.mixed()
-            //   .test(
-            //     "fileSize",
-            //     "Image size should be less than 1MB",
-            //     (value: any) => {
-            //       return value && value.size <= 1000000;
-            //     }
-            //   )
-            //   .test("fileType", "Only images are allowed", (value: any) => {
-            //     return value && value.type.includes("image");
-            //   }),
+            photograph: Yup.mixed().test(
+              "fileSize",
+              "Image size should be less than 1MB",
+              (value: any) => {
+                return value && value.size <= 1000000;
+              }
+            ),
+            // .test("fileType", "Only images are allowed", (value: any) => {
+            //   return value && value.type.includes("image");
+            // }),
           })
         )
         .nullable(),
     })
     .nullable();
-
 
   const newInfo = {
     child: {
@@ -228,19 +246,22 @@ const RegisterMemberComponent = () => {
       photograph: "",
       type: CareGiverType.grandDad,
     },
-  }
-
+  };
 
   const handleSubmit = async (
     values: RegistrationFormValues,
     actions: FormikHelpers<RegistrationFormValues>
   ) => {
+    alert("ok");
     if (step < totalSteps) {
+      console.log("values", values);
       console.log("is clicked!");
       nextStep();
       actions.setTouched({});
       actions.setSubmitting(false);
     } else {
+      console.log("values", values);
+
       actions.setSubmitting(true);
       console.log("is submitting!", values);
 
@@ -270,7 +291,6 @@ const RegisterMemberComponent = () => {
     }
   };
 
-
   useEffect(() => {
     if (step === 1) {
       setCurrentTitle("Parent Information");
@@ -281,6 +301,7 @@ const RegisterMemberComponent = () => {
     }
   }, [step]);
 
+  console.log("step", step);
 
   return (
     <>
@@ -306,7 +327,7 @@ const RegisterMemberComponent = () => {
                     email: "",
                     gender: Gender.male,
                     roleInChurch: "",
-                    departmentInChurch: "",
+                    departmentInChurch: '',
                     phoneNumberPrimary: "",
                     phoneNumberSecondary: "",
                     idName: "",
@@ -350,7 +371,14 @@ const RegisterMemberComponent = () => {
                     },
                   ],
                 }}
-                // validationSchema={RegistrationSchema}
+                validationSchema={
+                  step == 1
+                    ? ParentRegistrationSchema
+                    : step == 2
+                    ? ChildRegistrationSchema
+                    : CareGiverRegistrationSchema
+                }
+                // enableReinitialize={true}
                 onSubmit={handleSubmit}
               >
                 {({ values, errors, touched, isSubmitting }) => (
@@ -457,8 +485,8 @@ const RegisterMemberComponent = () => {
                         {isSubmitting
                           ? "Submitting..."
                           : step < totalSteps
-                            ? "Next"
-                            : "Submit"}
+                          ? "Next"
+                          : "Submit"}
                       </button>
                     </div>
                   </Form>

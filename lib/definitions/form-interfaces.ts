@@ -25,7 +25,7 @@ export interface CreateParentData {
   phoneNumberSecondary?: string;
   idName: string;
   idNumber: string;
-  idPhoto: string; // Image data for the ID picture
+  idPhoto: any; // Image data for the ID picture
   type: ParentType;
 }
 

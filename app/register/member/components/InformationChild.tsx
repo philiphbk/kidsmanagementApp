@@ -54,7 +54,6 @@ const ChildComponent = ({ index }: { index: number }) => {
       }
     }
 
-    console.log(e, name, value);
   };
 
   const relationshipDataFiltered = relationshipData?.find(

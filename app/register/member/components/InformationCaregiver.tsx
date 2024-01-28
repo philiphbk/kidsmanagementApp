@@ -58,7 +58,6 @@ const CaregiverComponent = ({ index }: { index: number }) => {
       );
     }
 
-    console.log(e, name, value);
 
     // Update otherField in formik context based on the selected value
     setFieldValue(name, value);

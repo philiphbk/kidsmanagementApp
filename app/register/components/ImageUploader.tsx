@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 interface ImageData {
-  base64String: string | null;
+  imageFile: any;
 }
 
 interface ImageInputUploader {
@@ -11,20 +11,19 @@ interface ImageInputUploader {
 }
 
 export default function ImageUploader({ id, ariaLabel }: ImageInputUploader) {
-  const [imageData, setImageData] = useState<ImageData>({ base64String: null });
+  const [imageData, setImageData] = useState<ImageData>({ imageFile: null });
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-
+    setImageData({ imageFile: file });
     if (file) {
-      console.log(e, file);
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        setImageData({ base64String: reader.result as string });
+        // setImageData({ imageFile: reader.result as string });
       };
     } else {
-      setImageData({ base64String: null });
+      setImageData({ imageFile: null });
     }
   };
 
@@ -46,9 +45,9 @@ export default function ImageUploader({ id, ariaLabel }: ImageInputUploader) {
       />
 
       <span>
-        {imageData.base64String && (
+        {imageData.imageFile && (
           <Image
-            src={imageData.base64String}
+            src={imageData.imageFile}
             alt="preview"
             width="90"
             height="90"
