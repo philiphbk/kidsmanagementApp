@@ -80,7 +80,6 @@ const CaregiverComponent = ({ index }: { index: number }) => {
     (branch) => branch.locationId === currentLocation
   );
 
-  const { setFieldValue } = useFormikContext();
   const [field] = useField(`caregiver[${index}].departmentInChurch`);
 
   const options: OptionType[] = departmentInChurchData.map((dept) => ({
@@ -89,9 +88,7 @@ const CaregiverComponent = ({ index }: { index: number }) => {
   }));
 
   const handleChange = (selectedOption: SingleValue<OptionType>) => {
-    setFieldValue(
-      `caregiver[${index}].departmentInChurch`,
-      selectedOption?.value
+    setFieldValue( `caregiver[${index}].departmentInChurch`, selectedOption?.value
     );
   };
 
@@ -194,9 +191,10 @@ const CaregiverComponent = ({ index }: { index: number }) => {
           Department in church
         </label>
         <Select
-          {...field}
           options={options}
-          onChange={handleChange}
+          onChange={(e) => {
+            setFieldValue(`caregiver[${index}].departmentInChurch`, e?.value);
+          }}
           classNames={{
             control: (state) =>
               state.isFocused
