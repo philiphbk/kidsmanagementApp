@@ -45,16 +45,22 @@ const ChildComponent = ({ index }: { index: number }) => {
       setFieldValue(name, value);
     }
 
-    if (id.includes("relationshipWithChild")) {
+    if (id.includes("childGuardian")) {
       if (value === "other") {
         setOtherType({ ...otherType, status: true });
+        setFieldValue(`child[${index}].relationshipWithChildType`, "guardian");
       } else {
         setOtherType({ ...otherType, status: false });
-        setFieldValue(name, value);
+        setFieldValue(`child[${index}].relationshipWithChild`, value);
       }
     }
 
     console.log(e, name, value);
+  };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setFieldValue(`child[${index}].relationshipWithChild`, value);
   };
 
   const relationshipDataFiltered = relationshipData?.find(
@@ -208,8 +214,8 @@ const ChildComponent = ({ index }: { index: number }) => {
           </label>
 
           <Field
-            name={`child[${index}].relationshipWithChild`}
-            id={`child[${index}].relationshipWithChild`}
+            name="childGuardian"
+            id="childGuardian"
             as="select"
             className="hod_input"
             aria-label="Specify Relationship"
@@ -227,7 +233,7 @@ const ChildComponent = ({ index }: { index: number }) => {
               )
             )}
           </Field>
-          <ErrorMessage name={`child[${index}].relationshipWithChild`} />
+          <ErrorMessage name="childGuardian" />
         </div>
       </div>
 
@@ -243,9 +249,9 @@ const ChildComponent = ({ index }: { index: number }) => {
             id="otherGuardian"
             type="text"
             className="hod_input"
-            aria-placeholder="Specify Relationship"
-            aria-label="Specify Relationship"
-            onChange={handleRelationshipChange}
+            aria-placeholder="Enter relationship with child"
+            aria-label="Enter relationship with child"
+            onChange={handleInputChange}
             defaultValue={otherType.value}
           />
           <ErrorMessage name="otherGuardian" />
