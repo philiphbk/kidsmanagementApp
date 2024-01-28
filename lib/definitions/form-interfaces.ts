@@ -3,12 +3,17 @@ export interface FormHeaderType {
   description?: string;
 }
 
+export enum Gender {
+  male = 'male',
+  female = 'female'
+}
+
 // member registration interface
-export interface Parent {
+export interface CreateParentData {
   firstName: string;
   lastName: string;
   email: string;
-  gender: string;
+  gender: Gender;
   roleInChurch: string;
   departmentInChurch: string;
   phoneNumberPrimary: string;
@@ -16,6 +21,10 @@ export interface Parent {
   idName: string;
   idNumber: string;
   idPhoto: string; // Image data for the ID picture
+}
+
+export interface Parent extends CreateParentData {
+  // Additional properties specify to Parent entity
 }
 
 export interface Child {

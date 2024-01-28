@@ -1,8 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectWithRetry } from "../db";
+import registrationServices from "./services";
 
-
-// initializeDatabase();
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -13,10 +12,10 @@ export default async function handler(
   switch (method) {
     case "GET":
       try {
-        
+
         const [rows] = await connection.execute("SELECT * FROM registration", []);
         connection.release();
-        res.status(200).json({result : rows});
+        res.status(200).json({ result: rows });
       } catch (error: any) {
         console.log(error);
         console.log(error.error);
@@ -25,10 +24,11 @@ export default async function handler(
       break;
     case "POST":
       try {
-        await connection.query("INSERT INTO registration SET ?", body);
-        console.log("API Response:", res);
+        const { parentInformation, childInformation, caregiverInformation } = body;
+        await registrationServices.parent(parentInformation);
+        await registrationServices.child(childInformation);
+        await registrationServices.careGiver(caregiverInformation);
         res.status(201).end();
-
       } catch (error: any) {
         console.log(error);
         console.log(error.error);
