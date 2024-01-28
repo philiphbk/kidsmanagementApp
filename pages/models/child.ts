@@ -42,9 +42,9 @@ const buildMakeChild = () => {
       getDateOfBirth: () => dateOfBirth,
       getAgeGroup: () => ageGroup,
       getPhotograph: () => photograph,
-      parent: () => parent,
-      getRelationshipWithChild: () => caregiver,
-      getSpecialNeeds: () => specialNeeds,
+      parent: () => parent ? parent : null,
+      getRelationshipWithChild: () => caregiver ? caregiver : null,
+      getSpecialNeeds: () => specialNeeds ? specialNeeds : null,
 
       getCreateChildData: () => ({
         firstName,
