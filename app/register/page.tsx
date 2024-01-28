@@ -29,13 +29,13 @@ export default function Register() {
         >
           Register as a Member
         </Link>
-        <Link
+        {/* <Link
           className="hod_button hod_button_primary_light"
           style={{ fontWeight: "500" }}
           href="/register/visitor"
         >
           Register as a Visitor
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

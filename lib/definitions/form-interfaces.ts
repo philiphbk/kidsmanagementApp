@@ -3,12 +3,22 @@ export interface FormHeaderType {
   description?: string;
 }
 
+export enum Gender {
+  male = 'male',
+  female = 'female'
+}
+
+export enum ParentType {
+  biological = 'biological',
+  guardian = 'guardian'
+}
+
 // member registration interface
-export interface Parent {
+export interface CreateParentData {
   firstName: string;
   lastName: string;
   email: string;
-  gender: string;
+  gender: Gender;
   roleInChurch: string;
   departmentInChurch: string;
   phoneNumberPrimary: string;
@@ -16,7 +26,27 @@ export interface Parent {
   idName: string;
   idNumber: string;
   idPhoto: string; // Image data for the ID picture
+  type: ParentType;
 }
+
+export interface Parent extends CreateParentData {
+  // Additional properties specify to Parent entity
+}
+
+export interface Department {
+  id: string;
+  value: string;
+}
+
+export interface OptionType {
+  label: string;
+  value: string;
+}
+
+export interface MySelectComponentProps {
+  departmentInChurchData: Department[];
+}
+
 
 export interface Child {
   firstName: string;
@@ -27,7 +57,19 @@ export interface Child {
   photograph: string; // Image data for the photograph
   relationshipWithChildType: string;
   relationshipWithChild: string;
+  parent: string[];
+  caregiver: string[];
   specialNeeds?: string;
+}
+
+export enum CareGiverType {
+  grandDad = 'grandDad',
+  grandMom = 'grandMom',
+  uncle = 'uncle',
+  aunt = 'aunt',
+  brother = 'brother',
+  sister = 'sister',
+  other = 'other'
 }
 
 export interface Caregiver {
@@ -46,6 +88,7 @@ export interface Caregiver {
   churchLocation: string;
   churchBranchInLocation: string;
   photograph: string; // Compulsory if relationship with parent is 'Others'
+  type: CareGiverType;
 }
 
 export interface RoleFormValues {

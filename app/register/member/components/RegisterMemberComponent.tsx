@@ -11,7 +11,12 @@ import {
 } from "formik";
 import * as Yup from "yup";
 
-import { RegistrationFormValues } from "@/lib/definitions/form-interfaces";
+import {
+  Gender,
+  ParentType,
+  RegistrationFormValues,
+  CareGiverType,
+} from "@/lib/definitions/form-interfaces";
 
 // import PreviewImage from "../components/PreviewImage";
 // import ImageUpload from "../components/ImageUpload";
@@ -22,15 +27,13 @@ import FormHeader from "@/app/register/components/FormHeader";
 import ParentComponent from "./InformationParent";
 import ChildComponent from "./InformationChild";
 import CaregiverComponent from "./InformationCaregiver";
-import { BsPlusCircle, BsTrash3 } from "react-icons/bs";
+import { BsPlusCircle } from "react-icons/bs";
 import NewChildInstanceTitle from "../../components/NewChildInstanceTitle";
-import { formatDateToYMD } from "@/lib/utils/utils";
 
 const RegisterMemberComponent = () => {
   const [step, setStep] = useState(1);
   const totalSteps = 3;
   const [currentTitle, setCurrentTitle] = useState("Personal Information");
-
 
   const nextStep = () => {
     if (step < totalSteps) {
@@ -74,6 +77,7 @@ const RegisterMemberComponent = () => {
   //   return valid;
   // };
 
+
   const RegistrationSchema = Yup.object()
     .shape({
       parent: Yup.object().shape({
@@ -96,9 +100,7 @@ const RegisterMemberComponent = () => {
         idName: Yup.string().required(
           "Please select a means of Identification!"
         ),
-        idNumber: Yup.string().required(
-          "Please enter your ID Number!"
-        ),
+        idNumber: Yup.string().required("Please enter your ID Number!"),
         // idPhoto: Yup.mixed()
         // .test("fileType", "Only images are allowed", (file?: any) =>
         //   file && validFileExtensions.includes(file.type)
@@ -193,8 +195,22 @@ const RegisterMemberComponent = () => {
     })
     .nullable();
 
-  const initialValues = {
-    parent: {
+
+  const newInfo = {
+    child: {
+      firstName: "",
+      lastName: "",
+      gender: "",
+      dateOfBirth: new Date(),
+      ageGroup: "",
+      photograph: "",
+      relationshipWithChildType: "parent",
+      relationshipWithChild: "mother",
+      parent: [""],
+      caregiver: [""],
+      specialNeeds: "",
+    },
+    caregiver: {
       firstName: "",
       lastName: "",
       email: "",
@@ -203,43 +219,17 @@ const RegisterMemberComponent = () => {
       departmentInChurch: "",
       phoneNumberPrimary: "",
       phoneNumberSecondary: "",
-      idName: "",
-      idNumber: "",
-      idPhoto: "", // Image data for the ID picture
+      relationshipWithChildType: "",
+      relationshipWithChild: "",
+      relationshipWithParentType: "",
+      relationshipWithParent: "",
+      churchLocation: "",
+      churchBranchInLocation: "",
+      photograph: "",
+      type: CareGiverType.grandDad,
     },
-    child: [
-      {
-        firstName: "",
-        lastName: "",
-        gender: "",
-        dateOfBirth: new Date(),
-        ageGroup: "",
-        photograph: "", // Image data for the photograph
-        relationshipWithChildType: "",
-        relationshipWithChild: "",
-        specialNeeds: "",
-      },
-    ],
-    caregiver: [
-      {
-        firstName: "",
-        lastName: "",
-        email: "",
-        gender: "",
-        roleInChurch: "",
-        departmentInChurch: "",
-        phoneNumberPrimary: "",
-        phoneNumberSecondary: "",
-        relationshipWithChildType: "",
-        relationshipWithChild: "",
-        relationshipWithParentType: "",
-        relationshipWithParent: "",
-        churchLocation: "",
-        churchBranchInLocation: "",
-        photograph: "", // Compulsory if relationship with parent is 'Others'
-      },
-    ],
-  };
+  }
+
 
   const handleSubmit = async (
     values: RegistrationFormValues,
@@ -271,7 +261,6 @@ const RegisterMemberComponent = () => {
           actions.resetForm();
           setRegistrationSuccessful(true);
         }
-
       } catch (err) {
         console.log(err);
       } finally {
@@ -280,6 +269,7 @@ const RegisterMemberComponent = () => {
       }
     }
   };
+
 
   useEffect(() => {
     if (step === 1) {
@@ -290,6 +280,7 @@ const RegisterMemberComponent = () => {
       setCurrentTitle("Caretaker Information");
     }
   }, [step]);
+
 
   return (
     <>
@@ -303,12 +294,62 @@ const RegisterMemberComponent = () => {
           <div className="registration_container">
             <div className="flex flex-col gap-6 items-center">
               <HodLogoOnly />
-              <h1 className="platform_title">HOD Kids Pick-Up Platform</h1>
+              <h1 className="platform_title">Junior Church Monitor</h1>
             </div>
 
             <main className="form_container flex flex-col items-center w-full h-full">
               <Formik<RegistrationFormValues>
-                initialValues={initialValues}
+                initialValues={{
+                  parent: {
+                    firstName: "",
+                    lastName: "",
+                    email: "",
+                    gender: Gender.male,
+                    roleInChurch: "",
+                    departmentInChurch: "",
+                    phoneNumberPrimary: "",
+                    phoneNumberSecondary: "",
+                    idName: "",
+                    idNumber: "",
+                    idPhoto: "",
+                    type: ParentType.biological,
+                  },
+                  child: [
+                    {
+                      firstName: "",
+                      lastName: "",
+                      gender: "",
+                      dateOfBirth: new Date(),
+                      ageGroup: "",
+                      photograph: "", // Image data for the photograph
+                      relationshipWithChildType: "parent",
+                      relationshipWithChild: "mother",
+                      parent: [""],
+                      caregiver: [""],
+                      specialNeeds: "",
+                    },
+                  ],
+                  caregiver: [
+                    {
+                      firstName: "",
+                      lastName: "",
+                      email: "",
+                      gender: "",
+                      roleInChurch: "",
+                      departmentInChurch: "",
+                      phoneNumberPrimary: "",
+                      phoneNumberSecondary: "",
+                      relationshipWithChildType: "",
+                      relationshipWithChild: "",
+                      relationshipWithParentType: "",
+                      relationshipWithParent: "",
+                      churchLocation: "",
+                      churchBranchInLocation: "",
+                      photograph: "",
+                      type: CareGiverType.grandDad, // Compulsory if relationship with parent is 'Others'
+                    },
+                  ],
+                }}
                 // validationSchema={RegistrationSchema}
                 onSubmit={handleSubmit}
               >
@@ -333,7 +374,7 @@ const RegisterMemberComponent = () => {
                     {step === 2 && (
                       <>
                         <FieldArray
-                          name="Child"
+                          name="child"
                           render={({ push, remove }) => (
                             <>
                               {values.child &&
@@ -353,11 +394,7 @@ const RegisterMemberComponent = () => {
                               <button
                                 type="button"
                                 className="flex gap-2 items-center text-hod-secondary text-base font-normal"
-                                onClick={() =>
-                                  values.child.forEach((child) => {
-                                    push(child);
-                                  })
-                                }
+                                onClick={() => push(newInfo.child)}
                               >
                                 <BsPlusCircle className="text-hod-secondary" />{" "}
                                 Include another child
@@ -371,33 +408,27 @@ const RegisterMemberComponent = () => {
                     {step === 3 && (
                       <>
                         <FieldArray
-                          name="Caregiver"
+                          name="caregiver"
                           render={({ push, remove }) => (
                             <>
                               {values.caregiver &&
                                 values.caregiver.length > 0 &&
-                                values.caregiver.map(
-                                  (caregiver, index) => (
-                                    <div key={index}>
-                                      <NewChildInstanceTitle
-                                        index={index}
-                                        remove={remove}
-                                        desc="Caregiver"
-                                      />
+                                values.caregiver.map((caregiver, index) => (
+                                  <div key={index}>
+                                    <NewChildInstanceTitle
+                                      index={index}
+                                      remove={remove}
+                                      desc="Caregiver"
+                                    />
 
-                                      <CaregiverComponent
-                                        index={index}
-                                      />
-                                    </div>
-                                  )
-                                )}
+                                    <CaregiverComponent index={index} />
+                                  </div>
+                                ))}
 
                               <button
                                 type="button"
                                 className="flex gap-2 items-center text-hod-secondary text-base font-normal"
-                                onClick={() =>
-                                  push(initialValues.child)
-                                }
+                                onClick={() => push(newInfo.caregiver)}
                               >
                                 <BsPlusCircle className="text-hod-secondary" />{" "}
                                 Include new caregiver
@@ -423,8 +454,11 @@ const RegisterMemberComponent = () => {
                         className="hod_button hod_button_primary"
                         disabled={isSubmitting}
                       >
-                        {isSubmitting ? "Submitting..." : (step < totalSteps ? "Next" : "Submit")}
-
+                        {isSubmitting
+                          ? "Submitting..."
+                          : step < totalSteps
+                            ? "Next"
+                            : "Submit"}
                       </button>
                     </div>
                   </Form>
