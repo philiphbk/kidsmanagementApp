@@ -34,17 +34,17 @@ import ImageFileUploader from "../../components/ImageFileUploader";
 // interface CaregiverProps extends Caregiver, PropsInterface { }
 
 const CaregiverComponent = ({ index }: { index: number }) => {
-  const formikContext = useFormikContext<Caregiver>();
+  const { setFieldValue } = useFormikContext<Caregiver>();
 
-  const [currentType, setCurrentType] = useState("");
-  const [currentLocation, setCurrentLocation] = useState("");
+  const [currentType, setCurrentType] = useState("parent");
+  const [currentLocation, setCurrentLocation] = useState("lagos");
 
   const handleRelationshipChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const { name, value, id } = e.target;
 
     if (id.includes("relationshipWithChildType")) {
       setCurrentType(value);
-      formikContext.setFieldValue(
+      setFieldValue(
         `caregiver[${index}].relationshipWithChild`,
         ""
       );
@@ -52,7 +52,7 @@ const CaregiverComponent = ({ index }: { index: number }) => {
 
     if (id.includes("churchLocation")) {
       setCurrentLocation(value);
-      formikContext.setFieldValue(
+      setFieldValue(
         `caregiver[${index}].churchBranchInLocation`,
         ""
       );
@@ -61,7 +61,7 @@ const CaregiverComponent = ({ index }: { index: number }) => {
     console.log(e, name, value);
 
     // Update otherField in formik context based on the selected value
-    formikContext.setFieldValue(name, value);
+    setFieldValue(name, value);
   };
 
   const relationshipDataFiltered = relationshipData?.find(
@@ -263,7 +263,7 @@ const CaregiverComponent = ({ index }: { index: number }) => {
                 className="hod_input"
                 aria-label="Specify Relationship"
                 onChange={handleRelationshipChange}
-                // disabled={!currentType}
+              // disabled={!currentType}
               >
                 <option value="" disabled>
                   choose relationship
@@ -342,7 +342,7 @@ const CaregiverComponent = ({ index }: { index: number }) => {
                 className="hod_input"
                 aria-label="Specify Relationship"
                 onChange={handleRelationshipChange}
-                // disabled={!currentType}
+              // disabled={!currentType}
               >
                 <option value="" disabled>
                   choose relationship

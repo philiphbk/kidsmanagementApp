@@ -41,7 +41,7 @@ interface ImageData {
   base64String: string | null;
 }
 
-interface ParentProps extends Parent, PropsInterface {}
+interface ParentProps extends Parent, PropsInterface { }
 
 const ParentComponent: React.FC<ParentProps> = ({
   firstName,
@@ -88,7 +88,7 @@ const ParentComponent: React.FC<ParentProps> = ({
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [idPhoto, imageData]);
   const { setFieldValue } = useFormikContext();
-  const [field] = useField("parent.departmentInChurch");
+  // const [field] = useField("parent.departmentInChurch");
 
   const options: OptionType[] = departmentInChurchData.map((dept) => ({
     value: dept.id,
@@ -198,9 +198,11 @@ const ParentComponent: React.FC<ParentProps> = ({
       <div className="input_group">
         <label htmlFor="parent.departmentInChurch">Department in church</label>
         <Select
-          {...field}
+          // {...field}
           options={options}
+          // defaultValue={options[0]}
           onChange={handleChange}
+          name="parent.departmentInChurch"
           classNames={{
             control: (state) =>
               state.isFocused

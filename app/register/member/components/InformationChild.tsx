@@ -27,27 +27,44 @@ import ImageFileUploader from "../../components/ImageFileUploader";
 // interface ChildProps extends Child, PropsInterface { }
 
 const ChildComponent = ({ index }: { index: number }) => {
-  const formikContext = useFormikContext<Child>();
+  const { setFieldValue } = useFormikContext<Child>();
 
-  const [currentType, setCurrentType] = useState("");
+  const [currentType, setCurrentType] = useState("parent");
+  const [otherType, setOtherType] = useState({
+    status: false,
+    value: ""
+  });
 
   const handleRelationshipChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const { name, value, id } = e.target;
 
     if (id.includes("relationshipWithChildType")) {
       setCurrentType(value);
-      formikContext.setFieldValue(`child[${index}].relationshipWithChild`, "");
+      setOtherType({ ...otherType, status: false });
+      setFieldValue(`child[${index}].relationshipWithChild`, "");
+      setFieldValue(name, value);
+    }
+
+    if (id.includes("relationshipWithChild")) {
+      if (value === "other") {
+        setOtherType({ ...otherType, status: true });
+      } else {
+        setOtherType({ ...otherType, status: false });
+        setFieldValue(name, value);
+      }
     }
 
     console.log(e, name, value);
-
-    // Update otherField in formik context based on the selected value
-    formikContext.setFieldValue(name, value);
   };
 
   const relationshipDataFiltered = relationshipData?.find(
     (relationship) => relationship.type === currentType
   );
+
+  // useEffect(() => {
+  //   setFieldValue(`child[${index}].relationshipWithChild`, otherType?.value);
+  // }, [index, otherType?.value, setFieldValue])
+
 
   return (
     <div className="personal_info">
@@ -190,46 +207,50 @@ const ChildComponent = ({ index }: { index: number }) => {
             Specify Relationship
           </label>
 
-          {currentType !== "other" ? (
-            <>
-              <Field
-                name={`child[${index}].relationshipWithChild`}
-                id={`child[${index}].relationshipWithChild`}
-                as="select"
-                className="hod_input"
-                aria-label="Specify Relationship"
-                onChange={handleRelationshipChange}
-                // disabled={!currentType}
-              >
-                <option value="" disabled>
-                  choose relationship
-                </option>
+          <Field
+            name={`child[${index}].relationshipWithChild`}
+            id={`child[${index}].relationshipWithChild`}
+            as="select"
+            className="hod_input"
+            aria-label="Specify Relationship"
+            onChange={handleRelationshipChange}
+          >
+            <option value="" disabled>
+              choose relationship
+            </option>
 
-                {relationshipDataFiltered?.relationship?.map(
-                  (item: { id: string; value: string }) => (
-                    <option key={item.id} value={item.id}>
-                      {item.value}
-                    </option>
-                  )
-                )}
-              </Field>
-              <ErrorMessage name={`child[${index}].relationshipWithChild`} />
-            </>
-          ) : (
-            <>
-              <Field
-                name={`child[${index}].relationshipWithChild`}
-                id={`child[${index}].relationshipWithChild`}
-                type="text"
-                className="hod_input"
-                aria-placeholder="Specify Relationship"
-                aria-label="Specify Relationship"
-              />
-              <ErrorMessage name={`child[${index}].relationshipWithChild`} />
-            </>
-          )}
+            {relationshipDataFiltered?.relationship?.map(
+              (item: { id: string; value: string }) => (
+                <option key={item.id} value={item.id}>
+                  {item.value}
+                </option>
+              )
+            )}
+          </Field>
+          <ErrorMessage name={`child[${index}].relationshipWithChild`} />
         </div>
       </div>
+
+      {/* exact relationship */}
+      {otherType.status && (
+        <div className="input_group">
+          <label htmlFor="otherGuardian">
+            Please enter the exact relationship with child
+          </label>
+
+          <Field
+            name="otherGuardian"
+            id="otherGuardian"
+            type="text"
+            className="hod_input"
+            aria-placeholder="Specify Relationship"
+            aria-label="Specify Relationship"
+            onChange={handleRelationshipChange}
+            defaultValue={otherType.value}
+          />
+          <ErrorMessage name="otherGuardian" />
+        </div>
+      )}
 
       {/* special need */}
       <div className="input_group">

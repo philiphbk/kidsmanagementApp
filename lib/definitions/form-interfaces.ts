@@ -55,6 +55,8 @@ export interface Child {
   dateOfBirth: Date;
   ageGroup: string;
   photograph: string; // Image data for the photograph
+  relationshipWithChildType: string;
+  relationshipWithChild: string;
   parent: string[];
   caregiver: string[];
   specialNeeds?: string;
@@ -62,7 +64,7 @@ export interface Child {
 
 export enum CareGiverType {
   grandDad = 'grandDad',
-  grandMon = 'grandDad',
+  grandMom = 'grandMom',
   uncle = 'uncle',
   aunt = 'aunt',
   brother = 'brother',

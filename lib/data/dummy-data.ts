@@ -68,7 +68,7 @@ export const departmentInChurchData = [
     value: "Drama"
   },
   {
-    id: "7",	
+    id: "7",
     value: "Directorate"
   },
   {
@@ -92,7 +92,7 @@ export const departmentInChurchData = [
     value: "HOD Academy"
   },
   {
-    id: "13",	
+    id: "13",
     value: "Information & Data Insight"
   },
   {
@@ -126,40 +126,40 @@ export const departmentInChurchData = [
   {
     id: "21",
     value: "Prayer"
-  },{
+  }, {
     id: "22",
     value: "Protocol"
-  },{
+  }, {
     id: "23",
     value: "Pastorate"
-  },{
+  }, {
     id: "24",
     value: "Partnership"
-  },{
+  }, {
     id: "25",
     value: "River of Life"
-  },{
+  }, {
     id: "26",
     value: "Sanitation"
-  },{
+  }, {
     id: "27",
     value: "Security"
-  },{
+  }, {
     id: "28",
     value: "Social Media & Communication"
-  },{
+  }, {
     id: "29",
     value: "Tech Team"
-  },{
+  }, {
     id: "30",
     value: "TSOM"
-  },{
+  }, {
     id: "31",
     value: "Treasury"
-  },{
+  }, {
     id: "32",
     value: "Transportation"
-  },{
+  }, {
     id: "33",
     value: "Ushering"
   },
@@ -220,10 +220,6 @@ export const relationshipTypeData = [
     id: "guardian",
     type: "Guardian",
   },
-  {
-    id: "other",
-    type: "Other",
-  },
 ]
 
 export const relationshipData = [
@@ -267,11 +263,11 @@ export const relationshipData = [
         id: "aunt",
         value: "Aunt"
       },
+      {
+        id: "other",
+        value: "Other"
+      },
     ]
-  },
-  {
-    type: "other",
-    relationship: []
   },
 ]
 
