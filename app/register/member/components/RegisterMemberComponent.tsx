@@ -196,14 +196,17 @@ const RegisterMemberComponent = () => {
             churchBranchInLocation: Yup.string().required(
               "Please select the branch in the location selected!"
             ),
-            photograph: Yup.mixed()
-            .test("fileSize", "File Size is too large", (value: any) => {
-              if (value) {
-                console.log("value.size", value.size <= 1024 * 1024);
-                return value.size <= 1024 * 1024;
+            photograph: Yup.mixed().test(
+              "fileSize",
+              "File Size is too large",
+              (value: any) => {
+                if (value) {
+                  console.log("value.size", value.size <= 1024 * 1024);
+                  return value.size <= 1024 * 1024;
+                }
+                return true;
               }
-              return true;
-            }),
+            ),
             // .test("fileType", "Only images are allowed", (value: any) => {
             //   return value && value.type.includes("image");
             // }),
@@ -251,7 +254,6 @@ const RegisterMemberComponent = () => {
     values: RegistrationFormValues,
     actions: FormikHelpers<RegistrationFormValues>
   ) => {
-    alert("ok");
     if (step < totalSteps) {
       console.log("values", values);
       console.log("is clicked!");
