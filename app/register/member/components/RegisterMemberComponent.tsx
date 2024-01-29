@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import router from "next/router";
+import axios from "axios";
 
 import {
   useFormikContext,
@@ -61,22 +63,6 @@ const RegisterMemberComponent = () => {
     "image/webp",
   ];
 
-  // const checkIfFilesAreTooBig = (file?: any): boolean => {
-  //   let valid = true;
-  //   if (file && file.size < MAX_FILE_SIZE) {
-  //     valid = false;
-  //   }
-  //   return valid;
-  // };
-
-  // const checkIfFilesAreCorrectType = (file?: any): boolean => {
-  //   let valid = true;
-  //   if (file && validFileExtensions.includes(file.type)) {
-  //     valid = false;
-  //   }
-  //   return valid;
-  // };
-
   const ParentRegistrationSchema = Yup.object()
     .shape({
       parent: Yup.object().shape({
@@ -109,17 +95,6 @@ const RegisterMemberComponent = () => {
             return true;
           })
           .required(),
-        // idPhoto: Yup.mixed()
-        //   // .test(
-        //   //   "fileType",
-        //   //   "Only images are allowed",
-        //   //   (file?: any) => file && validFileExtensions.includes(file.type)
-        //   // )
-        //   .test(
-        //     "fileSize",
-        //     "Image size should not be greater than 1MB",
-        //     (file?: any) => file && file.size < MAX_FILE_SIZE
-        //   ),
       }),
     })
     .nullable();
@@ -207,9 +182,6 @@ const RegisterMemberComponent = () => {
                 return true;
               }
             ),
-            // .test("fileType", "Only images are allowed", (value: any) => {
-            //   return value && value.type.includes("image");
-            // }),
           })
         )
         .nullable(),
@@ -267,27 +239,23 @@ const RegisterMemberComponent = () => {
       console.log("is submitting!", values);
 
       try {
-        const response = await fetch("/api/registration", {
-          method: "POST",
-          body: JSON.stringify(values),
+        const response = await axios.post("/api/registration", values, {
           headers: {
             "Content-Type": "application/json",
           },
         });
 
-        if (response.ok) {
-          const data = await response.json();
-          console.log(data, "Registration form submitted!");
+        console.log(response.data, "Registration form submitted!");
 
-          setStep(1);
-          actions.resetForm();
-          setRegistrationSuccessful(true);
-        }
+        setStep(1);
+        actions.resetForm();
+        setRegistrationSuccessful(true);
+        router.push("/success");
       } catch (err) {
-        console.log(err);
+        console.error(err);
+        setRegistrationSuccessful(false);
       } finally {
         actions.setSubmitting(false);
-        setRegistrationSuccessful(false);
       }
     }
   };

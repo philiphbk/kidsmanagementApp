@@ -31,15 +31,14 @@ export default function ImageFileUploader({
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        setImageData({ imageFile: file, imageBase64: "" });
-        setImageData({ base64String: reader.result as string });
+        setImageData({ imageFile: file, imageBase64: reader.result as string });
+        // setImageData({ base64String: reader.result as string });
         // formikContext.setFieldValue(id, reader.result as string);
         // console.log("file", file);
       };
-      setImageData({ base64String: reader.result as string });
       formikContext.setFieldValue(id, file);
     } else {
-      setImageData({ base64String: "" });
+      setImageData({ imageFile: file, imageBase64: "" });
       // setErrorMessage("Please upload an image");
     }
   };

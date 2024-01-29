@@ -27,7 +27,7 @@ export default function Success() {
           <p className=" mb-14">
             Thank you for registering your child(ren) with us!
           </p>
-          <Link href={`/register`}>
+          <Link href={`/register/member`}>
             <button className=" bg-[#273472] rounded px-4 py-5 text-wrap text-white font-semibold">
               Go to Home
             </button>

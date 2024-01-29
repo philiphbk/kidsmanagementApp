@@ -19,8 +19,6 @@ import {
   roleInChurchData,
 } from "@/lib/data/dummy-data";
 
-import ImageUploader from "../../components/ImageUploader";
-
 import {
   Department,
   OptionType,
@@ -35,12 +33,6 @@ import {
 } from "@/lib/definitions/form-interfaces";
 import ImageFileUploader from "../../components/ImageFileUploader";
 
-// interface PropsInterface {
-//     errors: FormikErrors<RegistrationFormValues>;
-//     touched: FormikTouched<RegistrationFormValues>;
-// }
-
-// interface CaregiverProps extends Caregiver, PropsInterface { }
 
 const CaregiverComponent = ({ index }: { index: number }) => {
   const { setFieldValue } = useFormikContext<Caregiver>();

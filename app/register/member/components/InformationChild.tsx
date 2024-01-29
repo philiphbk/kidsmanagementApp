@@ -16,7 +16,6 @@ import {
 } from "@/lib/data/dummy-data";
 import { Child } from "@/lib/definitions/form-interfaces";
 
-import ImageUploader from "../../components/ImageUploader";
 import ImageFileUploader from "../../components/ImageFileUploader";
 
 // interface PropsInterface {
