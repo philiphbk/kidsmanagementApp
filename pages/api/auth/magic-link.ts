@@ -15,8 +15,8 @@ async function sendMagicLink(email: string) {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "your-gmail@gmail.com", // Your Gmail address
-      pass: "your-gmail-password", // Your Gmail password
+      user: "philipfajorin@gmail.com", // Your Gmail address
+      pass: "erctdszgweijuxdb", // Your Gmail password
     },
   });
 

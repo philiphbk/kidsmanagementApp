@@ -18,22 +18,8 @@ import { Child } from "@/lib/definitions/form-interfaces";
 
 import ImageFileUploader from "../../components/ImageFileUploader";
 
-// interface PropsInterface {
-//     errors: FormikErrors<RegistrationFormValues>;
-//     touched: FormikTouched<RegistrationFormValues>;
-// }
-
-// interface ChildProps extends Child, PropsInterface { }
-
 const ChildComponent = ({ index }: { index: number }) => {
   const { setFieldValue, values, errors, touched } = useFormikContext<Child>();
-
-  console.log("values", values);
-  console.log("errors", errors);
-  console.log("touched", touched);
-  console.log('index', index);
-  
-
   const [currentType, setCurrentType] = useState("parent");
   const [otherType, setOtherType] = useState({
     status: false,
@@ -70,10 +56,6 @@ const ChildComponent = ({ index }: { index: number }) => {
     (relationship) => relationship.type === currentType
   );
 
-  // useEffect(() => {
-  //   setFieldValue(`child[${index}].relationshipWithChild`, otherType?.value);
-  // }, [index, otherType?.value, setFieldValue])
-
   return (
     <div className="personal_info">
       {/* full name */}
@@ -92,10 +74,6 @@ const ChildComponent = ({ index }: { index: number }) => {
             aria-label="First Name"
           />
           <ErrorMessage name={`child[${index}].firstName`} />
-          {/* {errors?.child?.firstName
-                        && touched?.child?.firstName ? (
-                        <div>{errors?.child?.firstName}</div>
-                    ) : null} */}
         </div>
 
         <div className="input_group">

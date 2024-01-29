@@ -23,9 +23,7 @@ export default async function handler(
       break;
     case "POST":
       try {
-        console.log(body);
         const { parent, child, caregiver } = body;
-        console.log('parent child caregiver', parent, child, caregiver);
         
 
         await registrationServices.parent(parent);

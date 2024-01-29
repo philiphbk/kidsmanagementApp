@@ -56,47 +56,14 @@ const ParentComponent: React.FC<ParentProps> = ({
   errors,
   touched,
 }) => {
-  console.log("errors", errors);
-  console.log("touched", touched);
 
-  // const formikContext = useFormikContext<Partial<Parent>>();
-
-  // const [imageData, setImageData] = useState<ImageData>({ base64String: "" });
-
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-
-  //   if (file) {
-
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onload = () => {
-  //       setImageData({ base64String: reader.result as string });
-
-  //       formikContext.setFieldValue("parent.idPhoto", reader.result as string);
-  //     };
-  //   } else {
-  //     setImageData({ base64String: "" });
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (imageData?.base64String) {
-  //     formikContext.setFieldValue("parent.idPhoto", imageData.base64String as string);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [idPhoto, imageData]);
   const { setFieldValue } = useFormikContext();
-  // const [field] = useField("parent.departmentInChurch");
 
   const options: OptionType[] = departmentInChurchData.map((dept) => ({
     value: dept.id,
     label: dept.value,
   }));
 
-  // const handleChange = (selectedOption: SingleValue<OptionType>) => {
-  //   setFieldValue("parent.departmentInChurch", selectedOption?.value);
-  // };
 
   return (
     <section className="personal_info">
@@ -113,10 +80,6 @@ const ParentComponent: React.FC<ParentProps> = ({
             aria-label="First Name"
           />
           <ErrorMessage name="parent.firstName" />
-          {/* {errors?.Parent?.firstName
-                        && touched?.Parent?.firstName ? (
-                        <div>{errors?.Parent?.firstName}</div>
-                    ) : null} */}
         </div>
 
         <div className="input_group">
@@ -129,7 +92,7 @@ const ParentComponent: React.FC<ParentProps> = ({
             aria-placeholder="Enter last name"
             aria-label="Last Name"
           />
-          {/* <ErrorMessage name="parent.lastName" /> */}
+          <ErrorMessage name="parent.lastName" />
         </div>
       </div>
 

@@ -5,16 +5,16 @@ import { ConnectionRefusedError } from "sequelize";
 dotenv.config();
 
 const connectionOptions = {
-  // host: process.env.DB_HOST,
-  // user: process.env.DB_USER,
-  // password: process.env.DB_PASS,
-  // database: process.env.DB_NAME,
-  // port: Number(process.env.DB_PORT),
-  host: "localhost",
-  user: "root",
-  password: "95@SeyiDami",
-  database: "kidsappdb",
-  port: 3306,
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
+  port: Number(process.env.DB_PORT),
+  // host: "localhost",
+  // user: "root",
+  // password: "95@SeyiDami",
+  // database: "kidsappdb",
+  // port: 3306,
   waitForConnections: true,
   connectionLimit: 10,
   connectTimeout: 100000000,
@@ -62,7 +62,8 @@ export const db = (tableName: string) => {
     try {
       const connection = await connectWithRetry();
       const [rows] = await connection.query(
-        `SELECT * FROM ${tableName} WHERE id = ?`, [id]
+        `SELECT * FROM ${tableName} WHERE id = ?`,
+        [id]
       );
       connection.release();
       if (!rows) {
@@ -73,14 +74,14 @@ export const db = (tableName: string) => {
       console.log(`Error getting ${tableName} from DB: `, error);
       throw error;
     }
-  }
+  };
 
   const create = async (data: any) => {
     try {
       const connection = await connectWithRetry();
-      const [rows] = await connection.query(
-        `INSERT INTO ${tableName} SET ?`, [data]
-      );
+      const [rows] = await connection.query(`INSERT INTO ${tableName} SET ?`, [
+        data,
+      ]);
       connection.release();
       if (!rows) {
         return null;
@@ -90,10 +91,10 @@ export const db = (tableName: string) => {
       console.log(`Error saving ${tableName} to DB: `, error);
       return null;
     }
-  }
+  };
 
   return {
     getOne,
-    create
-  }
-}
+    create,
+  };
+};

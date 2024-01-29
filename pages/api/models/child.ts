@@ -1,5 +1,5 @@
 import { Child } from "@/lib/definitions/form-interfaces";
-import { db } from "../api/db";
+import { db } from "../db";
 
 const buildMakeChild = () => {
   return function makeChild(childInfo: Child) {

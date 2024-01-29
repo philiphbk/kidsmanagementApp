@@ -1,4 +1,4 @@
-import { makeCareGiver, makeChild, makeParent } from "../../models";
+import { makeCareGiver, makeChild, makeParent } from "../models";
 
 const register: any = {
   parent: async (parents: any) => {

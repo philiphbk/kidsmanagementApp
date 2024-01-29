@@ -3,7 +3,7 @@ import {
   Gender,
   Parent,
 } from "@/lib/definitions/form-interfaces";
-import { db } from "../api/db";
+import { db } from "../db";
 
 const buildMakeParent = () => {
   return function makeParent(parent: CreateParentData) {

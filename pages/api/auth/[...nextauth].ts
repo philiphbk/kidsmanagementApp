@@ -1,29 +1,9 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-import User from "../../../lib/definitions/user";
 import { verifyToken } from "../../../lib/verifyToken";
 
 export default NextAuth({
   providers: [
-    // CredentialsProvider({
-    //   name: "Credentials",
-    //   credentials: {
-        
-    //     email: { label: "Email", type: "email", placeholder: "Email" },
-    //   },
-    //   authorize: async (credentials) => {
-    //     const user = await User.findOne({
-    //       where: { email: credentials?.email },
-    //     });
-
-    //     if (user) {
-    //       return { id: user.id.toString(), name: user.name, email: user.email };
-    //     } else {
-    //       throw new Error("No user found");
-    //     }
-    //   },
-    // }),
     CredentialsProvider({
       name: "Magic Link",
       credentials: {

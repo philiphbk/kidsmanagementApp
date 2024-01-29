@@ -256,7 +256,6 @@ const RegisterMemberComponent = () => {
         setRegistrationSuccessful(true);
         router.push("/success");
       } catch (err) {
-        console.error(err);
         setRegistrationSuccessful(false);
       } finally {
         actions.setSubmitting(false);

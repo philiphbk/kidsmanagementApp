@@ -3,7 +3,7 @@ import jwt from "jwt-simple";
 import { signIn } from "next-auth/react";
 import findUserByEmail from "@/lib/findUserByEmail";
 
-const SECRET_KEY = "your_secret_key"; // Same as used above.
+const SECRET_KEY = "secret"; // Same as used above.
 
 const callbackHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { token } = req.query;

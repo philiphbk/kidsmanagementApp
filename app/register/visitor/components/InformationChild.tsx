@@ -1,7 +1,6 @@
 import { ErrorMessage, Field } from "formik";
 import { genderData, ageGroupData } from "@/lib/data/dummy-data";
 
-import ImageUploader from "../../components/ImageUploader";
 
 const ChildInformation = ({ index }: { index: number }) => {
     return (
@@ -129,7 +128,7 @@ const ChildInformation = ({ index }: { index: number }) => {
             {/* photograph */}
             <div className="input_group">
                 <label htmlFor={`childInformation[${index}].photograph`}>Upload Photo</label>
-                <ImageUploader id={`childInformation[${index}].photograph`} ariaLabel="Upload Photo" />
+                {/* <ImageUploader id={`childInformation[${index}].photograph`} ariaLabel="Upload Photo" /> */}
                 <ErrorMessage name={`childInformation[${index}].photograph`} />
             </div>
         </div>

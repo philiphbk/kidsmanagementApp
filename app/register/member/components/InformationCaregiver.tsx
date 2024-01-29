@@ -19,7 +19,6 @@ import {
   roleInChurchData,
 } from "@/lib/data/dummy-data";
 
-
 import {
   Department,
   OptionType,
@@ -34,7 +33,6 @@ import {
 } from "@/lib/definitions/form-interfaces";
 import ImageFileUploader from "../../components/ImageFileUploader";
 
-
 const CaregiverComponent = ({ index }: { index: number }) => {
   const { setFieldValue } = useFormikContext<Caregiver>();
 
@@ -46,22 +44,14 @@ const CaregiverComponent = ({ index }: { index: number }) => {
 
     if (id.includes("relationshipWithChildType")) {
       setCurrentType(value);
-      setFieldValue(
-        `caregiver[${index}].relationshipWithChild`,
-        ""
-      );
+      setFieldValue(`caregiver[${index}].relationshipWithChild`, "");
     }
 
     if (id.includes("churchLocation")) {
       setCurrentLocation(value);
-      setFieldValue(
-        `caregiver[${index}].churchBranchInLocation`,
-        ""
-      );
+      setFieldValue(`caregiver[${index}].churchBranchInLocation`, "");
     }
 
-
-    // Update otherField in formik context based on the selected value
     setFieldValue(name, value);
   };
 
@@ -81,7 +71,9 @@ const CaregiverComponent = ({ index }: { index: number }) => {
   }));
 
   const handleChange = (selectedOption: SingleValue<OptionType>) => {
-    setFieldValue( `caregiver[${index}].departmentInChurch`, selectedOption?.value
+    setFieldValue(
+      `caregiver[${index}].departmentInChurch`,
+      selectedOption?.value
     );
   };
 
@@ -199,23 +191,6 @@ const CaregiverComponent = ({ index }: { index: number }) => {
           isClearable
           isSearchable
         />
-        {/* <Field
-          name={`caregiver[${index}].departmentInChurch`}
-          id={`caregiver[${index}].departmentInChurch`}
-          as="select"
-          className="hod_input"
-          aria-label="Department in church"
-        >
-          <option value="" disabled>
-            select department in church
-          </option>
-
-          {departmentInChurchData?.map((dept) => (
-            <option key={dept.id} value={dept.id}>
-              {dept.value}
-            </option>
-          ))}
-        </Field> */}
         <ErrorMessage name={`caregiver[${index}].departmentInChurch`} />
       </div>
 
@@ -292,7 +267,6 @@ const CaregiverComponent = ({ index }: { index: number }) => {
                 className="hod_input"
                 aria-label="Specify Relationship"
                 onChange={handleRelationshipChange}
-              // disabled={!currentType}
               >
                 <option value="" disabled>
                   choose relationship
@@ -371,7 +345,6 @@ const CaregiverComponent = ({ index }: { index: number }) => {
                 className="hod_input"
                 aria-label="Specify Relationship"
                 onChange={handleRelationshipChange}
-              // disabled={!currentType}
               >
                 <option value="" disabled>
                   choose relationship
