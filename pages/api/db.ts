@@ -76,6 +76,24 @@ export const db = (tableName: string) => {
     }
   };
 
+  const getByEmail = async (email: string) => {
+    try {
+      const connection = await connectWithRetry();
+      const [rows] = await connection.query(
+        `SELECT * FROM ${tableName} WHERE email = ?`,
+        [email]
+      );
+      connection.release();
+      if (!rows) {
+        return null;
+      }
+      return rows;
+    } catch (error: any) {
+      console.log(`Error getting ${tableName} from DB: `, error);
+      throw error;
+    }
+  };
+
   const create = async (data: any) => {
     try {
       const connection = await connectWithRetry();
@@ -96,5 +114,6 @@ export const db = (tableName: string) => {
   return {
     getOne,
     create,
+    getByEmail
   };
 };

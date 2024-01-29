@@ -8,7 +8,7 @@ const SECRET_KEY = "secret"; // Use a secure, unique secret key.
 
 async function sendMagicLink(email: string) {
 
-  const token = jwt.encode({ email, exp: Date.now() + 36000 }, SECRET_KEY); // Token expires in 1 hour.
+  const token = jwt.encode({ email, exp: Date.now() + 360000 }, SECRET_KEY); // Token expires in 1 hour.
   const link = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback?token=${token}`;
 
   // Configure Nodemailer
