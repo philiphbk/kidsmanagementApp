@@ -1,6 +1,5 @@
 {
   "name": "kidsmanagement",
-  "homepage": "https://jc.householdofdavid.org",
   "version": "0.1.0",
   "private": true,
   "scripts": {
