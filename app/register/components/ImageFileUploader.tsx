@@ -4,7 +4,6 @@ import { useFormikContext } from "formik";
 import { Parent } from "@/lib/definitions/form-interfaces";
 
 interface ImageData {
-  imageFile: any;
   imageBase64: string;
 }
 
@@ -19,35 +18,39 @@ export default function ImageFileUploader({
 }: ImageInputUploader) {
   const formikContext = useFormikContext<Partial<Parent>>();
 
-  const [imageData, setImageData] = useState<ImageData>({ imageFile: "", imageBase64: ""});
+  const [imageData, setImageData] = useState<ImageData>({
+    imageBase64: "",
+  });
 
   //React.ChangeEvent<HTMLInputElement>
 
   const handleFileChange = (e: any) => {
     const file = e.currentTarget.files[0];
-    
-    formikContext.setFieldValue(id, file);
+
+    if (file.size <= 1024 * 1024 == false) {
+      alert("File Size is too large");
+      return;
+    }
+
     if (file) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        setImageData({ imageFile: file, imageBase64: reader.result as string });
-        // setImageData({ base64String: reader.result as string });
-        // formikContext.setFieldValue(id, reader.result as string);
-        // console.log("file", file);
+        setImageData({ imageBase64: reader.result as string });
+        formikContext.setFieldValue(id, reader.result as string);
       };
       formikContext.setFieldValue(id, file);
     } else {
-      setImageData({ imageFile: file, imageBase64: "" });
+      setImageData({ imageBase64: "" });
       // setErrorMessage("Please upload an image");
     }
   };
 
   useEffect(() => {
-    if (imageData?.imageFile) {
-      console.log("imageData.imageFile", imageData.imageFile);
+    if (imageData?.imageBase64) {
+      console.log("imageData.imageFile", imageData.imageBase64);
 
-      formikContext.setFieldValue(id, imageData.imageFile);
+      formikContext.setFieldValue(id, imageData.imageBase64);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageData]);
@@ -67,18 +70,18 @@ export default function ImageFileUploader({
         aria-label={ariaLabel}
         aria-placeholder={ariaLabel}
         onChange={handleFileChange}
-        defaultValue={imageData?.imageFile}
+        defaultValue={imageData?.imageBase64}
       />
-      {/* <span className="mt-3 flex">
-        {imageData?.imageFile && (
+      <span className="mt-3 flex">
+        {imageData?.imageBase64 && (
           <Image
-            src={imageData.imageFile}
+            src={imageData.imageBase64}
             alt="preview"
             width="90"
             height="90"
           />
         )}
-      </span> */}
+      </span>
     </div>
   );
 }

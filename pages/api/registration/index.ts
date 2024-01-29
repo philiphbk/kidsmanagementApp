@@ -25,6 +25,8 @@ export default async function handler(
       try {
         console.log(body);
         const { parent, child, caregiver } = body;
+        console.log('submitted parent', parent);
+        
 
         await registrationServices.parent(parent);
         await registrationServices.child(child);
