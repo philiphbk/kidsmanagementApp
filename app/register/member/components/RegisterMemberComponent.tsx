@@ -298,7 +298,7 @@ const RegisterMemberComponent = () => {
     } else if (step === 2) {
       setCurrentTitle("Child’s Information");
     } else {
-      setCurrentTitle("Caretaker Information");
+      setCurrentTitle("Caregiver Information");
     }
   }, [step]);
 
