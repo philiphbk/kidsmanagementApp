@@ -5,20 +5,27 @@ import { db } from "../db";
 
 const SECRET_KEY = "wowthisisabadsecret12345"; // Same as used above.
 
+// Define the JWT payload interface
+interface JwtPayload {
+  email: string;
+  exp: number;
+}
+
 const callbackHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { token } = req.query;
-  console.log("token", token);
+  const { email } = req.body;
   try {
-    // const { email, exp } = jwt.verify(token as string, SECRET_KEY);
+    // Verify the token and assert its type
+    const decoded = jwt.verify(token as string, SECRET_KEY) as JwtPayload;
 
-    // if (Date.now() > exp) {
-    //   return res.status(401).end("Token expired");
-    // }
+    if (Date.now() >= decoded.exp * 1000) { // Note: JWT exp is in seconds
+      return res.status(401).end("Token expired");
+    }
 
-    const value = decodeToken(token as string);
-    console.log("value", value);
+    // const value = decodeToken(token as string);
+    // console.log("value", value);
 
-    const email = value?.user?.email;
+    // const email = value?.user?.email;
 
     const user = await db("user").getByEmail(email);
     console.log(user);
@@ -34,6 +41,7 @@ const callbackHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     res.redirect("/jcadmin/overview");
   } catch (error) {
+    console.error("JWT Verification Error:", error); 
     res.status(401).end("Invalid token");
   }
 };
