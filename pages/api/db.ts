@@ -9,7 +9,7 @@ const connectionOptions = {
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  port: Number(process.env.DB_PORT),
+  // port: Number(process.env.DB_PORT),
   // host: "localhost",
   // user: "root",
   // password: "95@SeyiDami",
@@ -114,6 +114,6 @@ export const db = (tableName: string) => {
   return {
     getOne,
     create,
-    getByEmail
+    getByEmail,
   };
 };
