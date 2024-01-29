@@ -5,6 +5,7 @@ import { Parent } from "@/lib/definitions/form-interfaces";
 
 interface ImageData {
   imageFile: any;
+  imageBase64: string;
 }
 
 interface ImageInputUploader {
@@ -18,28 +19,29 @@ export default function ImageFileUploader({
 }: ImageInputUploader) {
   const formikContext = useFormikContext<Partial<Parent>>();
 
-  const [imageData, setImageData] = useState<ImageData>({ imageFile: "" });
+  const [imageData, setImageData] = useState<ImageData>({ imageFile: "", imageBase64: ""});
 
   //React.ChangeEvent<HTMLInputElement>
 
   const handleFileChange = (e: any) => {
     const file = e.currentTarget.files[0];
-    setImageData({ imageFile: file  });
+    
     formikContext.setFieldValue(id, file);
-    // if (file) {
-    //   const reader = new FileReader();
-    //   reader.readAsDataURL(file);
-    //   reader.onload = () => {
-    //     setImageData({ base64String: reader.result as string });
-    //     // formikContext.setFieldValue(id, reader.result as string);
-    //     // console.log("file", file);
-    //   };
-    //   setImageData({ base64String: reader.result as string });
-    //   formikContext.setFieldValue(id, file);
-    // } else {
-    //   setImageData({ base64String: "" });
-    //   // setErrorMessage("Please upload an image");
-    // }
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        setImageData({ imageFile: file, imageBase64: "" });
+        setImageData({ base64String: reader.result as string });
+        // formikContext.setFieldValue(id, reader.result as string);
+        // console.log("file", file);
+      };
+      setImageData({ base64String: reader.result as string });
+      formikContext.setFieldValue(id, file);
+    } else {
+      setImageData({ base64String: "" });
+      // setErrorMessage("Please upload an image");
+    }
   };
 
   useEffect(() => {
