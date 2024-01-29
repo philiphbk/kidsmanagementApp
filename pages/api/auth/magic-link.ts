@@ -8,15 +8,15 @@ const SECRET_KEY = "secret"; // Use a secure, unique secret key.
 
 async function sendMagicLink(email: string) {
 
-  const token = jwt.encode({ email, exp: Date.now() + 36000 }, SECRET_KEY); // Token expires in 1 hour.
+  const token = jwt.encode({ email, exp: Date.now() + 360000 }, SECRET_KEY); // Token expires in 1 hour.
   const link = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback?token=${token}`;
 
   // Configure Nodemailer
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "your-gmail@gmail.com", // Your Gmail address
-      pass: "your-gmail-password", // Your Gmail password
+      user: "philipfajorin@gmail.com", // Your Gmail address
+      pass: "erctdszgweijuxdb", // Your Gmail password
     },
   });
 

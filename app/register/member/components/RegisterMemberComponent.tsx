@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import router from "next/router";
+import axios from "axios";
 
 import {
   useFormikContext,
@@ -61,22 +63,6 @@ const RegisterMemberComponent = () => {
     "image/webp",
   ];
 
-  // const checkIfFilesAreTooBig = (file?: any): boolean => {
-  //   let valid = true;
-  //   if (file && file.size < MAX_FILE_SIZE) {
-  //     valid = false;
-  //   }
-  //   return valid;
-  // };
-
-  // const checkIfFilesAreCorrectType = (file?: any): boolean => {
-  //   let valid = true;
-  //   if (file && validFileExtensions.includes(file.type)) {
-  //     valid = false;
-  //   }
-  //   return valid;
-  // };
-
   const ParentRegistrationSchema = Yup.object()
     .shape({
       parent: Yup.object().shape({
@@ -100,26 +86,15 @@ const RegisterMemberComponent = () => {
           "Please select a means of Identification!"
         ),
         idNumber: Yup.string().required("Please enter your ID Number!"),
-        idPhoto: Yup.mixed()
-          .test("fileSize", "File Size is too large", (value: any) => {
-            if (value) {
-              console.log("value.size", value.size <= 1024 * 1024);
-              return value.size <= 1024 * 1024;
-            }
-            return true;
-          })
+        idPhoto: Yup.string()
+          // .test("fileSize", "File Size is too large", (value: any) => {
+          //   if (value) {
+          //     console.log("value.size", value.size <= 1024 * 1024);
+          //     return value.size <= 1024 * 1024;
+          //   }
+          //   return true;
+          // })
           .required(),
-        // idPhoto: Yup.mixed()
-        //   // .test(
-        //   //   "fileType",
-        //   //   "Only images are allowed",
-        //   //   (file?: any) => file && validFileExtensions.includes(file.type)
-        //   // )
-        //   .test(
-        //     "fileSize",
-        //     "Image size should not be greater than 1MB",
-        //     (file?: any) => file && file.size < MAX_FILE_SIZE
-        //   ),
       }),
     })
     .nullable();
@@ -129,23 +104,21 @@ const RegisterMemberComponent = () => {
       child: Yup.array()
         .of(
           Yup.object().shape({
-            firsName: Yup.string().required("First name is required!"),
+            firstName: Yup.string().required("Child First name is required!"),
             lastName: Yup.string().required("Last name is required!"),
             gender: Yup.string().required("Gender is required!"),
             dateOfBirth: Yup.date().required("Date of birth is required!"),
             ageGroup: Yup.string().required("Age group is required!"),
-            photograph: Yup.mixed()
-              .required("Photograph is required!")
-              .test(
-                "fileSize",
-                "Image size should be less than 1MB",
-                (value: any) => {
-                  return value && value.size <= 1000000;
-                }
-              ),
-            // .test("fileType", "Only images are allowed", (value: any) => {
-            //   return value && value.type.includes("image");
-            // }),
+
+            photograph: Yup.string()
+              .required("Photograph is required!"),
+              // .test("fileSize", "File Size is too large", (value: any) => {
+              //   if (value) {
+              //     console.log("value.size", value.size <= 1024 * 1024);
+              //     return value.size <= 1024 * 1024;
+              //   }
+              //   return true;
+              // }),
             relationshipWithChildType: Yup.string().required(
               "Type of relationship with child is required!"
             ),
@@ -198,13 +171,18 @@ const RegisterMemberComponent = () => {
             churchBranchInLocation: Yup.string().required(
               "Please select the branch in the location selected!"
             ),
-            photograph: Yup.mixed().test(
-              "fileSize",
-              "Image size should be less than 1MB",
-              (value: any) => {
-                return value && value.size <= 1000000;
-              }
-            ),
+            photograph: Yup.string().required()
+            
+            // .test(
+            //   "fileSize",
+            //   "File Size is too large",
+            //   (value: any) => {
+            //     if (value) {
+            //       return value.size <= 1024 * 1024;
+            //     }
+            //     return true;
+            //   }
+            // ),
             // .test("fileType", "Only images are allowed", (value: any) => {
             //   return value && value.type.includes("image");
             // }),
@@ -252,7 +230,6 @@ const RegisterMemberComponent = () => {
     values: RegistrationFormValues,
     actions: FormikHelpers<RegistrationFormValues>
   ) => {
-    alert("ok");
     if (step < totalSteps) {
       console.log("values", values);
       console.log("is clicked!");
@@ -266,27 +243,22 @@ const RegisterMemberComponent = () => {
       console.log("is submitting!", values);
 
       try {
-        const response = await fetch("/api/registration", {
-          method: "POST",
-          body: JSON.stringify(values),
+        const response = await axios.post("/api/registration", values, {
           headers: {
             "Content-Type": "application/json",
           },
         });
 
-        if (response.ok) {
-          const data = await response.json();
-          console.log(data, "Registration form submitted!");
+        console.log(response.data, "Registration form submitted!");
 
-          setStep(1);
-          actions.resetForm();
-          setRegistrationSuccessful(true);
-        }
+        setStep(1);
+        actions.resetForm();
+        setRegistrationSuccessful(true);
+        router.push("/success");
       } catch (err) {
-        console.log(err);
+        setRegistrationSuccessful(false);
       } finally {
         actions.setSubmitting(false);
-        setRegistrationSuccessful(false);
       }
     }
   };
@@ -297,11 +269,9 @@ const RegisterMemberComponent = () => {
     } else if (step === 2) {
       setCurrentTitle("Child’s Information");
     } else {
-      setCurrentTitle("Caretaker Information");
+      setCurrentTitle("Caregiver Information");
     }
   }, [step]);
-
-  console.log("step", step);
 
   return (
     <>
@@ -320,7 +290,6 @@ const RegisterMemberComponent = () => {
 
             <main className="form_container flex flex-col items-center w-full h-full">
               <Formik<RegistrationFormValues>
-
                 initialValues={{
                   parent: {
                     firstName: "",
@@ -328,7 +297,7 @@ const RegisterMemberComponent = () => {
                     email: "",
                     gender: Gender.male,
                     roleInChurch: "",
-                    departmentInChurch: '',
+                    departmentInChurch: "",
                     phoneNumberPrimary: "",
                     phoneNumberSecondary: "",
                     idName: "",

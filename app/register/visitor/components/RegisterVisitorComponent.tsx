@@ -13,10 +13,6 @@ import * as Yup from "yup";
 
 import { Visitor } from "@/lib/definitions/form-interfaces";
 
-// import PreviewImage from "../components/PreviewImage";
-// import ImageUpload from "../components/ImageUpload";
-// import ImageUploader from "../components/ImageUploader";
-
 import HodLogoOnly from "@/app/register/components/HodLogo";
 import FormHeader from "@/app/register/components/FormHeader";
 import PersonalInformation from "@/app/register/visitor/components/InformationPersonal";

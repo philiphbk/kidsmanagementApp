@@ -1,5 +1,5 @@
 const config = {
-  SECRET_KEY: 'secret'
+  SECRET_KEY: 'wowthisisabadsecret12345'
 }
 
 export default config

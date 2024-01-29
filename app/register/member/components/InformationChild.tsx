@@ -16,23 +16,14 @@ import {
 } from "@/lib/data/dummy-data";
 import { Child } from "@/lib/definitions/form-interfaces";
 
-import ImageUploader from "../../components/ImageUploader";
 import ImageFileUploader from "../../components/ImageFileUploader";
 
-// interface PropsInterface {
-//     errors: FormikErrors<RegistrationFormValues>;
-//     touched: FormikTouched<RegistrationFormValues>;
-// }
-
-// interface ChildProps extends Child, PropsInterface { }
-
 const ChildComponent = ({ index }: { index: number }) => {
-  const { setFieldValue } = useFormikContext<Child>();
-
+  const { setFieldValue, values, errors, touched } = useFormikContext<Child>();
   const [currentType, setCurrentType] = useState("parent");
   const [otherType, setOtherType] = useState({
     status: false,
-    value: ""
+    value: "",
   });
 
   const handleRelationshipChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -54,7 +45,6 @@ const ChildComponent = ({ index }: { index: number }) => {
         setFieldValue(`child[${index}].relationshipWithChild`, value);
       }
     }
-
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -66,11 +56,6 @@ const ChildComponent = ({ index }: { index: number }) => {
     (relationship) => relationship.type === currentType
   );
 
-  // useEffect(() => {
-  //   setFieldValue(`child[${index}].relationshipWithChild`, otherType?.value);
-  // }, [index, otherType?.value, setFieldValue])
-
-
   return (
     <div className="personal_info">
       {/* full name */}
@@ -78,19 +63,17 @@ const ChildComponent = ({ index }: { index: number }) => {
         <div className="input_group">
           <label htmlFor={`child[${index}].firstName`}>First Name</label>
           <Field
-            // name="child.firstName"
             name={`child[${index}].firstName`}
             id={`child[${index}].firstName`}
             type="text"
+            onChange={(e: any) => {
+              setFieldValue(`child[${index}].firstName`, e.target.value);
+            }}
             className="hod_input"
             aria-placeholder="Enter first name"
             aria-label="First Name"
           />
           <ErrorMessage name={`child[${index}].firstName`} />
-          {/* {errors?.child?.firstName
-                        && touched?.child?.firstName ? (
-                        <div>{errors?.child?.firstName}</div>
-                    ) : null} */}
         </div>
 
         <div className="input_group">

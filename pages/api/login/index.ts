@@ -16,6 +16,7 @@ export default async function handler(
       try {
         const { email } = body;
 
+        console.log(email);
         const [rows] = await connection.execute("SELECT * FROM user WHERE email = ?", [email]);
 
         if (!rows) {
