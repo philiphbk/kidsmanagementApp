@@ -13,7 +13,6 @@ import {
   meansOfId,
   roleInChurchData,
 } from "@/lib/data/dummy-data";
-import ImageUploader from "../../components/ImageUploader";
 
 import Select, { SingleValue } from "react-select";
 

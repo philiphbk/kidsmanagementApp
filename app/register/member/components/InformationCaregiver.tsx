@@ -19,7 +19,6 @@ import {
   roleInChurchData,
 } from "@/lib/data/dummy-data";
 
-import ImageUploader from "../../components/ImageUploader";
 
 import {
   Department,
