@@ -27,10 +27,10 @@ export default function ImageFileUploader({
   const handleFileChange = (e: any) => {
     const file = e.currentTarget.files[0];
 
-    if (file.size <= 1024 * 1024 == false) {
-      alert("File Size is too large");
-      return;
-    }
+    // if (file.size <= 1024 * 1024 == false) {
+    //   alert("File Size is too large");
+    //   return;
+    // }
 
     if (file) {
       const reader = new FileReader();
