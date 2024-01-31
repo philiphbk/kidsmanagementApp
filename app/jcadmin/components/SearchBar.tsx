@@ -1,4 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent, KeyboardEvent } from "react";
+
+function debounce<T extends any[]>(
+  func: (...args: T) => void,
+  wait: number
+): (...args: T) => void {
+  let timeout: ReturnType<typeof setTimeout>;
+
+  return function executedFunction(...args: T) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
 
 interface SearchBarProps {
   onSearch: (searchTerm: string, searchType: string) => void;
@@ -7,28 +24,48 @@ interface SearchBarProps {
 export default function SearchBar({ onSearch }: SearchBarProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchType, setSearchType] = useState("child");
+  const [isTyping, setIsTyping] = useState(false);
+
+  const debouncedSearch = debounce(() => onSearch(searchTerm, searchType), 500);
 
   useEffect(() => {
-    // Implement your automatic search logic here
+    if (searchTerm) {
+      setIsTyping(true);
+      debouncedSearch();
+    } else {
+      setIsTyping(false);
+    }
     const timeoutId = setTimeout(() => {
       onSearch(searchTerm, searchType);
-    }, 500); // Adjust the delay as needed
-
-    // Cleanup the previous timer when the component re-renders
+    }, 500);
     return () => clearTimeout(timeoutId);
-  }, [searchTerm, searchType, onSearch]);
+  }, [debouncedSearch, onSearch, searchTerm, searchType]);
 
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSearch = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      onSearch(searchTerm, searchType);
+    }
+  };
 
   return (
     <div className="">
       <input
         className=" border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none shadow-md"
         type="text"
-        placeholder="Enter search term"
+        placeholder={
+          isTyping
+            ? "Press enter to view all results."
+            : "Search for parents, child or caregivers."
+        }
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onKeyDown={handleSearch}
+        onChange={handleInputChange}
       />
-      
+
       <select
         className=" border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none shadow-md"
         value={searchType}
