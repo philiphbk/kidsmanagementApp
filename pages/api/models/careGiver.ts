@@ -14,10 +14,10 @@ const buildCareGiver = () => {
       phoneNumberSecondary,
       relationshipWithChild,
       relationshipWithChildType,
-      relationshipWithParent,
-      relationshipWithParentType,
-      churchBranchInLocation,
-      churchLocation,
+      caregiverRelationshipTypeWithParent,
+      caregiverRelationshipWithParentData,
+      // churchBranchInLocation,
+      // churchLocation,
       photograph,
       type,
     } = careGiver;
@@ -54,15 +54,15 @@ const buildCareGiver = () => {
     if (!relationshipWithChildType) {
       throw new Error("CareGiver must have a relationship with child type.");
     }
-    if (!relationshipWithParent) {
+    if (!caregiverRelationshipTypeWithParent) {
       throw new Error("CareGiver must have a relationship with parent.");
     }
-    if (!relationshipWithParentType) {
+    if (!caregiverRelationshipWithParentData) {
       throw new Error("CareGiver must have a relationship with parent type.");
     }
-    if (!churchBranchInLocation) {
-      throw new Error("CareGiver must have a church branch in location.");
-    }
+    // if (!churchBranchInLocation) {
+    //   throw new Error("CareGiver must have a church branch in location.");
+    // }
 
     return Object.freeze({
       getCareGiverData: () => ({
@@ -76,10 +76,10 @@ const buildCareGiver = () => {
         phoneNumberSecondary,
         relationshipWithChild,
         relationshipWithChildType,
-        relationshipWithParent,
-        relationshipWithParentType,
-        churchBranchInLocation,
-        churchLocation,
+        caregiverRelationshipTypeWithParent,
+        caregiverRelationshipWithParentData,
+        // churchBranchInLocation,
+        // churchLocation,
         photograph,
         type,
       }),

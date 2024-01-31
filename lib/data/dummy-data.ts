@@ -7,38 +7,38 @@ export const newChildTitle = [
 export const genderData = [
   {
     id: "male",
-    value: "male"
+    value: "Male"
   },
   {
     id: "female",
-    value: "female"
+    value: "Female"
   },
 ]
 
 export const roleInChurchData = [
   {
     id: "pastor",
-    value: "pastor"
+    value: "Pastor"
   },
   {
     id: "director",
-    value: "director"
+    value: "Director"
   },
   {
     id: "hod",
-    value: "hod"
+    value: "HOD"
   },
   {
     id: "asst_hod",
-    value: "assistant hod"
+    value: "Assistant HOD"
   },
   {
     id: "member",
-    value: "member"
+    value: "Member"
   },
   {
     id: "visitor",
-    value: "visitor"
+    value: "Visitor"
   },
 ]
 
@@ -176,15 +176,15 @@ export const departmentInChurchData = [
 export const meansOfId = [
   {
     id: "voters",
-    value: "voter's card",
+    value: "Voter's card",
   },
   {
     id: "nin",
-    value: "nin",
+    value: "NIN",
   },
   {
     id: "drivers",
-    value: "driver's license",
+    value: "Driver's license",
   },
 ];
 
@@ -219,6 +219,67 @@ export const relationshipTypeData = [
   {
     id: "guardian",
     type: "Guardian",
+  },
+]
+
+export const caregiverRelationshipTypeWithParent = [
+  {
+    id: "spouse",
+    type: "Spouse",
+  },
+  {
+    id: "relative & friend",
+    type: "Relative & Friend",
+  },
+]
+
+
+export const caregiverRelationshipWithParentData = [
+  {
+    type: "spouse",
+    relationship: [
+      {
+        id: "husband",
+        value: "Husband"
+      },
+      {
+        id: "wife",
+        value: "Wife"
+      },
+    ]
+  },
+  {
+    type: "relative & friend",
+    relationship: [
+      {
+        id: "brother",
+        value: "Brother"
+      },
+      {
+        id: "sister",
+        value: "Sister"
+      },
+      {
+        id: "uncle",
+        value: "Uncle"
+      },
+      {
+        id: "aunt",
+        value: "Aunt"
+      },
+      {
+        id: "grandDad",
+        value: "Grand Dad"
+      },
+      {
+        id: "grandMom",
+        value: "Grand Mom"
+      },
+      {
+        id: "friend",
+        value: "Friend"
+      },
+    ]
   },
 ]
 
@@ -288,7 +349,7 @@ export const locationTypeData = [
 
 export const branchAndCenterData = [
   {
-    locationId: "lagos",
+    locationId: "Lagos",
     branches: [
       {
         id: "ikeja",
@@ -301,7 +362,7 @@ export const branchAndCenterData = [
     ]
   },
   {
-    locationId: "ogun",
+    locationId: "Ogun",
     branches: [
       {
         id: "arepo",
@@ -310,7 +371,7 @@ export const branchAndCenterData = [
     ]
   },
   {
-    locationId: "united_kingdom",
+    locationId: "United_kingdom",
     branches: [
       {
         id: "manchester",

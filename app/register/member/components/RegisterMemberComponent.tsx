@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import router from "next/router";
 import axios from "axios";
 
 import {
@@ -31,8 +30,10 @@ import ChildComponent from "./InformationChild";
 import CaregiverComponent from "./InformationCaregiver";
 import { BsPlusCircle } from "react-icons/bs";
 import NewChildInstanceTitle from "../../components/NewChildInstanceTitle";
+import { useRouter } from "next/navigation";
 
 const RegisterMemberComponent = () => {
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const totalSteps = 3;
   const [currentTitle, setCurrentTitle] = useState("Personal Information");
@@ -48,9 +49,6 @@ const RegisterMemberComponent = () => {
       setStep(step - 1);
     }
   };
-
-  const [registrationSuccessful, setRegistrationSuccessful] =
-    useState<boolean>(false);
 
   const MAX_FILE_SIZE = 1000000; // 1MB
   const validFileExtensions = [
@@ -94,7 +92,7 @@ const RegisterMemberComponent = () => {
           //   }
           //   return true;
           // })
-          .required(),
+          .required("Please upload a photo"),
       }),
     })
     .nullable();
@@ -110,15 +108,14 @@ const RegisterMemberComponent = () => {
             dateOfBirth: Yup.date().required("Date of birth is required!"),
             ageGroup: Yup.string().required("Age group is required!"),
 
-            photograph: Yup.string()
-              .required("Photograph is required!"),
-              // .test("fileSize", "File Size is too large", (value: any) => {
-              //   if (value) {
-              //     console.log("value.size", value.size <= 1024 * 1024);
-              //     return value.size <= 1024 * 1024;
-              //   }
-              //   return true;
-              // }),
+            photograph: Yup.string().required("Photograph is required!"),
+            // .test("fileSize", "File Size is too large", (value: any) => {
+            //   if (value) {
+            //     console.log("value.size", value.size <= 1024 * 1024);
+            //     return value.size <= 1024 * 1024;
+            //   }
+            //   return true;
+            // }),
             relationshipWithChildType: Yup.string().required(
               "Type of relationship with child is required!"
             ),
@@ -159,20 +156,20 @@ const RegisterMemberComponent = () => {
             relationshipWithChild: Yup.string().required(
               "Relationship with child is required!"
             ),
-            relationshipWithParentType: Yup.string().required(
+            caregiverRelationshipTypeWithParent: Yup.string().required(
               "Type of relationship with parent is required!"
             ),
-            relationshipWithParent: Yup.string().required(
+            caregiverRelationshipWithParentData: Yup.string().required(
               "Relationship with parent is required!"
             ),
-            churchLocation: Yup.string().required(
-              "Please select church location!"
-            ),
-            churchBranchInLocation: Yup.string().required(
-              "Please select the branch in the location selected!"
-            ),
-            photograph: Yup.string().required()
-            
+            // churchLocation: Yup.string().required(
+            //   "Please select church location!"
+            // ),
+            // churchBranchInLocation: Yup.string().required(
+            //   "Please select the branch in the location selected!"
+            // ),
+            photograph: Yup.string().required("Please upload a photo"),
+
             // .test(
             //   "fileSize",
             //   "File Size is too large",
@@ -215,12 +212,12 @@ const RegisterMemberComponent = () => {
       departmentInChurch: "",
       phoneNumberPrimary: "",
       phoneNumberSecondary: "",
-      relationshipWithChildType: "",
-      relationshipWithChild: "",
-      relationshipWithParentType: "",
-      relationshipWithParent: "",
-      churchLocation: "",
-      churchBranchInLocation: "",
+      relationshipWithChildType: "parent",
+      relationshipWithChild: "mother",
+      caregiverRelationshipTypeWithParent: "",
+      caregiverRelationshipWithParentData: "",
+      // churchLocation: "",
+      // churchBranchInLocation: "",
       photograph: "",
       type: CareGiverType.grandDad,
     },
@@ -253,10 +250,9 @@ const RegisterMemberComponent = () => {
 
         setStep(1);
         actions.resetForm();
-        setRegistrationSuccessful(true);
-        router.push("/success");
+        router.push("/register/success");
       } catch (err) {
-        setRegistrationSuccessful(false);
+        console.log(err);
       } finally {
         actions.setSubmitting(false);
       }
@@ -274,199 +270,188 @@ const RegisterMemberComponent = () => {
   }, [step]);
 
   return (
-    <>
-      {registrationSuccessful ? (
-        <>
-          <p>Registration is successful</p>
-          {/* {alert("Registration is successful")} */}
-        </>
-      ) : (
-        <>
-          <div className="registration_container">
-            <div className="flex flex-col gap-6 items-center">
-              <HodLogoOnly />
-              <h1 className="platform_title">Junior Church Monitor</h1>
-            </div>
+    <div className="registration_container">
+      <div className="flex flex-col gap-6 items-center">
+        <HodLogoOnly />
+        <h1 className="platform_title">Junior Church Monitor</h1>
+      </div>
 
-            <main className="form_container flex flex-col items-center w-full h-full">
-              <Formik<RegistrationFormValues>
-                initialValues={{
-                  parent: {
-                    firstName: "",
-                    lastName: "",
-                    email: "",
-                    gender: Gender.male,
-                    roleInChurch: "",
-                    departmentInChurch: "",
-                    phoneNumberPrimary: "",
-                    phoneNumberSecondary: "",
-                    idName: "",
-                    idNumber: "",
-                    idPhoto: "",
-                    type: ParentType.biological,
-                  },
-                  child: [
-                    {
-                      firstName: "",
-                      lastName: "",
-                      gender: "",
-                      dateOfBirth: new Date(),
-                      ageGroup: "",
-                      photograph: "", // Image data for the photograph
-                      relationshipWithChildType: "parent",
-                      relationshipWithChild: "mother",
-                      parent: [""],
-                      caregiver: [""],
-                      specialNeeds: "",
-                    },
-                  ],
-                  caregiver: [
-                    {
-                      firstName: "",
-                      lastName: "",
-                      email: "",
-                      gender: "",
-                      roleInChurch: "",
-                      departmentInChurch: "",
-                      phoneNumberPrimary: "",
-                      phoneNumberSecondary: "",
-                      relationshipWithChildType: "",
-                      relationshipWithChild: "",
-                      relationshipWithParentType: "",
-                      relationshipWithParent: "",
-                      churchLocation: "",
-                      churchBranchInLocation: "",
-                      photograph: "",
-                      type: CareGiverType.grandDad, // Compulsory if relationship with parent is 'Others'
-                    },
-                  ],
-                }}
-                validationSchema={
-                  step == 1
-                    ? ParentRegistrationSchema
-                    : step == 2
-                    ? ChildRegistrationSchema
-                    : CareGiverRegistrationSchema
-                }
-                // enableReinitialize={true}
-                onSubmit={handleSubmit}
-              >
-                {({ values, errors, touched, isSubmitting }) => (
-                  <Form className="form">
-                    <div className="steps mb-2 w-16">
-                      Step {step}/{totalSteps}
-                    </div>
-                    <FormHeader title={currentTitle} />
-                    <hr className="text-hod-text-gray2 mt-6 mb-10" />
+      <main className="form_container flex flex-col items-center w-full h-full">
+        <Formik<RegistrationFormValues>
+          initialValues={{
+            parent: {
+              firstName: "",
+              lastName: "",
+              email: "",
+              gender: Gender.male,
+              roleInChurch: "",
+              departmentInChurch: "",
+              phoneNumberPrimary: "",
+              phoneNumberSecondary: "",
+              idName: "",
+              idNumber: "",
+              idPhoto: "",
+              type: ParentType.biological,
+            },
+            child: [
+              {
+                firstName: "",
+                lastName: "",
+                gender: "",
+                dateOfBirth: new Date(),
+                ageGroup: "",
+                photograph: "", // Image data for the photograph
+                relationshipWithChildType: "parent",
+                relationshipWithChild: "mother",
+                parent: [""],
+                caregiver: [""],
+                specialNeeds: "",
+              },
+            ],
+            caregiver: [
+              {
+                firstName: "",
+                lastName: "",
+                email: "",
+                gender: "",
+                roleInChurch: "",
+                departmentInChurch: "",
+                phoneNumberPrimary: "",
+                phoneNumberSecondary: "",
+                relationshipWithChildType: "parent",
+                relationshipWithChild: "mother",
+                caregiverRelationshipTypeWithParent: "",
+                caregiverRelationshipWithParentData: "",
+                // churchLocation: "",
+                // churchBranchInLocation: "",
+                photograph: "",
+                type: CareGiverType.grandDad, // Compulsory if relationship with parent is 'Others'
+              },
+            ],
+          }}
+          validationSchema={
+            step == 1
+              ? ParentRegistrationSchema
+              : step == 2
+              ? ChildRegistrationSchema
+              : CareGiverRegistrationSchema
+          }
+          // enableReinitialize={true}
+          onSubmit={handleSubmit}
+        >
+          {({ values, errors, touched, isSubmitting }) => (
+            <Form className="form">
+              <div className="steps mb-2 w-16">
+                Step {step}/{totalSteps}
+              </div>
+              <FormHeader title={currentTitle} />
+              <hr className="text-hod-text-gray2 mt-6 mb-10" />
 
-                    {step === 1 && (
+              {step === 1 && (
+                <>
+                  <ParentComponent
+                    {...values.parent}
+                    errors={errors}
+                    touched={touched}
+                  />
+                </>
+              )}
+
+              {step === 2 && (
+                <>
+                  <FieldArray
+                    name="child"
+                    render={({ push, remove }) => (
                       <>
-                        <ParentComponent
-                          {...values.parent}
-                          errors={errors}
-                          touched={touched}
-                        />
-                      </>
-                    )}
+                        {values.child &&
+                          values.child.length > 0 &&
+                          values.child.map((child, index) => (
+                            <div key={index}>
+                              <NewChildInstanceTitle
+                                index={index}
+                                remove={remove}
+                                desc="Child"
+                              />
 
-                    {step === 2 && (
-                      <>
-                        <FieldArray
-                          name="child"
-                          render={({ push, remove }) => (
-                            <>
-                              {values.child &&
-                                values.child.length > 0 &&
-                                values.child.map((child, index) => (
-                                  <div key={index}>
-                                    <NewChildInstanceTitle
-                                      index={index}
-                                      remove={remove}
-                                      desc="Child"
-                                    />
+                              <ChildComponent index={index} />
+                            </div>
+                          ))}
 
-                                    <ChildComponent index={index} />
-                                  </div>
-                                ))}
-
-                              <button
-                                type="button"
-                                className="flex gap-2 items-center text-hod-secondary text-base font-normal"
-                                onClick={() => push(newInfo.child)}
-                              >
-                                <BsPlusCircle className="text-hod-secondary" />{" "}
-                                Include another child
-                              </button>
-                            </>
-                          )}
-                        />
-                      </>
-                    )}
-
-                    {step === 3 && (
-                      <>
-                        <FieldArray
-                          name="caregiver"
-                          render={({ push, remove }) => (
-                            <>
-                              {values.caregiver &&
-                                values.caregiver.length > 0 &&
-                                values.caregiver.map((caregiver, index) => (
-                                  <div key={index}>
-                                    <NewChildInstanceTitle
-                                      index={index}
-                                      remove={remove}
-                                      desc="Caregiver"
-                                    />
-
-                                    <CaregiverComponent index={index} />
-                                  </div>
-                                ))}
-
-                              <button
-                                type="button"
-                                className="flex gap-2 items-center text-hod-secondary text-base font-normal"
-                                onClick={() => push(newInfo.caregiver)}
-                              >
-                                <BsPlusCircle className="text-hod-secondary" />{" "}
-                                Include new caregiver
-                              </button>
-                            </>
-                          )}
-                        />
-                      </>
-                    )}
-
-                    <div className="form_button_container">
-                      {step > 1 && (
                         <button
                           type="button"
-                          className="hod_button hod_button_secondary"
-                          onClick={previousStep}
+                          className="flex gap-2 items-center text-hod-secondary text-base font-normal"
+                          onClick={() => push(newInfo.child)}
                         >
-                          Previous
+                          <BsPlusCircle className="text-hod-secondary" />{" "}
+                          Include another child
                         </button>
-                      )}
-                      <button
-                        type="submit"
-                        className="hod_button hod_button_primary"
-                        disabled={isSubmitting}
-                      >
-                        {isSubmitting
-                          ? "Submitting..."
-                          : step < totalSteps
-                          ? "Next"
-                          : "Submit"}
-                      </button>
-                    </div>
-                  </Form>
+                      </>
+                    )}
+                  />
+                </>
+              )}
+
+              {step === 3 && (
+                <>
+                  <FieldArray
+                    name="caregiver"
+                    render={({ push, remove }) => (
+                      <>
+                        {values.caregiver &&
+                          values.caregiver.length > 0 &&
+                          values.caregiver.map((caregiver, index) => (
+                            <div key={index}>
+                              <NewChildInstanceTitle
+                                index={index}
+                                remove={remove}
+                                desc="Caregiver"
+                              />
+
+                              <CaregiverComponent index={index} />
+                            </div>
+                          ))}
+
+                        <button
+                          type="button"
+                          className="flex gap-2 items-center text-hod-secondary text-base font-normal"
+                          onClick={() => push(newInfo.caregiver)}
+                        >
+                          <BsPlusCircle className="text-hod-secondary" />{" "}
+                          Include new caregiver
+                        </button>
+                      </>
+                    )}
+                  />
+                </>
+              )}
+
+              <div className="form_button_container">
+                {step > 1 && (
+                  <button
+                    type="button"
+                    className="hod_button hod_button_secondary"
+                    onClick={previousStep}
+                  >
+                    Previous
+                  </button>
                 )}
-              </Formik>
-            </main>
-          </div>
-        </>
-      )}
-    </>
+                <button
+                  type="submit"
+                  className="hod_button hod_button_primary"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting
+                    ? "Submitting..."
+                    : step < totalSteps
+                    ? "Next"
+                    : "Submit"}
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </main>
+    </div>
   );
 };
 

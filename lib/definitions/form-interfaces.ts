@@ -83,10 +83,10 @@ export interface Caregiver {
   phoneNumberSecondary?: string;
   relationshipWithChildType: string;
   relationshipWithChild: string;
-  relationshipWithParentType: string;
-  relationshipWithParent: string;
-  churchLocation: string;
-  churchBranchInLocation: string;
+  caregiverRelationshipTypeWithParent: string;
+  caregiverRelationshipWithParentData: string;
+  // churchLocation: string;
+  // churchBranchInLocation: string;
   photograph: string; // Compulsory if relationship with parent is 'Others'
   type: CareGiverType;
 }
