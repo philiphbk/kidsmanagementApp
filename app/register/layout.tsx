@@ -5,14 +5,12 @@ export const metadata = {
   description: 'a simple app to help parents organize and monitor pickups',
 }
 
-export default function RootLayout({
+export default function RegisterLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
+    <div>{children}</div>
   )
 }

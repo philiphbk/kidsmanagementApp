@@ -17,6 +17,8 @@ import {
   relationshipData,
   relationshipTypeData,
   roleInChurchData,
+  caregiverRelationshipTypeWithParent,
+  caregiverRelationshipWithParentData,
 } from "@/lib/data/dummy-data";
 
 import {
@@ -37,6 +39,13 @@ const CaregiverComponent = ({ index }: { index: number }) => {
   const { setFieldValue } = useFormikContext<Caregiver>();
 
   const [currentType, setCurrentType] = useState("parent");
+  const [currentCaregiverType, setCurrentCaregiverType] = useState("");
+
+  const [otherType, setOtherType] = useState({
+    status: false,
+    value: "",
+  });
+
   const [currentLocation, setCurrentLocation] = useState("lagos");
 
   const handleRelationshipChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -44,16 +53,49 @@ const CaregiverComponent = ({ index }: { index: number }) => {
 
     if (id.includes("relationshipWithChildType")) {
       setCurrentType(value);
+      setOtherType({ ...otherType, status: false });
       setFieldValue(`caregiver[${index}].relationshipWithChild`, "");
+      setFieldValue(name, value);
+    }
+
+    if (id.includes("caregiverGuardian")) {
+      if (value === "other") {
+        setOtherType({ ...otherType, status: true });
+        setFieldValue(
+          `caregiver[${index}].relationshipWithChildType`,
+          "guardian"
+        );
+      } else {
+        setOtherType({ ...otherType, status: false });
+        setFieldValue(`caregiver[${index}].relationshipWithChild`, value);
+      }
+    }
+
+    if (id.includes("caregiverRelationshipTypeWithParent")) {
+      setCurrentCaregiverType(value);
+      setFieldValue(
+        `caregiver[${index}].caregiverRelationshipWithParentData`,
+        value
+      );
+      setFieldValue(name, value);
     }
 
     if (id.includes("churchLocation")) {
       setCurrentLocation(value);
       setFieldValue(`caregiver[${index}].churchBranchInLocation`, "");
     }
-
-    setFieldValue(name, value);
   };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setFieldValue(`caregiver[${index}].relationshipWithChild`, value);
+  };
+
+  const caregiverRelationshipFiltered =
+    caregiverRelationshipWithParentData?.find(
+      (CaregiverRelationship) =>
+        CaregiverRelationship.type === currentCaregiverType
+    );
 
   const relationshipDataFiltered = relationshipData?.find(
     (relationship) => relationship.type === currentType
@@ -258,59 +300,62 @@ const CaregiverComponent = ({ index }: { index: number }) => {
             Specify Relationship
           </label>
 
-          {currentType !== "other" ? (
-            <>
-              <Field
-                name={`caregiver[${index}].relationshipWithChild`}
-                id={`caregiver[${index}].relationshipWithChild`}
-                as="select"
-                className="hod_input"
-                aria-label="Specify Relationship"
-                onChange={handleRelationshipChange}
-              >
-                <option value="" disabled>
-                  choose relationship
-                </option>
+          <Field
+            name="caregiverGuardian"
+            id="caregiverGuardian"
+            as="select"
+            className="hod_input"
+            aria-label="Specify Relationship"
+            onChange={handleRelationshipChange}
+          >
+            <option value="" disabled>
+              choose relationship
+            </option>
 
-                {relationshipDataFiltered?.relationship?.map(
-                  (item: { id: string; value: string }) => (
-                    <option key={item.id} value={item.id}>
-                      {item.value}
-                    </option>
-                  )
-                )}
-              </Field>
-              <ErrorMessage
-                name={`caregiver[${index}].relationshipWithChild`}
-              />
-            </>
-          ) : (
-            <>
-              <Field
-                name={`caregiver[${index}].relationshipWithChild`}
-                id={`caregiver[${index}].relationshipWithChild`}
-                type="text"
-                className="hod_input"
-                aria-placeholder="Specify Relationship"
-                aria-label="Specify Relationship"
-              />
-              <ErrorMessage
-                name={`caregiver[${index}].relationshipWithChild`}
-              />
-            </>
-          )}
+            {relationshipDataFiltered?.relationship?.map(
+              (item: { id: string; value: string }) => (
+                <option key={item.id} value={item.id}>
+                  {item.value}
+                </option>
+              )
+            )}
+          </Field>
+          <ErrorMessage name={`caregiverGuardian`} />
         </div>
       </div>
+
+      {/* exact relationship */}
+      {otherType.status && (
+        <div className="input_group">
+          <label htmlFor="otherGuardian">
+            Please enter the exact relationship with child
+          </label>
+
+          <Field
+            name="otherGuardian"
+            id="otherGuardian"
+            type="text"
+            className="hod_input"
+            aria-placeholder="Enter relationship with child"
+            aria-label="Enter relationship with child"
+            onChange={handleInputChange}
+            defaultValue={otherType.value}
+          />
+          <ErrorMessage name="otherGuardian" />
+        </div>
+      )}
 
       {/* relationship with parent */}
       <div className="flex gap-x-6 flex-col md:flex-row">
         <div className="input_group">
-          <label htmlFor={`caregiver[${index}].relationshipWithParentType`}>
+          <label
+            htmlFor={`caregiver[${index}].caregiverRelationshipTypeWithParent`}
+          >
             Relationship with Parent
           </label>
           <Field
-            name={`caregiver[${index}].relationshipWithParentType`}
-            id={`caregiver[${index}].relationshipWithParentType`}
+            name={`caregiver[${index}].caregiverRelationshipTypeWithParent`}
+            id={`caregiver[${index}].caregiverRelationshipTypeWithParent`}
             as="select"
             className="hod_input"
             aria-label="Relationship with parent"
@@ -320,7 +365,7 @@ const CaregiverComponent = ({ index }: { index: number }) => {
               select relationship
             </option>
 
-            {relationshipTypeData?.map((relationship) => (
+            {caregiverRelationshipTypeWithParent?.map((relationship) => (
               <option key={relationship.id} value={relationship.id}>
                 {relationship.type}
               </option>
@@ -332,55 +377,38 @@ const CaregiverComponent = ({ index }: { index: number }) => {
         </div>
 
         <div className="input_group">
-          <label htmlFor={`caregiver[${index}].relationshipWithParent`}>
+          <label
+            htmlFor={`caregiver[${index}].caregiverRelationshipWithParentData`}
+          >
             Specify Relationship
           </label>
+          <Field
+            name={`caregiver[${index}].caregiverRelationshipWithParentData`}
+            id={`caregiver[${index}].caregiverRelationshipWithParentData`}
+            as="select"
+            className="hod_input"
+            aria-label="Specify Relationship"
+            onChange={handleRelationshipChange}
+          >
+            <option value="" disabled>
+              choose relationship
+            </option>
 
-          {currentType !== "other" ? (
-            <>
-              <Field
-                name={`caregiver[${index}].relationshipWithParent`}
-                id={`caregiver[${index}].relationshipWithParent`}
-                as="select"
-                className="hod_input"
-                aria-label="Specify Relationship"
-                onChange={handleRelationshipChange}
-              >
-                <option value="" disabled>
-                  choose relationship
+            {caregiverRelationshipFiltered?.relationship?.map(
+              (item: { id: string; value: string }) => (
+                <option key={item.id} value={item.id}>
+                  {item.value}
                 </option>
-
-                {relationshipDataFiltered?.relationship?.map(
-                  (item: { id: string; value: string }) => (
-                    <option key={item.id} value={item.id}>
-                      {item.value}
-                    </option>
-                  )
-                )}
-              </Field>
-              <ErrorMessage
-                name={`caregiver[${index}].relationshipWithParent`}
-              />
-            </>
-          ) : (
-            <>
-              <Field
-                name={`caregiver[${index}].relationshipWithParent`}
-                id={`caregiver[${index}].relationshipWithParent`}
-                type="text"
-                className="hod_input"
-                aria-placeholder="Specify Relationship"
-                aria-label="Specify Relationship"
-              />
-              <ErrorMessage
-                name={`caregiver[${index}].relationshipWithParent`}
-              />
-            </>
-          )}
+              )
+            )}
+          </Field>
+          <ErrorMessage
+            name={`caregiver[${index}].caregiverRelationshipWithParentData`}
+          />
         </div>
       </div>
 
-      {/* church location and branch */}
+      {/* church location and branch
       <div className="flex gap-x-6 flex-col md:flex-row">
         <div className="input_group">
           <label htmlFor={`caregiver[${index}].churchLocation`}>
@@ -432,7 +460,7 @@ const CaregiverComponent = ({ index }: { index: number }) => {
           </Field>
           <ErrorMessage name={`caregiver[${index}].churchBranchInLocation`} />
         </div>
-      </div>
+      </div> */}
 
       <div className="input_group">
         <label htmlFor={`caregiver[${index}].photograph`}>Upload Photo</label>

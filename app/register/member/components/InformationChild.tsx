@@ -131,7 +131,7 @@ const ChildComponent = ({ index }: { index: number }) => {
       {/* photograph */}
       <div className="input_group">
         <label htmlFor={`child[${index}].photograph`}>
-          Upload a clear photograph
+          Upload a clear photograph (MaxSize: 1MB)
         </label>
         <ImageFileUploader
           id={`child[${index}].photograph`}
@@ -194,7 +194,7 @@ const ChildComponent = ({ index }: { index: number }) => {
           <label htmlFor={`child[${index}].relationshipWithChild`}>
             Specify Relationship
           </label>
-
+    
           <Field
             name="childGuardian"
             id="childGuardian"
