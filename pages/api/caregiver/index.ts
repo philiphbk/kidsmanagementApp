@@ -11,7 +11,7 @@ export default async function handler(
   switch (method) {
     case "GET":
       try {
-        const [rows] = await connection.execute("SELECT * FROM caregiver", []);
+        const [rows] = await connection.execute("SELECT * FROM careGiver", []);
         connection.release();
         res.status(200).json(rows);
       } catch (error: any) {
@@ -22,7 +22,7 @@ export default async function handler(
       break;
     case "POST":
       try {
-        await connection.query("INSERT INTO caregiver SET ?", body);
+        await connection.query("INSERT INTO careGiver SET ?", body);
         res.status(201).end();
       } catch (error: any) {
         console.log(error);
@@ -32,7 +32,7 @@ export default async function handler(
     case "PUT":
       try {
         const { id, ...updateData } = body; // Assuming 'id' is sent in the request body
-        await connection.query("UPDATE caregiver SET ? WHERE id = ?", [
+        await connection.query("UPDATE careGiver SET ? WHERE id = ?", [
           updateData,
           id,
         ]);
@@ -44,7 +44,7 @@ export default async function handler(
     case "DELETE":
       try {
         const { id } = body; // Assuming 'id' is sent in the request body
-        await connection.query("DELETE FROM caregiver WHERE id = ?", [id]);
+        await connection.query("DELETE FROM careGiver WHERE id = ?", [id]);
         res.status(200).end();
       } catch (error: any) {
         res.status(500).json({ error });
