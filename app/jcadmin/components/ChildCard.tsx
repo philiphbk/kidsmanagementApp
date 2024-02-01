@@ -4,20 +4,29 @@ import React from "react";
 import Image from "next/image";
 
 interface ChildCardProps {
-  name: string;
-  age: number;
+  id: string;
+  firstName: string;
+  lastName: string;
+  ageGroup: number;
+  dateOfBirth: string;
+  parent: string;
   gender: string;
+  photograph: string;
+  specialNeeds: string;
   status: string;
-  imageUrl: string;
-  onClick: () => void; // Function to handle click event
+  onClick: () => void;
 }
 
 const ChildCard: React.FC<ChildCardProps> = ({
-  name,
-  age,
+  firstName,
+  lastName,
   gender,
+  ageGroup,
+  dateOfBirth,
+  parent,
+  photograph,
+  specialNeeds,
   status,
-  imageUrl,
   onClick,
 }) => {
   return (
@@ -28,15 +37,20 @@ const ChildCard: React.FC<ChildCardProps> = ({
       <div className="flex items-center space-x-4">
         <div className="w-16 h-16 relative">
           <Image
-            src={imageUrl}
-            alt={name}
+            src={photograph}
+            alt={firstName}
             layout="fill"
             className="rounded-full"
           />
         </div>
         <div>
-          <h3 className="text-lg font-semibold">{name}</h3>
-          <p>{`${age} yrs, ${gender}`}</p>
+          <h3 className="text-lg font-semibold">
+            {firstName}&nbsp; {lastName}
+          </h3>
+          <p>{`${ageGroup} yrs, ${gender}`}</p>
+          <p>{`DOB: ${dateOfBirth}`}</p>
+          <p>{`Parent: ${parent}`}</p>
+          <p>{`Special Needs: ${specialNeeds}`}</p>
           <span
             className={`text-sm ${
               status === "Checked In" ? "text-green-500" : "text-red-500"

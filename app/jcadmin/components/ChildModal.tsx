@@ -1,14 +1,20 @@
 // components/ChildModal.tsx
 
+import Image from "next/image";
 import React from "react";
 
 interface ChildModalProps {
   child: {
-    name: string;
-    age: number;
+    firstName: string;
+    lastName: string;
+    ageGroup: number;
     gender: string;
-    imageUrl: string;
-    caretakers: Array<{ name: string; relation: string }>;
+    photograph: string;
+    caretakers: Array<{
+      firstName: string;
+      lastName: string;
+      relation: string;
+    }>;
   };
   onClose: () => void; // Function to close the modal
 }
@@ -21,6 +27,23 @@ const ChildModal: React.FC<ChildModalProps> = ({ child, onClose }) => {
           ×
         </button>
         {/* Other modal content */}
+        <div className="flex items-center space-x-4">
+          <div className="w-16 h-16 relative">
+            <Image
+              src={child.photograph}
+              alt={child.firstName}
+              width={64}
+              height={64}
+              className="rounded-full"
+            />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold">
+              {child.firstName} {child.lastName}
+            </h3>
+            <p>{`${child.ageGroup} yrs`}</p>
+          </div>
+        </div>
       </div>
     </div>
   );

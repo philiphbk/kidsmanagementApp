@@ -2,8 +2,9 @@
 import React from "react";
 
 interface ChildDetailsModalProps {
-  name: string;
-  age: number;
+  firstName: string;
+  lastName: string;
+  ageGroup: number;
   gender: string;
   status: string;
   onClose: () => void;
@@ -11,8 +12,9 @@ interface ChildDetailsModalProps {
 }
 
 const ChildDetailsModal: React.FC<ChildDetailsModalProps> = ({
-  name,
-  age,
+  firstName,
+  lastName,
+  ageGroup,
   gender,
   status,
   onClose,
@@ -24,9 +26,12 @@ const ChildDetailsModal: React.FC<ChildDetailsModalProps> = ({
           X
         </button>
         <div className="clear-both">
-          <h1 className="text-2xl font-bold">{name}</h1>
-          <p>{`${age} yrs, ${gender}`}</p>
+          <h1 className="text-2xl font-bold">
+            {firstName} &nbsp; {lastName}
+          </h1>
+          <p>{`${ageGroup} yrs, ${gender}`}</p>
           <p>{status}</p>
+
           {/* ... Rest of the details */}
         </div>
       </div>
