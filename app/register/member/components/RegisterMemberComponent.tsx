@@ -227,6 +227,7 @@ const RegisterMemberComponent = () => {
     values: RegistrationFormValues,
     actions: FormikHelpers<RegistrationFormValues>
   ) => {
+    console.log("values", values);
     if (step < totalSteps) {
       console.log("values", values);
       console.log("is clicked!");
@@ -238,16 +239,18 @@ const RegisterMemberComponent = () => {
 
       actions.setSubmitting(true);
       console.log("is submitting!", values);
-
+      
       try {
         const response = await axios.post("/api/registration", values, {
           headers: {
             "Content-Type": "application/json",
           },
+          maxContentLength: 100000000,
+          maxBodyLength: 1000000000,
         });
 
         console.log(response.data, "Registration form submitted!");
-
+        
         setStep(1);
         actions.resetForm();
         router.push("/register/success");
@@ -446,6 +449,7 @@ const RegisterMemberComponent = () => {
                     ? "Next"
                     : "Submit"}
                 </button>
+              
               </div>
             </Form>
           )}

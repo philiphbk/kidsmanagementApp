@@ -23,6 +23,7 @@ export default async function handler(
       break;
     case "POST":
       try {
+        console.log("this is body", body)
         const { parent, child, caregiver } = body;
         
 
