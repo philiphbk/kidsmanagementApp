@@ -83,16 +83,16 @@ const RegisterMemberComponent = () => {
         idName: Yup.string().required(
           "Please select a means of Identification!"
         ),
+
         idNumber: Yup.string().required("Please enter your ID Number!"),
-        idPhoto: Yup.string()
-          // .test("fileSize", "File Size is too large", (value: any) => {
-          //   if (value) {
-          //     console.log("value.size", value.size <= 1024 * 1024);
-          //     return value.size <= 1024 * 1024;
-          //   }
-          //   return true;
-          // })
-          .required("Please upload a photo"),
+        idPhoto: Yup.string().required("Please upload a photo"),
+        // .test("fileSize", "File Size is too large", (value: any) => {
+        //   if (value) {
+        //     console.log("value.size", value.size <= 1024 * 1024);
+        //     return value.size <= 1024 * 1024;
+        //   }
+        //   return true;
+        // })
       }),
     })
     .nullable();
@@ -107,15 +107,18 @@ const RegisterMemberComponent = () => {
             gender: Yup.string().required("Gender is required!"),
             dateOfBirth: Yup.date().required("Date of birth is required!"),
             ageGroup: Yup.string().required("Age group is required!"),
-
-            photograph: Yup.string().required("Photograph is required!"),
-            // .test("fileSize", "File Size is too large", (value: any) => {
-            //   if (value) {
-            //     console.log("value.size", value.size <= 1024 * 1024);
-            //     return value.size <= 1024 * 1024;
+            photograph: Yup.mixed().required("Photograph is required!"),
+            // .test(
+            //   "fileSize",
+            //   "Image size should be less than 1MB",
+            //   (value: any) => {
+            //     return value && value.size <= 1000000;
             //   }
-            //   return true;
+            // )
+            // .test("fileType", "Only images are allowed", (value: any) => {
+            //   return value && value.type.includes("image");
             // }),
+
             relationshipWithChildType: Yup.string().required(
               "Type of relationship with child is required!"
             ),
@@ -162,6 +165,7 @@ const RegisterMemberComponent = () => {
             caregiverRelationshipWithParentData: Yup.string().required(
               "Relationship with parent is required!"
             ),
+
             // churchLocation: Yup.string().required(
             //   "Please select church location!"
             // ),
