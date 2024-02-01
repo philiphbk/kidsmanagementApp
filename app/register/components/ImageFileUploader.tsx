@@ -1,87 +1,93 @@
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { useFormikContext } from "formik";
 import { Parent } from "@/lib/definitions/form-interfaces";
+import axios from "axios";
+import Image from "next/image";
 
-interface ImageData {
-  imageBase64: string;
-}
-
-interface ImageInputUploader {
+interface ImageInputUploaderProps {
   id: string;
   ariaLabel?: string;
 }
 
-export default function ImageFileUploader({
+const ImageFileUploader: React.FC<ImageInputUploaderProps> = ({
   id,
   ariaLabel,
-}: ImageInputUploader) {
+}) => {
   const formikContext = useFormikContext<Partial<Parent>>();
+  const [imageData, setImageData] = useState<string>("");
 
-  const [imageData, setImageData] = useState<ImageData>({
-    imageBase64: "",
-  });
-
-  //React.ChangeEvent<HTMLInputElement>
-
-  const handleFileChange = (e: any) => {
-    const file = e.currentTarget.files[0];
-
-    // if (file.size <= 1024 * 1024 == false) {
-    //   alert("File Size is too large");
-    //   return;
-    // }
-
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
     if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        setImageData({ imageBase64: reader.result as string });
-        formikContext.setFieldValue(id, reader.result as string);
-      };
-      formikContext.setFieldValue(id, file);
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const response = await axios.post("/api/upload", formData);
+
+        const data = response.data;
+        console.log(data && (data.paths[0] as string));
+        if (data) {
+          let newdata = data.paths[0] as string;
+          newdata = newdata.replaceAll("\\", "/");
+          setImageData(newdata);
+          formikContext.setFieldValue(id, newdata);
+        }
+      } catch (error: any) {
+        console.error("Error uploading file:", error);
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.error(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error("Error", error.message);
+        }
+      }
     } else {
-      setImageData({ imageBase64: "" });
-      // setErrorMessage("Please upload an image");
+      setImageData("");
+      // Optionally, handle no file selected case
     }
   };
 
-  useEffect(() => {
-    if (imageData?.imageBase64) {
-      console.log("imageData.imageFile", imageData.imageBase64);
-
-      formikContext.setFieldValue(id, imageData.imageBase64);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [imageData]);
+  // useEffect(() => {
+  //   if (imageData) {
+  //     formikContext.setFieldValue(id, imageData);
+  //   }
+  // }, [imageData, id, formikContext]);
 
   return (
-    <div>
+    <div className="input_group">
       <input
         name={id}
         id={id}
         type="file"
         accept=".jpg, .gif, .jfif, .png, .jpeg, .svg, .webp"
+        aria-label={ariaLabel}
+        onChange={handleFileChange}
+        aria-placeholder={ariaLabel}
         className="hod_input"
         style={{
           paddingTop: "0.875rem",
           paddingBottom: "0.875rem",
         }}
-        aria-label={ariaLabel}
-        aria-placeholder={ariaLabel}
-        onChange={handleFileChange}
-        defaultValue={imageData?.imageBase64}
       />
-      <span className="mt-3 flex">
-        {imageData?.imageBase64 && (
+      <span className="input_group__label">
+        {imageData && (
           <Image
-            src={imageData.imageBase64}
-            alt="preview"
-            width="90"
-            height="90"
+            src={`/../../..${imageData}`}
+            //src="../../../public/upload/children-bg.jpg"
+            alt="Uploaded"
+            width={90}
+            height={90}
+            style={{ width: "90px", height: "90px" }}
           />
         )}
       </span>
     </div>
   );
-}
+};
+
+export default ImageFileUploader;
