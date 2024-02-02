@@ -83,6 +83,7 @@ const ChildrenList = () => {
         ))}
         {selectedChild && (
           <ChildDetailsModal
+            id={selectedChild.id}
             firstName={selectedChild.firstName}
             lastName={selectedChild.lastName}
             ageGroup={selectedChild.ageGroup}

@@ -21,7 +21,7 @@ interface ChildModalProps {
 
 const ChildModal: React.FC<ChildModalProps> = ({ child, onClose }) => {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 w-4/5 p-7">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 w-4/5 p-3">
       <div className="bg-white p-6 rounded-lg max-w-lg w-full">
         <button className="absolute top-4 right-4 text-lg" onClick={onClose}>
           ×

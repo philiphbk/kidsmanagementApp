@@ -71,7 +71,7 @@ const childrenPickupProfiles: ChildPickUpProfile[] = [
 export default function Overview() {
   return (
     <div className=" flex flex-col items-center">
-      <div className=" p-28 ">
+      <div className=" py-5 px-6">
         <h1 className=" my-5 text-2xl flex justify-center">
           Welcome to Junior Church!
           <HiOutlineEmojiHappy className="ml-3" />
