@@ -111,9 +111,22 @@ export const db = (tableName: string) => {
     }
   };
 
+  const textSearch = async (searchTerm: string) => {
+    const connection = await connectWithRetry();
+    const sql = `
+      SELECT *
+      FROM ${tableName}
+      WHERE MATCH (${searchTerm}) AGAINST (:searchTerm IN BOOLEAN MODE)
+    `;
+
+    const [rows] = await connection.query(sql, { searchTerm });
+    return rows;
+  };
+
   return {
     getOne,
     create,
     getByEmail,
+    textSearch
   };
 };
