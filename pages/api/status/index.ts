@@ -1,7 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectWithRetry } from "../db";
-import registrationServices from "./services";
-import { Parent, Child, Caregiver } from "@/lib/definitions/form-interfaces";
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,9 +10,9 @@ export default async function handler(
   switch (method) {
     case "GET":
       try {
-        const [rows] = await connection.execute("SELECT * FROM parent", []);
+        const [rows] = await connection.execute("SELECT * FROM status", []);
         connection.release();
-        res.status(200).json({ result: rows });
+        res.status(200).json(rows);
       } catch (error: any) {
         console.log(error);
         console.log(error.error);
@@ -23,12 +21,7 @@ export default async function handler(
       break;
     case "POST":
       try {
-        console.log("this is body", body);
-        const { parent, child, caregiver } = body;
-
-        await registrationServices.parent(parent);
-        await registrationServices.child(child);
-        await registrationServices.careGiver(caregiver);
+        await connection.query("INSERT INTO status SET ?", body);
         res.status(201).end();
       } catch (error: any) {
         console.log(error);
@@ -39,7 +32,7 @@ export default async function handler(
     case "PUT":
       try {
         const { id, ...updateData } = body; // Assuming 'id' is sent in the request body
-        await connection.query("UPDATE registration SET ? WHERE id = ?", [
+        await connection.query("UPDATE status SET ? WHERE id = ?", [
           updateData,
           id,
         ]);
@@ -53,12 +46,12 @@ export default async function handler(
     case "DELETE":
       try {
         const { id } = body; // Assuming 'id' is sent in the request body
-        await connection.query("DELETE FROM registration WHERE id = ?", [id]);
+        await connection.query("DELETE FROM status WHERE id = ?", [id]);
         res.status(200).end();
       } catch (error: any) {
         console.log(error);
         console.log(error.error);
-        res.status(500).json({ error });
+        res.status(500).json({ error: "Internal Server Error" });
       }
       break;
     default:
