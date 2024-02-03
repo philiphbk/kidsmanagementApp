@@ -37,9 +37,10 @@ const ChildCard: React.FC<ChildCardProps> = ({
       <div className="flex items-center space-x-4">
         <div className="w-16 h-16 relative">
           <Image
-            src={photograph}
+            src={`${photograph}`}
             alt={firstName}
-            layout="fill"
+            width={80}
+            height={80}
             className="rounded-full"
           />
         </div>

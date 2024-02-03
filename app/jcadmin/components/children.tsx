@@ -27,29 +27,37 @@ const ChildrenList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [childrenPerPage] = useState(6);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchData = async () => {
+    try {
       const result = await axios("/api/child");
-      setChildren(result.data);
+      //setChildren(result.data);
       setDisplayedChildren(result.data); // Initially display all children
-    };
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    } // Initially display all children
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
   let value = "child";
 
   const handleSearch = (searchTerm: string, searchType: string) => {
-    const filteredChildren = children.filter((child) => {
+    const filteredChildren = displayedChildren.filter((child) => {
       const fullName = `${child.firstName} ${child.lastName}`.toLowerCase();
       return (
         fullName.includes(searchTerm.toLowerCase()) && value === searchType
       );
     });
     setDisplayedChildren(filteredChildren);
-    setCurrentPage(1); // Reset to first page after search
+    //setCurrentPage(1); // Reset to first page after search
   };
 
+  function setChildPhoto(photo: string): string {
+    console.log(photo);
+    return photo.replace("/public", "") as string;
+  }
   // Get current children for pagination
   const indexOfLastChild = currentPage * childrenPerPage;
   const indexOfFirstChild = indexOfLastChild - childrenPerPage;
@@ -74,7 +82,7 @@ const ChildrenList = () => {
             ageGroup={child.ageGroup}
             dateOfBirth={child.dateOfBirth}
             parent={child.parent}
-            photograph={child.photograph}
+            photograph={setChildPhoto(child.photograph)}
             gender={child.gender}
             status={child.status}
             specialNeeds={child.specialNeeds}
@@ -89,7 +97,9 @@ const ChildrenList = () => {
             ageGroup={selectedChild.ageGroup}
             gender={selectedChild.gender}
             status={selectedChild.status}
-            photograph={selectedChild.photograph}
+            photograph={
+              selectedChild.photograph.replace("/public", "") as string
+            }
             onClose={() => setSelectedChild(null)}
           />
         )}

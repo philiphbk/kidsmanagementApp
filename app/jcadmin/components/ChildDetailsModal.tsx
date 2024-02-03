@@ -135,7 +135,7 @@ const ChildDetailsModal: React.FC<ChildDetailsModalProps> = ({
                       {parents.map((parent) => (
                         <div
                           className=" border-2 border-gray-200 p-2 hover:bg-gray-100 cursor-pointer rounded-lg mb-2"
-                          key={parent}
+                          key={parent.id}
                         >{`${parent.firstName} ${parent.lastName}`}</div>
                       ))}
                     </div>

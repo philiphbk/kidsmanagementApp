@@ -2,13 +2,11 @@
 
 import { useState } from "react";
 import { StaticImageData } from "next/image";
-import LatestDropOffs from "../components/LatestDropOffs";
-import LatestPickUps from "../components/LatestPickUps";
-import SearchBar from "../components/SearchBar";
-import ImageSrc from "../components/ImageSrc";
+
 import ChildrenList from "../components/children";
 import { GiHighFive } from "react-icons/gi";
 import { HiOutlineEmojiHappy } from "react-icons/hi";
+// import { Image } from "next/image";
 
 type ChildDropOffProfile = {
   id: number;
@@ -77,8 +75,9 @@ export default function Overview() {
           <HiOutlineEmojiHappy className="ml-3" />
           <GiHighFive className="ml-3" />
         </h1>
-        <ChildrenList initialChildren={[]} currentPage={0} totalPages={0} />
+        <ChildrenList />
       </div>
+
       {/* <SearchBar onSearch={handleSearch} />
       <div>
         {searchTerm.map((item) => (
