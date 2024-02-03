@@ -60,6 +60,7 @@ export interface Child {
   parent: string[];
   caregiver: string[];
   specialNeeds?: string;
+  isCheckedIn: boolean;
 }
 
 export enum CareGiverType {
