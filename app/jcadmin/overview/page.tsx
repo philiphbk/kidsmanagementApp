@@ -77,7 +77,7 @@ export default function Overview() {
           <HiOutlineEmojiHappy className="ml-3" />
           <GiHighFive className="ml-3" />
         </h1>
-        <ChildrenList />
+        <ChildrenList initialChildren={[]} currentPage={0} totalPages={0} />
       </div>
       {/* <SearchBar onSearch={handleSearch} />
       <div>

@@ -4,7 +4,7 @@
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { HomeIcon, UserIcon, SettingsIcon } from "@heroicons/react/solid";
+import { HomeIcon, UserIcon } from "@heroicons/react/solid";
 
 interface ChildDetailsModalProps {
   id: string;
@@ -128,7 +128,7 @@ const ChildDetailsModal: React.FC<ChildDetailsModalProps> = ({
                     <p className=" mb-3 flex justify-center">
                       Select Parent / Caretaker
                     </p>
-                    <div className=" grid grid-rows-5 grid-flow-col gap-4 ">
+                    <div className=" grid grid-rows-6 grid-flow-col gap-4 ">
                       {parents.map((parent) => (
                         <div
                           className=" border-2 border-gray-200 p-2 hover:bg-gray-100 cursor-pointer rounded-lg mb-2"
