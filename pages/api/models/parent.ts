@@ -1,15 +1,13 @@
 import {
-  CreateParentData,
-  Gender,
-  Parent,
+  CreateParentData
 } from "@/lib/definitions/form-interfaces";
 import { db } from "../db";
 
 const buildMakeParent = () => {
   return function makeParent(parent: CreateParentData) {
-    // if (parent === undefined) {
-    //   throw new Error("Parent object is required.");
-    // }
+    if (parent === undefined) {
+      throw new Error("Parent object is required.");
+    }
     if (!parent.firstName) {
       throw new Error("Parent must have a first name.");
     }
