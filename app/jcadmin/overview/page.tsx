@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { StaticImageData } from "next/image";
-import LatestDropOffs from "../components/LatestDropOffs";
-import LatestPickUps from "../components/LatestPickUps";
-import SearchBar from "../components/SearchBar";
-import ImageSrc from "../components/ImageSrc";
+
+import ChildrenList from "../components/children";
+import { GiHighFive } from "react-icons/gi";
+import { HiOutlineEmojiHappy } from "react-icons/hi";
+// import { Image } from "next/image";
 
 type ChildDropOffProfile = {
   id: number;
@@ -65,42 +66,19 @@ const childrenPickupProfiles: ChildPickUpProfile[] = [
   // Add more child profiles as needed
 ];
 
-interface Item {
-  id: number;
-  name: string;
-  type: string;
-  // Add other properties that might be relevant for your items
-}
-
-// Mock data array
-const items: Item[] = [
-  { id: 1, name: "Child A ", type: "child" },
-  { id: 2, name: "Parent B", type: "parent" },
-  { id: 3, name: "Caregiver C", type: "caregiver" },
-  // ... other items
-];
-
 export default function Overview() {
-  const [searchTerm, setSearchTerm] = useState<Item[]>([]);
-  const handleSearch = (searchTerm: string, searchType: string) => {
-    if (searchTerm.trim() === "") {
-      setSearchTerm([]);
-    } else {
-      const results = items.filter(
-        (item) =>
-          item.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-          item.type === searchType
-      );
-      setSearchTerm(results);
-    }
-
-    console.log(`Searching for ${searchTerm} in ${searchType}`);
-  };
-
   return (
     <div className=" flex flex-col items-center">
-      <h1 className=" my-6 text-2xl">Welcome to Junior Church!</h1>
-      <SearchBar onSearch={handleSearch} />
+      <div className=" py-5 px-6">
+        <h1 className=" my-5 text-2xl flex justify-center">
+          Welcome to Junior Church!
+          <HiOutlineEmojiHappy className="ml-3" />
+          <GiHighFive className="ml-3" />
+        </h1>
+        <ChildrenList />
+      </div>
+
+      {/* <SearchBar onSearch={handleSearch} />
       <div>
         {searchTerm.map((item) => (
           <div key={item.id}>{item.name}</div>
@@ -109,7 +87,7 @@ export default function Overview() {
       <div className=" flex flex-row justify-around mt-20 gap-10">
         <LatestDropOffs childrenDropOffProfiles={childrenDropOffProfiles} />
         <LatestPickUps childrenPickUpProfiles={childrenPickupProfiles} />
-      </div>
+      </div> */}
     </div>
   );
 }
