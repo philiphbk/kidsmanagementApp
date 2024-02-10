@@ -74,6 +74,10 @@ const buildMakeChild = () => {
         specialNeeds,
       }),
 
+      checkIn: () => {
+        childInfo.isCheckedIn = true;
+      },
+
       save: async (data: Child) => {
         const parentDb = db("child");
         await parentDb.create(data);
