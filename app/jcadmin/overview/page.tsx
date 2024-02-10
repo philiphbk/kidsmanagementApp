@@ -77,17 +77,6 @@ export default function Overview() {
         </h1>
         <ChildrenList />
       </div>
-
-      {/* <SearchBar onSearch={handleSearch} />
-      <div>
-        {searchTerm.map((item) => (
-          <div key={item.id}>{item.name}</div>
-        ))}
-      </div>
-      <div className=" flex flex-row justify-around mt-20 gap-10">
-        <LatestDropOffs childrenDropOffProfiles={childrenDropOffProfiles} />
-        <LatestPickUps childrenPickUpProfiles={childrenPickupProfiles} />
-      </div> */}
     </div>
   );
 }
