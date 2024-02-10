@@ -21,6 +21,12 @@ const connectionOptions = {
   queueLimit: 0, // Adjust the timeout value as needed (in milliseconds)
 };
 
+interface TextSearchParams {
+  searchTerm: string;
+  offset: number;
+  pageSize: number;
+}
+
 export async function connectWithRetry(): Promise<PoolConnection> {
   let connection: PoolConnection | null = null;
   const maxRetries = 3; // Maximum number of retry attempts
@@ -111,9 +117,23 @@ export const db = (tableName: string) => {
     }
   };
 
+  const textSearch = async (params: TextSearchParams) => {
+    const connection = await connectWithRetry();
+    const sql = `
+      SELECT *
+      FROM ${tableName}
+      WHERE MATCH (${params.searchTerm}) AGAINST (:searchTerm IN BOOLEAN MODE)
+      LIMIT :pageSize OFFSET :offset
+    `;
+
+    const [rows] = await connection.query(sql, params);
+    return rows;
+  };
+
   return {
     getOne,
     create,
     getByEmail,
+    textSearch
   };
 };
