@@ -21,7 +21,7 @@ interface Child {
 }
 
 const ChildrenList = () => {
-  const [children, setChildren] = useState<Child[]>([]);
+  const [allChildren, setAllChildren] = useState<Child[]>([]);
   const [displayedChildren, setDisplayedChildren] = useState<Child[]>([]);
   const [selectedChild, setSelectedChild] = useState<Child | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -31,7 +31,8 @@ const ChildrenList = () => {
     try {
       const result = await axios("/api/child");
       //setChildren(result.data);
-      setDisplayedChildren(result.data); // Initially display all children
+      // setDisplayedChildren(result.data); // Initially display all children
+      setAllChildren(result.data); // Initially display all children
     } catch (error) {
       console.error("Failed to fetch data:", error);
     } // Initially display all children
@@ -44,24 +45,34 @@ const ChildrenList = () => {
   let value = "child";
 
   const handleSearch = (searchTerm: string, searchType: string) => {
-    const filteredChildren = displayedChildren.filter((child) => {
+    const filteredChildren = allChildren.filter((child) => {
       const fullName = `${child.firstName} ${child.lastName}`.toLowerCase();
       return (
         fullName.includes(searchTerm.toLowerCase()) && value === searchType
       );
     });
+    console.log(filteredChildren, "filteredChildren");
     setDisplayedChildren(filteredChildren);
-    //setCurrentPage(1); // Reset to first page after search
+    // setCurrentPage(1); // Reset to first page after search
   };
 
-  function setChildPhoto(photo: string): string {
-    console.log(photo);
-    return photo.replace("/public", "") as string;
+  function setChildPhoto(photo: string) {
+    //console.log(photo);
+    if (photo.includes("/public")) {
+      return photo.replace("/public", "") as string;
+    } else if (
+      photo.includes("https://householdofdavid.org/wp-content/uploads")
+    ) {
+      return photo.replace(
+        "https://householdofdavid.org/wp-content/uploads",
+        ""
+      ) as string;
+    }
   }
   // Get current children for pagination
   const indexOfLastChild = currentPage * childrenPerPage;
   const indexOfFirstChild = indexOfLastChild - childrenPerPage;
-  const currentChildren = displayedChildren.slice(
+  const currentChildren = allChildren.slice(
     indexOfFirstChild,
     indexOfLastChild
   );
@@ -73,7 +84,7 @@ const ChildrenList = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {currentChildren.map((child) => (
+        {displayedChildren.map((child) => (
           <ChildCard
             key={child.id}
             id={child.id}
@@ -82,7 +93,7 @@ const ChildrenList = () => {
             ageGroup={child.ageGroup}
             dateOfBirth={child.dateOfBirth}
             parent={child.parent}
-            photograph={setChildPhoto(child.photograph)}
+            photograph={setChildPhoto(child.photograph) as string}
             gender={child.gender}
             status={child.status}
             specialNeeds={child.specialNeeds}
@@ -97,15 +108,13 @@ const ChildrenList = () => {
             ageGroup={selectedChild.ageGroup}
             gender={selectedChild.gender}
             status={selectedChild.status}
-            photograph={
-              selectedChild.photograph.replace("/public", "") as string
-            }
+            photograph={setChildPhoto(selectedChild.photograph) as string}
             onClose={() => setSelectedChild(null)}
           />
         )}
       </div>
       <Pagination
-        totalItems={displayedChildren.length}
+        totalItems={allChildren.length}
         itemsPerPage={childrenPerPage}
         currentPage={currentPage}
         onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
