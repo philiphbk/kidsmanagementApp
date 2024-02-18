@@ -33,7 +33,7 @@ const ChildrenList = () => {
         `/api/child${searchTerm ? `?searchWord=${searchTerm}` : ""}`
       );
       console.log(result.data, "result.data");
-      setAllChildren(result.data);
+      setDisplayedChildren(result.data);
     } catch (error) {
       console.error("Failed to fetch data:", error);
     }
@@ -41,20 +41,18 @@ const ChildrenList = () => {
 
   useEffect(() => {
     fetchData();
-  }, [setDisplayedChildren]);
+  }, []);
 
   let value = "child";
 
-  const handleSearch = async (searchTerm: string, searchType: string) => {
-    // const filteredChildren = allChildren.filter((child) => {
-    //   const fullName = `${child.firstName} ${child.lastName}`.toLowerCase();
-    //   return (
-    //     fullName.includes(searchTerm.toLowerCase()) && value === searchType
-    //   );
-    // });
+  const handleSearch = async (searchTerm: string) => {
+    console.log(searchTerm, "searchTerm");
 
-    await fetchData(searchTerm);
-    value = searchType;
+    if (searchTerm) {
+      fetchData(searchTerm);
+    } else {
+      //fetchData();
+    }
   };
 
   function setChildPhoto(photo: string) {
@@ -81,7 +79,7 @@ const ChildrenList = () => {
   return (
     <div>
       <div className=" flex justify-center mb-7">
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={(e: any) => handleSearch(e)} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

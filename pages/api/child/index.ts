@@ -10,21 +10,26 @@ export default async function handler(
   const { searchWord } = req.query;
 
   const connection = await connectWithRetry();
+  const firstNameSearch = "%searchWord%";
+  const lastNameSearch = "%searchWord%";
+
   try {
     switch (method) {
       case "GET":
         let sqlQuery = "";
-        let queryParams = [];
+        let rows: any = [];
 
         if (searchWord) {
           sqlQuery =
-            "SELECT * FROM child WHERE firstName LIKE ? OR lastName LIKE ? LIMIT 10";
-          queryParams.push(`%${searchWord}%`);
+            "SELECT * FROM child WHERE firstName = ${firstNameSearch} OR lastName = ${lastNameSearch} LIMIT 10";
+          [rows] = await connection.execute(sqlQuery, [
+            firstNameSearch,
+            lastNameSearch,
+          ]);
         } else {
           sqlQuery = "SELECT * FROM child LIMIT 10";
+          [rows] = await connection.execute(sqlQuery);
         }
-
-        const [rows] = await connection.execute(sqlQuery, queryParams);
         connection.release();
         res.status(200).json(rows);
         break;

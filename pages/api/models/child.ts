@@ -15,6 +15,7 @@ const buildMakeChild = () => {
       relationshipWithChildType,
       relationshipWithChild,
       specialNeeds,
+      isCheckedIn,
     } = childInfo;
     if (!firstName) {
       throw new Error("Child must have a first name.");
@@ -59,6 +60,7 @@ const buildMakeChild = () => {
       getRelationshipWithChildType: () => relationshipWithChildType,
       getRelationshipWithChild: () => relationshipWithChild,
       getSpecialNeeds: () => (specialNeeds ? specialNeeds : null),
+      isCheckedIn: () => childInfo.isCheckedIn,
 
       getCreateChildData: () => ({
         firstName,
@@ -72,6 +74,7 @@ const buildMakeChild = () => {
         relationshipWithChildType,
         relationshipWithChild,
         specialNeeds,
+        isCheckedIn: false,
       }),
 
       checkIn: () => {
