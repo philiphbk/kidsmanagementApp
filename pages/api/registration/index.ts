@@ -23,9 +23,13 @@ export default async function handler(
         console.log("this is body", body);
         const { parent, child, caregiver } = body;
 
-        await registrationServices.parent(parent);
-        await registrationServices.child(child);
-        await registrationServices.careGiver(caregiver);
+        const savedParent = await registrationServices.parent(parent);
+        if(savedParent){
+          const careGIds =  await registrationServices.careGiver(caregiver);
+          if(careGIds.length > 0)
+            await registrationServices.child(child, careGIds);
+        }
+       
         res.status(201).end();
         break;
 

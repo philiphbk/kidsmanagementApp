@@ -2,7 +2,7 @@ import { Child } from "@/lib/definitions/form-interfaces";
 import { db } from "../db";
 
 const buildMakeChild = () => {
-  return function makeChild(childInfo: Child) {
+  return function makeChild(childInfo: Child, parentid: number) {
     const {
       firstName,
       lastName,
@@ -69,7 +69,7 @@ const buildMakeChild = () => {
         dateOfBirth,
         ageGroup,
         photograph,
-        parent,
+        parent: parentid,
         caregiver,
         relationshipWithChildType,
         relationshipWithChild,
@@ -81,7 +81,7 @@ const buildMakeChild = () => {
         childInfo.isCheckedIn = true;
       },
 
-      save: async (data: Child) => {
+      save: async (data: Child, careGIds = []) => {
         const parentDb = db("child");
         await parentDb.create(data);
       },
