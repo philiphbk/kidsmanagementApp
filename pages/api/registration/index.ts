@@ -8,21 +8,18 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { method, body } = req;
+  const { id, ...updateData } = body;
   const connection = await connectWithRetry();
-  switch (method) {
-    case "GET":
-      try {
+
+  try {
+    switch (method) {
+      case "GET":
         const [rows] = await connection.execute("SELECT * FROM parent", []);
         connection.release();
         res.status(200).json({ result: rows });
-      } catch (error: any) {
-        console.log(error);
-        console.log(error.error);
-        res.status(500).json({ error });
-      }
-      break;
-    case "POST":
-      try {
+        break;
+
+      case "POST":
         console.log("this is body", body);
         const { parent, child, caregiver } = body;
 
@@ -30,39 +27,30 @@ export default async function handler(
         await registrationServices.child(child);
         await registrationServices.careGiver(caregiver);
         res.status(201).end();
-      } catch (error: any) {
-        console.log(error);
-        console.log(error.error);
-        res.status(500).json({ error });
-      }
-      break;
-    case "PUT":
-      try {
-        const { id, ...updateData } = body; // Assuming 'id' is sent in the request body
+        break;
+
+      case "PUT":
         await connection.query("UPDATE registration SET ? WHERE id = ?", [
           updateData,
           id,
         ]);
         res.status(200).end();
-      } catch (error: any) {
-        console.log(error);
-        console.log(error.error);
-        res.status(500).json({ error });
-      }
-      break;
-    case "DELETE":
-      try {
-        const { id } = body; // Assuming 'id' is sent in the request body
+        break;
+
+      case "DELETE":
         await connection.query("DELETE FROM registration WHERE id = ?", [id]);
         res.status(200).end();
-      } catch (error: any) {
-        console.log(error);
-        console.log(error.error);
-        res.status(500).json({ error });
-      }
-      break;
-    default:
-      res.setHeader("Allow", ["GET", "POST", "PUT", "DELETE"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+        break;
+
+      default:
+        res.setHeader("Allow", ["GET", "POST", "PUT", "DELETE"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  } finally {
+    // Ensure the connection is always released
+    if (connection && connection.release) connection.release();
   }
 }

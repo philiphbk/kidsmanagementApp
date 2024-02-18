@@ -7,51 +7,50 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { method, body } = req;
+  const { id, ...updateData } = body;
   const connection = await connectWithRetry();
-  switch (method) {
-    case "GET":
-      try {
+
+  const sqlQuery = `
+  SELECT careGiver.firstName, careGiver.lastName
+  FROM parent
+  JOIN child ON CONCAT(careGiver.firstName, careGiver.lastName) = child.parent;
+`;
+
+  try {
+    switch (method) {
+      case "GET":
         const [rows] = await connection.execute("SELECT * FROM careGiver", []);
         connection.release();
         res.status(200).json(rows);
-      } catch (error: any) {
-        console.log(error);
-        console.log(error.error);
-        res.status(500).json({ error });
-      }
-      break;
-    case "POST":
-      try {
+        break;
+
+      case "POST":
         await connection.query("INSERT INTO careGiver SET ?", body);
         res.status(201).end();
-      } catch (error: any) {
-        console.log(error);
-        res.status(500).json({ error });
-      }
-      break;
-    case "PUT":
-      try {
-        const { id, ...updateData } = body; // Assuming 'id' is sent in the request body
+        break;
+
+      case "PUT":
         await connection.query("UPDATE careGiver SET ? WHERE id = ?", [
           updateData,
           id,
         ]);
         res.status(200).end();
-      } catch (error: any) {
-        res.status(500).json({ error });
-      }
-      break;
-    case "DELETE":
-      try {
-        const { id } = body; // Assuming 'id' is sent in the request body
+        break;
+
+      case "DELETE":
         await connection.query("DELETE FROM careGiver WHERE id = ?", [id]);
         res.status(200).end();
-      } catch (error: any) {
-        res.status(500).json({ error });
-      }
-      break;
-    default:
-      res.setHeader("Allow", ["GET", "POST", "PUT", "DELETE"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+        break;
+
+      default:
+        res.setHeader("Allow", ["GET", "POST", "PUT", "DELETE"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  } finally {
+    // Ensure the connection is always released
+    if (connection && connection.release) connection.release();
   }
 }

@@ -27,33 +27,34 @@ const ChildrenList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [childrenPerPage] = useState(6);
 
-  const fetchData = async () => {
+  const fetchData = async (searchTerm?: string) => {
     try {
-      const result = await axios("/api/child");
-      //setChildren(result.data);
-      // setDisplayedChildren(result.data); // Initially display all children
-      setAllChildren(result.data); // Initially display all children
+      const result = await axios(
+        `/api/child${searchTerm ? `?searchWord=${searchTerm}` : ""}`
+      );
+      console.log(result.data, "result.data");
+      setAllChildren(result.data);
     } catch (error) {
       console.error("Failed to fetch data:", error);
-    } // Initially display all children
+    }
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [setDisplayedChildren]);
 
   let value = "child";
 
-  const handleSearch = (searchTerm: string, searchType: string) => {
-    const filteredChildren = allChildren.filter((child) => {
-      const fullName = `${child.firstName} ${child.lastName}`.toLowerCase();
-      return (
-        fullName.includes(searchTerm.toLowerCase()) && value === searchType
-      );
-    });
-    console.log(filteredChildren, "filteredChildren");
-    setDisplayedChildren(filteredChildren);
-    // setCurrentPage(1); // Reset to first page after search
+  const handleSearch = async (searchTerm: string, searchType: string) => {
+    // const filteredChildren = allChildren.filter((child) => {
+    //   const fullName = `${child.firstName} ${child.lastName}`.toLowerCase();
+    //   return (
+    //     fullName.includes(searchTerm.toLowerCase()) && value === searchType
+    //   );
+    // });
+
+    await fetchData(searchTerm);
+    value = searchType;
   };
 
   function setChildPhoto(photo: string) {
@@ -72,7 +73,7 @@ const ChildrenList = () => {
   // Get current children for pagination
   const indexOfLastChild = currentPage * childrenPerPage;
   const indexOfFirstChild = indexOfLastChild - childrenPerPage;
-  const currentChildren = allChildren.slice(
+  const currentChildren = allChildren?.slice(
     indexOfFirstChild,
     indexOfLastChild
   );
