@@ -26,33 +26,33 @@ const ChildrenList = () => {
   const [selectedChild, setSelectedChild] = useState<Child | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [childrenPerPage] = useState(6);
-
-  const fetchData = async (searchTerm?: string) => {
-    try {
-      const result = await axios(
-        `/api/child${searchTerm ? `?searchWord=${searchTerm}` : ""}`
-      );
-      console.log(result.data, "result.data");
-      setDisplayedChildren(result.data);
-    } catch (error) {
-      console.error("Failed to fetch data:", error);
-    }
-  };
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    const fetchData = async (searchTerm?: string) => {
+      try {
+        const result = await axios(
+          `/api/child${searchTerm ? `?searchWord=${searchTerm}` : ""}`
+        );
+        console.log(result.data, "result.data");
+        setDisplayedChildren(result.data);
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
+    if (searchTerm) {
+      fetchData(searchTerm);
+    } else {
+      fetchData();
+    }
+  }, [searchTerm]);
 
   let value = "child";
 
   const handleSearch = async (searchTerm: string) => {
     console.log(searchTerm, "searchTerm");
 
-    if (searchTerm) {
-      fetchData(searchTerm);
-    } else {
-      //fetchData();
-    }
+    setSearchTerm(searchTerm);
   };
 
   function setChildPhoto(photo: string) {
@@ -68,13 +68,13 @@ const ChildrenList = () => {
       ) as string;
     }
   }
-  // Get current children for pagination
-  const indexOfLastChild = currentPage * childrenPerPage;
-  const indexOfFirstChild = indexOfLastChild - childrenPerPage;
-  const currentChildren = allChildren?.slice(
-    indexOfFirstChild,
-    indexOfLastChild
-  );
+  // // Get current children for pagination
+  // const indexOfLastChild = currentPage * childrenPerPage;
+  // const indexOfFirstChild = indexOfLastChild - childrenPerPage;
+  // const currentChildren = allChildren?.slice(
+  //   indexOfFirstChild,
+  //   indexOfLastChild
+  // );
 
   return (
     <div>
@@ -112,12 +112,12 @@ const ChildrenList = () => {
           />
         )}
       </div>
-      <Pagination
+      {/* <Pagination
         totalItems={allChildren.length}
         itemsPerPage={childrenPerPage}
         currentPage={currentPage}
         onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
-      />
+      /> */}
     </div>
   );
 };

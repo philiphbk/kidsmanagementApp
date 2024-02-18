@@ -12,7 +12,7 @@ export default async function handler(
 
   const sqlQuery = `
   SELECT careGiver.firstName, careGiver.lastName
-  FROM parent
+  FROM careGiver
   JOIN child ON CONCAT(careGiver.firstName, careGiver.lastName) = child.parent;
 `;
 
