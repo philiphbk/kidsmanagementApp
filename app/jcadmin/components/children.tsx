@@ -21,11 +21,11 @@ interface Child {
 }
 
 const ChildrenList = () => {
-  const [allChildren, setAllChildren] = useState<Child[]>([]);
+  //const [allChildren, setAllChildren] = useState<Child[]>([]);
   const [displayedChildren, setDisplayedChildren] = useState<Child[]>([]);
   const [selectedChild, setSelectedChild] = useState<Child | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [childrenPerPage] = useState(6);
+  //const [currentPage, setCurrentPage] = useState(1);
+  //const [childrenPerPage] = useState(6);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -51,7 +51,6 @@ const ChildrenList = () => {
 
   const handleSearch = async (searchTerm: string) => {
     console.log(searchTerm, "searchTerm");
-
     setSearchTerm(searchTerm);
   };
 
