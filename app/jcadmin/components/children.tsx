@@ -21,59 +21,68 @@ interface Child {
 }
 
 const ChildrenList = () => {
-  const [children, setChildren] = useState<Child[]>([]);
+  //const [allChildren, setAllChildren] = useState<Child[]>([]);
   const [displayedChildren, setDisplayedChildren] = useState<Child[]>([]);
   const [selectedChild, setSelectedChild] = useState<Child | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [childrenPerPage] = useState(6);
-
-  const fetchData = async () => {
-    try {
-      const result = await axios("/api/child");
-      //setChildren(result.data);
-      setDisplayedChildren(result.data); // Initially display all children
-    } catch (error) {
-      console.error("Failed to fetch data:", error);
-    } // Initially display all children
-  };
+  //const [currentPage, setCurrentPage] = useState(1);
+  //const [childrenPerPage] = useState(6);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    const fetchData = async (searchTerm?: string) => {
+      try {
+        const result = await axios(
+          `/api/child${searchTerm ? `?searchWord=${searchTerm}` : ""}`
+        );
+        console.log(result.data, "result.data");
+        setDisplayedChildren(result.data);
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
+    if (searchTerm) {
+      fetchData(searchTerm);
+    } else {
+      fetchData();
+    }
+  }, [searchTerm]);
 
   let value = "child";
 
-  const handleSearch = (searchTerm: string, searchType: string) => {
-    const filteredChildren = displayedChildren.filter((child) => {
-      const fullName = `${child.firstName} ${child.lastName}`.toLowerCase();
-      return (
-        fullName.includes(searchTerm.toLowerCase()) && value === searchType
-      );
-    });
-    setDisplayedChildren(filteredChildren);
-    //setCurrentPage(1); // Reset to first page after search
+  const handleSearch = async (searchTerm: string) => {
+    console.log(searchTerm, "searchTerm");
+    setSearchTerm(searchTerm);
   };
 
-  function setChildPhoto(photo: string): string {
-    console.log(photo);
-    return photo.replace("/public", "") as string;
+  function setChildPhoto(photo: string) {
+    //console.log(photo);
+    if (photo.includes("/public")) {
+      return photo.replace("/public", "") as string;
+    } else if (
+      photo.includes("https://householdofdavid.org/wp-content/uploads")
+    ) {
+      return photo.replace(
+        "https://householdofdavid.org/wp-content/uploads",
+        ""
+      ) as string;
+    }
   }
-  // Get current children for pagination
-  const indexOfLastChild = currentPage * childrenPerPage;
-  const indexOfFirstChild = indexOfLastChild - childrenPerPage;
-  const currentChildren = displayedChildren.slice(
-    indexOfFirstChild,
-    indexOfLastChild
-  );
+  // // Get current children for pagination
+  // const indexOfLastChild = currentPage * childrenPerPage;
+  // const indexOfFirstChild = indexOfLastChild - childrenPerPage;
+  // const currentChildren = allChildren?.slice(
+  //   indexOfFirstChild,
+  //   indexOfLastChild
+  // );
 
   return (
     <div>
       <div className=" flex justify-center mb-7">
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={(e: any) => handleSearch(e)} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {currentChildren.map((child) => (
+        {displayedChildren.map((child) => (
           <ChildCard
             key={child.id}
             id={child.id}
@@ -82,7 +91,7 @@ const ChildrenList = () => {
             ageGroup={child.ageGroup}
             dateOfBirth={child.dateOfBirth}
             parent={child.parent}
-            photograph={setChildPhoto(child.photograph)}
+            photograph={setChildPhoto(child.photograph) as string}
             gender={child.gender}
             status={child.status}
             specialNeeds={child.specialNeeds}
@@ -97,19 +106,17 @@ const ChildrenList = () => {
             ageGroup={selectedChild.ageGroup}
             gender={selectedChild.gender}
             status={selectedChild.status}
-            photograph={
-              selectedChild.photograph.replace("/public", "") as string
-            }
+            photograph={setChildPhoto(selectedChild.photograph) as string}
             onClose={() => setSelectedChild(null)}
           />
         )}
       </div>
-      <Pagination
-        totalItems={displayedChildren.length}
+      {/* <Pagination
+        totalItems={allChildren.length}
         itemsPerPage={childrenPerPage}
         currentPage={currentPage}
         onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
-      />
+      /> */}
     </div>
   );
 };

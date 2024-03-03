@@ -57,9 +57,10 @@ export interface Child {
   photograph: string; // Image data for the photograph
   relationshipWithChildType: string;
   relationshipWithChild: string;
-  parent: string[];
-  caregiver: string[];
+  parent: number;
+  caregiver: string;
   specialNeeds?: string;
+  isCheckedIn: boolean;
 }
 
 export enum CareGiverType {
