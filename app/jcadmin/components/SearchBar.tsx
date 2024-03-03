@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, ChangeEvent, KeyboardEvent } from "react";
-// import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 function debounce<T extends any[]>(
   func: (...args: T) => void,

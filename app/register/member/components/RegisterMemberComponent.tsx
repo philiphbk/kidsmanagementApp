@@ -203,8 +203,8 @@ const RegisterMemberComponent = () => {
       photograph: "",
       relationshipWithChildType: "parent",
       relationshipWithChild: "mother",
-      parent: [""],
-      caregiver: [""],
+      parent: 0,
+      caregiver: "",
       specialNeeds: "",
     },
     caregiver: {
@@ -243,7 +243,7 @@ const RegisterMemberComponent = () => {
 
       actions.setSubmitting(true);
       console.log("is submitting!", values);
-      
+
       try {
         const response = await axios.post("/api/registration", values, {
           headers: {
@@ -254,7 +254,7 @@ const RegisterMemberComponent = () => {
         });
 
         console.log(response.data, "Registration form submitted!");
-        
+
         setStep(1);
         actions.resetForm();
         router.push("/register/success");
@@ -310,9 +310,10 @@ const RegisterMemberComponent = () => {
                 photograph: "", // Image data for the photograph
                 relationshipWithChildType: "parent",
                 relationshipWithChild: "mother",
-                parent: [""],
-                caregiver: [""],
+                parent: 0,
+                caregiver: "",
                 specialNeeds: "",
+                isCheckedIn: false, // Add the missing property
               },
             ],
             caregiver: [
@@ -453,7 +454,6 @@ const RegisterMemberComponent = () => {
                     ? "Next"
                     : "Submit"}
                 </button>
-              
               </div>
             </Form>
           )}

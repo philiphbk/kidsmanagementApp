@@ -1,52 +1,56 @@
 // pages/api/parent.ts
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from "next";
 import { connectWithRetry } from "../db";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const { method, body } = req;
   const connection = await connectWithRetry();
 
-  switch (method) {
-    case 'GET':
-      try {
-        const [rows] = await connection.execute('SELECT * FROM parent', []);
+  const { id, ...updateData } = body;
+  const sqlQuery = `
+  SELECT parent.firstName, parent.lastName
+  FROM parent
+  JOIN child ON CONCAT(parent.firstName, parent.lastName) = child.parent;
+`;
+
+  try {
+    switch (method) {
+      case "GET":
+        const [rows] = await connection.execute("SELECT * FROM parent", []);
         connection.release();
         res.status(200).json(rows);
-      } catch (error: any) {
-        console.log(error);
-        console.log(error.error);
-        res.status(500).json({ error });
-      }
-      break;
-    case 'POST':
-      try {
-        await connection.query('INSERT INTO parent SET ?', body);
-        res.status(201).end();
-      } catch (error: any) {
-        res.status(500).json({ error });
-      }
-      break;
-    case 'PUT':
-        try {
-            const { id, ...updateData } = body; // Assuming 'id' is sent in the request body
-            await connection.query('UPDATE parent SET ? WHERE id = ?', [updateData, id]);
-            res.status(200).end();
-          } catch (error : any) {
+        break;
 
-            res.status(500).json({ error });
-          }
-          break;
-    case 'DELETE':
-        try {
-            const { id } = body; // Assuming 'id' is sent in the request body
-            await connection.query('DELETE FROM parent WHERE id = ?', [id]);
-            res.status(200).end();
-          } catch (error : any) {
-            res.status(500).json({ error} );
-          }
-          break;
-    default:
-      res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
-      res.status(405).end(`Method ${method} Not Allowed`);
+      case "POST":
+        await connection.query("INSERT INTO parent SET ?", body);
+        res.status(201).end();
+        break;
+
+      case "PUT":
+        await connection.query("UPDATE parent SET ? WHERE id = ?", [
+          updateData,
+          id,
+        ]);
+        res.status(200).end();
+
+        break;
+      case "DELETE":
+        await connection.query("DELETE FROM parent WHERE id = ?", [id]);
+        res.status(200).end();
+        break;
+
+      default:
+        res.setHeader("Allow", ["GET", "POST", "PUT", "DELETE"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  } finally {
+    // Ensure the connection is always released
+    if (connection && connection.release) connection.release();
   }
 }

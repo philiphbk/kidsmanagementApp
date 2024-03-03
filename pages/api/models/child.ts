@@ -2,7 +2,7 @@ import { Child } from "@/lib/definitions/form-interfaces";
 import { db } from "../db";
 
 const buildMakeChild = () => {
-  return function makeChild(childInfo: Child) {
+  return function makeChild(childInfo: Child, parentid: number) {
     const {
       firstName,
       lastName,
@@ -15,6 +15,7 @@ const buildMakeChild = () => {
       relationshipWithChildType,
       relationshipWithChild,
       specialNeeds,
+      isCheckedIn,
     } = childInfo;
     if (!firstName) {
       throw new Error("Child must have a first name.");
@@ -59,6 +60,7 @@ const buildMakeChild = () => {
       getRelationshipWithChildType: () => relationshipWithChildType,
       getRelationshipWithChild: () => relationshipWithChild,
       getSpecialNeeds: () => (specialNeeds ? specialNeeds : null),
+      isCheckedIn: () => childInfo.isCheckedIn,
 
       getCreateChildData: () => ({
         firstName,
@@ -67,18 +69,19 @@ const buildMakeChild = () => {
         dateOfBirth,
         ageGroup,
         photograph,
-        parent,
+        parent: parentid,
         caregiver,
         relationshipWithChildType,
         relationshipWithChild,
         specialNeeds,
+        isCheckedIn: false,
       }),
 
       checkIn: () => {
         childInfo.isCheckedIn = true;
       },
 
-      save: async (data: Child) => {
+      save: async (data: Child, careGIds = []) => {
         const parentDb = db("child");
         await parentDb.create(data);
       },

@@ -7,34 +7,40 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { method, body } = req;
+  const { searchWord } = req.query;
+
   const connection = await connectWithRetry();
-  switch (method) {
-    case "GET":
-      try {
-        const [rows] = await connection.execute("SELECT * FROM child", []);
+
+  try {
+    switch (method) {
+      case "GET":
+        let sqlQuery = "";
+        let rows: any = [];
+
+        if (searchWord) {
+          sqlQuery = `SELECT * FROM child WHERE firstName = ? OR lastName = ?`;
+          [rows] = await connection.execute(sqlQuery, [searchWord, searchWord]);
+        } else {
+          sqlQuery = "SELECT * FROM child LIMIT 10";
+          [rows] = await connection.execute(sqlQuery);
+        }
         connection.release();
         res.status(200).json(rows);
-      } catch (error: any) {
-        console.log(error);
-        console.log(error.error);
-        res.status(500).json({ error });
-      }
-      break;
-    case "POST":
-      try {
+        break;
+
+      case "POST":
         await connection.query("INSERT INTO child SET ?", body);
         res.status(201).end();
-      } catch (error: any) {
-        console.log(error);
-        console.log(error.error);
-        res.status(500).json({ error });
-      }
-      break;
-    case "PUT":
-      // Check if this is a status update
-      if ("status" in body && Object.keys(body).length === 2 && "id" in body) {
-        // Handle status update
-        try {
+        break;
+
+      case "PUT":
+        // Check if this is a status update
+        if (
+          "status" in body &&
+          Object.keys(body).length === 2 &&
+          "id" in body
+        ) {
+          // Handle status update
           const { id, status } = body;
           const query = "UPDATE child SET status = ? WHERE id = ?";
           await connection.execute(query, [status, id]);
@@ -45,13 +51,9 @@ export default async function handler(
           res
             .status(200)
             .json({ success: true, message: "Status updated successfully." });
-        } catch (error: any) {
-          console.error("Error updating status:", error);
-          res.status(500).json({ error: "Internal server error" });
-        }
-      } else {
-        // Handle other updates
-        try {
+        } else {
+          // Handle other updates
+
           const { id, ...updateData } = body;
           await connection.query("UPDATE child SET ? WHERE id = ?", [
             updateData,
@@ -59,24 +61,24 @@ export default async function handler(
           ]);
           connection.release();
           res.status(200).end();
-        } catch (error: any) {
-          console.error(error);
-          res.status(500).json({ error: "Internal server error" });
         }
-      }
-    case "DELETE":
-      try {
+        break;
+
+      case "DELETE":
         const { id } = body; // Assuming 'id' is sent in the request body
         await connection.query("DELETE FROM child WHERE id = ?", [id]);
         res.status(200).end();
-      } catch (error: any) {
-        console.log(error);
-        console.log(error.error);
-        res.status(500).json({ error: "Internal Server Error" });
-      }
-      break;
-    default:
-      res.setHeader("Allow", ["GET", "POST", "PUT", "DELETE"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+        break;
+
+      default:
+        res.setHeader("Allow", ["GET", "POST", "PUT", "DELETE"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
+    }
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  } finally {
+    // Ensure the connection is always released
+    if (connection && connection.release) connection.release();
   }
 }

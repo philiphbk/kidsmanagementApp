@@ -46,12 +46,12 @@ const ChildCard: React.FC<ChildCardProps> = ({
         </div>
         <div>
           <h3 className="text-lg font-semibold">
-            {firstName}&nbsp; {lastName}
+            {firstName} {lastName}
           </h3>
-          <p>{`${ageGroup} yrs, ${gender}`}</p>
-          <p>{`DOB: ${dateOfBirth}`}</p>
-          <p>{`Parent: ${parent}`}</p>
-          <p>{`Special Needs: ${specialNeeds}`}</p>
+          <p>{`${ageGroup}yrs, ${gender}`}</p>
+          {/* <p>{`DOB: ${dateOfBirth}`}</p>
+          <p>{`Parent: ${parent}`}</p> 
+          <p>{`Special Needs: ${specialNeeds}`}</p>*/}
           <span
             className={`text-sm ${
               status === "Checked In" ? "text-green-500" : "text-red-500"

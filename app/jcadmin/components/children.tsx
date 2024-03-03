@@ -21,39 +21,37 @@ interface Child {
 }
 
 const ChildrenList = () => {
-  const [allChildren, setAllChildren] = useState<Child[]>([]);
+  //const [allChildren, setAllChildren] = useState<Child[]>([]);
   const [displayedChildren, setDisplayedChildren] = useState<Child[]>([]);
   const [selectedChild, setSelectedChild] = useState<Child | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [childrenPerPage] = useState(6);
-
-  const fetchData = async () => {
-    try {
-      const result = await axios("/api/child");
-      //setChildren(result.data);
-      // setDisplayedChildren(result.data); // Initially display all children
-      setAllChildren(result.data); // Initially display all children
-    } catch (error) {
-      console.error("Failed to fetch data:", error);
-    } // Initially display all children
-  };
+  //const [currentPage, setCurrentPage] = useState(1);
+  //const [childrenPerPage] = useState(6);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    const fetchData = async (searchTerm?: string) => {
+      try {
+        const result = await axios(
+          `/api/child${searchTerm ? `?searchWord=${searchTerm}` : ""}`
+        );
+        console.log(result.data, "result.data");
+        setDisplayedChildren(result.data);
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
+    if (searchTerm) {
+      fetchData(searchTerm);
+    } else {
+      fetchData();
+    }
+  }, [searchTerm]);
 
   let value = "child";
 
-  const handleSearch = (searchTerm: string, searchType: string) => {
-    const filteredChildren = allChildren.filter((child) => {
-      const fullName = `${child.firstName} ${child.lastName}`.toLowerCase();
-      return (
-        fullName.includes(searchTerm.toLowerCase()) && value === searchType
-      );
-    });
-    console.log(filteredChildren, "filteredChildren");
-    setDisplayedChildren(filteredChildren);
-    // setCurrentPage(1); // Reset to first page after search
+  const handleSearch = async (searchTerm: string) => {
+    console.log(searchTerm, "searchTerm");
+    setSearchTerm(searchTerm);
   };
 
   function setChildPhoto(photo: string) {
@@ -69,18 +67,18 @@ const ChildrenList = () => {
       ) as string;
     }
   }
-  // Get current children for pagination
-  const indexOfLastChild = currentPage * childrenPerPage;
-  const indexOfFirstChild = indexOfLastChild - childrenPerPage;
-  const currentChildren = allChildren.slice(
-    indexOfFirstChild,
-    indexOfLastChild
-  );
+  // // Get current children for pagination
+  // const indexOfLastChild = currentPage * childrenPerPage;
+  // const indexOfFirstChild = indexOfLastChild - childrenPerPage;
+  // const currentChildren = allChildren?.slice(
+  //   indexOfFirstChild,
+  //   indexOfLastChild
+  // );
 
   return (
     <div>
       <div className=" flex justify-center mb-7">
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={(e: any) => handleSearch(e)} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -113,12 +111,12 @@ const ChildrenList = () => {
           />
         )}
       </div>
-      <Pagination
+      {/* <Pagination
         totalItems={allChildren.length}
         itemsPerPage={childrenPerPage}
         currentPage={currentPage}
         onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
-      />
+      /> */}
     </div>
   );
 };

@@ -86,7 +86,7 @@ const buildCareGiver = () => {
 
       save: async (data: Caregiver) => {
         const careGiverDb = db("careGiver");
-        await careGiverDb.create(data);
+        return await careGiverDb.create(data);
       },
     });
   };

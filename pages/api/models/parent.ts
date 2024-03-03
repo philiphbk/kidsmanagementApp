@@ -84,7 +84,7 @@ const buildMakeParent = () => {
 
       save: async (data: CreateParentData) => {
         const parentDb = db("parent");
-        await parentDb.create(data);
+        return await parentDb.create(data);
       },
     });
   };
