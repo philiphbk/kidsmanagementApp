@@ -20,16 +20,19 @@ export default async function handler(
         break;
 
       case "POST":
-        console.log("this is body", body);
         const { parent, child, caregiver } = body;
 
         const savedParent = await registrationServices.parent(parent);
-        if(savedParent){
-          const careGIds =  await registrationServices.careGiver(caregiver);
-          if(careGIds.length > 0)
-            await registrationServices.child(child, careGIds);
+        if (savedParent) {
+          const careGIds = await registrationServices.careGiver(caregiver);
+          if (careGIds.length > 0)
+            await registrationServices.child(
+              child,
+              careGIds.id,
+              savedParent.id
+            );
         }
-       
+
         res.status(201).end();
         break;
 
