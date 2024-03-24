@@ -8,7 +8,6 @@ const register: any = {
     parentIdresult = parent.getId();
     const allowedParentData = parent.getCreateParentData();
     await parent.save(allowedParentData); // Update the type to 'any'
-    console.log("parentIdresult", parentIdresult);
     return parentIdresult;
   },
 
@@ -26,7 +25,6 @@ const register: any = {
         // }
       }
     }
-    console.log("careGIdsresults", careGIdsresults);
     return careGIdsresults;
   },
 

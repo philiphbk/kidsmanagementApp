@@ -70,6 +70,7 @@ export interface CaregiverForm {
   gender: string;
   roleInChurch: string;
   departmentInChurch: string;
+  ministry: string;
   phoneNumberPrimary: string;
   phoneNumberSecondary?: string;
   relationshipWithChildType: string;

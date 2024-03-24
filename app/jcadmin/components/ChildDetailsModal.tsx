@@ -20,6 +20,8 @@ interface ChildDetailsModalProps {
   gender: string;
   status: string;
   photograph: string;
+  parentId: string;
+  caregiverIds: string;
   onClose: () => void;
   // ... Add other props as needed for the rest of the child's details
 }
@@ -52,6 +54,8 @@ const ChildDetailsModal: React.FC<ChildDetailsModalProps> = ({
   gender,
   status,
   photograph,
+  parentId,
+  caregiverIds,
   onClose,
 }) => {
   const [parents, setParents] = useState<Parent[]>([]);
@@ -70,26 +74,27 @@ const ChildDetailsModal: React.FC<ChildDetailsModalProps> = ({
     }
   };
 
-  let idValue = id;
+  let idParent = parentId;
+  let idCaregiver = caregiverIds;
   useEffect(() => {
-    const fetchParents = async (idValue: string) => {
-      const result = await axios("/api/child/parent", { params: { idValue } });
+    const fetchParents = async (idParent: string) => {
+      const result = await axios("/api/parents", { params: { idParent } });
       setParents(result.data);
+      console.log("parents", result.data);
     };
 
-    const fetchCaregivers = async (id: string) => {
-      const result = await axios("/api/child/caregiver", {
-        params: { idValue },
-      });
-      const caregiverIds = result.data.split(",");
+    const fetchCaregivers = async (idCaregiver: string) => {
+      const result = await axios("/api/caregiver", { params: { idCaregiver } });
+      console.log("caregivers", result.data);
+      const caregiverIds = result.data.slice(",");
       caregiverIds.forEach((caregiver: Caregiver) => {
         setCaregivers(caregiverIds);
       });
     };
 
-    fetchParents(idValue);
-    fetchCaregivers(idValue);
-  }, []);
+    fetchParents(idParent);
+    fetchCaregivers(idCaregiver);
+  }, [idParent, idCaregiver]);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
