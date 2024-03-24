@@ -4,7 +4,12 @@
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { HomeIcon, UserIcon } from "@heroicons/react/solid";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  IconDefinition,
+  faHome,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import tempimage from "@/public/upload/pexels-binyamin-mellish-186077.jpg";
 
 interface ChildDetailsModalProps {
@@ -15,6 +20,8 @@ interface ChildDetailsModalProps {
   gender: string;
   status: string;
   photograph: string;
+  parentId: string;
+  caregiverIds: string;
   onClose: () => void;
   // ... Add other props as needed for the rest of the child's details
 }
@@ -34,18 +41,21 @@ interface Caregiver {
 }
 
 const tabs = [
-  { name: "Drop-off / Pick Up", icon: HomeIcon },
-  { name: "Activity Log", icon: UserIcon },
+  { name: "Drop-off / Pick Up", icon: { faHome } },
+  { name: "Activity Log", icon: { faUser } },
   // { name: 'Settings', icon: SettingsIcon },
 ];
 
 const ChildDetailsModal: React.FC<ChildDetailsModalProps> = ({
+  id,
   firstName,
   lastName,
   ageGroup,
   gender,
   status,
   photograph,
+  parentId,
+  caregiverIds,
   onClose,
 }) => {
   const [parents, setParents] = useState<Parent[]>([]);
@@ -64,20 +74,27 @@ const ChildDetailsModal: React.FC<ChildDetailsModalProps> = ({
     }
   };
 
+  let idParent = parentId;
+  let idCaregiver = caregiverIds;
   useEffect(() => {
-    const fetchParents = async () => {
-      const result = await axios("/api/parents");
+    const fetchParents = async (idParent: string) => {
+      const result = await axios("/api/parents", { params: { idParent } });
       setParents(result.data);
+      console.log("parents", result.data);
     };
 
-    const fetchCaregivers = async () => {
-      const result = await axios("/api/caregiver");
-      setCaregivers(result.data);
+    const fetchCaregivers = async (idCaregiver: string) => {
+      const result = await axios("/api/caregiver", { params: { idCaregiver } });
+      console.log("caregivers", result.data);
+      const caregiverIds = result.data.slice(",");
+      caregiverIds.forEach((caregiver: Caregiver) => {
+        setCaregivers(caregiverIds);
+      });
     };
 
-    fetchParents();
-    fetchCaregivers();
-  }, []);
+    fetchParents(idParent);
+    fetchCaregivers(idCaregiver);
+  }, [idParent, idCaregiver]);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
@@ -120,7 +137,10 @@ const ChildDetailsModal: React.FC<ChildDetailsModalProps> = ({
                         : "text-gray-600 hover:text-blue-600"
                     }`}
                   >
-                    <tab.icon className="w-5 h-5 mr-1" />
+                    <FontAwesomeIcon
+                      icon={tab.icon as unknown as IconDefinition}
+                      className="w-5 h-5 mr-1"
+                    />
                     {tab.name}
                   </button>
                 ))}

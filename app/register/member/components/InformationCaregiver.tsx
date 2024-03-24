@@ -1,50 +1,58 @@
 import { useState, ChangeEvent } from "react";
 
-import {
-  ErrorMessage,
-  Field,
-  FormikErrors,
-  FormikTouched,
-  useField,
-  useFormikContext,
-} from "formik";
+import { ErrorMessage, Field, useField, useFormikContext } from "formik";
 
 import {
   branchAndCenterData,
   departmentInChurchData,
   genderData,
-  locationTypeData,
   relationshipData,
   relationshipTypeData,
   roleInChurchData,
+  ministryData,
   caregiverRelationshipTypeWithParent,
   caregiverRelationshipWithParentData,
 } from "@/lib/data/dummy-data";
 
 import {
-  Department,
   OptionType,
-  MySelectComponentProps,
+  CaregiverForm,
+  RegistrationForm,
 } from "@/lib/definitions/form-interfaces";
 
-import Select, { SingleValue } from "react-select";
+import Select, { ActionMeta, SingleValue } from "react-select";
 
-import {
-  Caregiver,
-  RegistrationFormValues,
-} from "@/lib/definitions/form-interfaces";
 import ImageFileUploader from "../../components/ImageFileUploader";
 
 const CaregiverComponent = ({ index }: { index: number }) => {
-  const { setFieldValue } = useFormikContext<Caregiver>();
-
+  const { values, setFieldValue } = useFormikContext<RegistrationForm>();
   const [currentType, setCurrentType] = useState("parent");
   const [currentCaregiverType, setCurrentCaregiverType] = useState("");
-
   const [otherType, setOtherType] = useState({
     status: false,
     value: "",
   });
+
+  const options: OptionType[] = departmentInChurchData.map((dept) => ({
+    value: dept.id,
+    label: dept.value,
+  }));
+
+  const ministryOptions: OptionType[] = ministryData.map((ministry) => ({
+    value: ministry.id,
+    label: ministry.value,
+  }));
+
+  const showDepartmentDropdown =
+    values.caregiver[index].roleInChurch &&
+    values.caregiver[index].roleInChurch !== "director" &&
+    values.caregiver[index].roleInChurch !== "pastor" &&
+    values.caregiver[index].roleInChurch !== "visitor" &&
+    values.caregiver[index].roleInChurch !== "member";
+
+  const showMinistryDropdown =
+    values.caregiver[index].roleInChurch === "director" ||
+    values.caregiver[index].roleInChurch === "pastor";
 
   const [currentLocation, setCurrentLocation] = useState("lagos");
 
@@ -80,11 +88,54 @@ const CaregiverComponent = ({ index }: { index: number }) => {
       setFieldValue(name, value);
     }
 
-    if (id.includes("churchLocation")) {
-      setCurrentLocation(value);
-      setFieldValue(`caregiver[${index}].churchBranchInLocation`, "");
-    }
+    // if (id.includes("churchLocation")) {
+    //   setCurrentLocation(value);
+    //   setFieldValue(`caregiver[${index}].churchBranchInLocation`, "");
+    // }
   };
+
+  // const handleRelationshipChange = (
+  //   e: React.ChangeEvent<HTMLSelectElement>,
+  //   index: number
+  // ) => {
+  //   const { name, value } = e.target;
+
+  //   // Update the formik field value directly.
+  //   setFieldValue(name, value);
+
+  //   // Handle relationship with child type changes.
+  //   if (name === `caregiver[${index}].relationshipWithChildType`) {
+  //     setCurrentType(value);
+  //     setOtherType({ ...otherType, status: false });
+  //     setFieldValue(`caregiver[${index}].relationshipWithChild`, "");
+  //     setFieldValue(name, value);
+  //   }
+
+  //   // Handle caregiver guardian relationship changes.
+  //   if (name === `caregiverGuardian`) {
+  //     // Logic to handle "other" type relationships.
+  //     const isOther = value === "other";
+  //     setOtherType({ status: isOther, value: isOther ? "" : value });
+  //     setFieldValue(
+  //       `caregiver[${index}].relationshipWithChildType`,
+  //       isOther ? "guardian" : value
+  //     );
+  //   }
+
+  //   if (name === `caregiver[${index}].caregiverRelationshipTypeWithParent`) {
+  //     setCurrentCaregiverType(value);
+  //     setFieldValue(
+  //       `caregiver[${index}].caregiverRelationshipWithParentData`,
+  //       value
+  //     );
+  //     setFieldValue(name, value);
+  //   }
+
+  //   // if (name === caregiver[index].churchLocation) {
+  //   //   setCurrentLocation(value);
+  //   //   setFieldValue(values.caregiver[index].churchBranchInLocation, "");
+  //   // }
+  // };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -104,20 +155,6 @@ const CaregiverComponent = ({ index }: { index: number }) => {
   const branchAndCenterFiltered = branchAndCenterData?.find(
     (branch) => branch.locationId === currentLocation
   );
-
-  const [field] = useField(`caregiver[${index}].departmentInChurch`);
-
-  const options: OptionType[] = departmentInChurchData.map((dept) => ({
-    value: dept.id,
-    label: dept.value,
-  }));
-
-  const handleChange = (selectedOption: SingleValue<OptionType>) => {
-    setFieldValue(
-      `caregiver[${index}].departmentInChurch`,
-      selectedOption?.value
-    );
-  };
 
   return (
     <section className="personal_info">
@@ -198,6 +235,13 @@ const CaregiverComponent = ({ index }: { index: number }) => {
           as="select"
           className="hod_input"
           aria-label="Role in church"
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+            const { value } = e.target;
+            setFieldValue(`caregiver[${index}].roleInChurch`, value);
+            if (value !== "visitor" && value !== "member") {
+              setFieldValue(`caregiver[${index}].roleInChurch`, "");
+            }
+          }}
         >
           <option value="" disabled>
             select role in church
@@ -212,30 +256,65 @@ const CaregiverComponent = ({ index }: { index: number }) => {
         <ErrorMessage name={`caregiver[${index}].roleInChurch`} />
       </div>
 
-      {/* ministry */}
-      <div className="input_group">
-        <label htmlFor={`caregiver[${index}].departmentInChurch`}>
-          Department in church
-        </label>
-        <Select
-          options={options}
-          onChange={(e) => {
-            setFieldValue(`caregiver[${index}].departmentInChurch`, e?.value);
-          }}
-          classNames={{
-            control: (state) =>
-              state.isFocused
-                ? "flex items-center gap-2 h-14 w-full px-2 py-2 rounded-lg bg-white border border-hod-bg-red-light"
-                : "flex items-center gap-2 h-14 w-full px-2 py-2 rounded-lg bg-white border border-hod-border-gray",
-          }}
-          aria-label="Department in church"
-          placeholder="Select department in church"
-          isClearable
-          isSearchable
-        />
-        <ErrorMessage name={`caregiver[${index}].departmentInChurch`} />
-      </div>
+      {/* department */}
+      {showDepartmentDropdown && (
+        <div className="input_group">
+          <label htmlFor={`caregiver[${index}].departmentInChurch`}>
+            Department in church
+          </label>
+          <Select
+            name={`caregiver[${index}].departmentInChurch`}
+            options={options}
+            onChange={(option: OptionType | null) => {
+              setFieldValue(
+                `caregiver[${index}].departmentInChurch`,
+                option ? option.value : ""
+              );
+            }}
+            classNames={{
+              control: (state: { isFocused: any }) =>
+                state.isFocused
+                  ? "flex items-center gap-2 h-14 w-full px-2 py-2 rounded-lg bg-white border border-hod-bg-red-light"
+                  : "flex items-center gap-2 h-14 w-full px-2 py-2 rounded-lg bg-white border border-hod-border-gray",
+            }}
+            aria-label="Department in church"
+            placeholder="Select department in church"
+            isClearable
+            isSearchable
+          />
+          <ErrorMessage name={`caregiver[${index}].departmentInChurch`} />
+        </div>
+      )}
 
+      {/* ministry */}
+      {showMinistryDropdown && (
+        <div className="input_group">
+          <label htmlFor={`caregiver[${index}].ministry`}>Ministry</label>
+          <Select
+            name={`caregiver[${index}].ministry`}
+            options={ministryOptions}
+            onChange={(option: OptionType | null) => {
+              setFieldValue(
+                `caregiver[${index}].ministry`,
+                option ? option.value : ""
+              );
+            }}
+            classNames={{
+              control: (state: { isFocused: any }) =>
+                state.isFocused
+                  ? "flex items-center gap-2 h-14 w-full px-2 py-2 rounded-lg bg-white border border-hod-bg-red-light"
+                  : "flex items-center gap-2 h-14 w-full px-2 py-2 rounded-lg bg-white border border-hod-border-gray",
+            }}
+            aria-label="Ministry in Church"
+            placeholder="Select ministry"
+            isClearable
+            isSearchable
+          />
+          <ErrorMessage name={`caregiver[${index}].ministry`} />
+        </div>
+      )}
+
+      {/* phone number */}
       <div className="input_group">
         <label htmlFor={`caregiver[${index}].phoneNumberPrimary`}>
           Primary Phone Number
@@ -320,7 +399,7 @@ const CaregiverComponent = ({ index }: { index: number }) => {
               )
             )}
           </Field>
-          <ErrorMessage name={`caregiverGuardian`} />
+          <ErrorMessage name={`caregiver[${index}].relationshipWithChild`} />
         </div>
       </div>
 
@@ -372,7 +451,7 @@ const CaregiverComponent = ({ index }: { index: number }) => {
             ))}
           </Field>
           <ErrorMessage
-            name={`caregiver[${index}].relationshipWithParentType`}
+            name={`caregiver[${index}].caregiverRelationshipTypeWithParent`}
           />
         </div>
 

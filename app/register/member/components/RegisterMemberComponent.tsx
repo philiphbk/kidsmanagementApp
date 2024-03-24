@@ -3,25 +3,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-import {
-  useFormikContext,
-  Formik,
-  FormikHelpers,
-  Form,
-  FieldArray,
-} from "formik";
+import { Formik, FormikHelpers, Form, FieldArray } from "formik";
 import * as Yup from "yup";
 
-import {
-  Gender,
-  ParentType,
-  RegistrationFormValues,
-  CareGiverType,
-} from "@/lib/definitions/form-interfaces";
-
-// import PreviewImage from "../components/PreviewImage";
-// import ImageUpload from "../components/ImageUpload";
-// import ImageUploader from "../components/ImageUploader";
+import { RegistrationForm } from "@/lib/definitions/form-interfaces";
 
 import HodLogoOnly from "@/app/register/components/HodLogo";
 import FormHeader from "@/app/register/components/FormHeader";
@@ -36,7 +21,7 @@ const RegisterMemberComponent = () => {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const totalSteps = 3;
-  const [currentTitle, setCurrentTitle] = useState("Personal Information");
+  const [currentTitle, setCurrentTitle] = useState("Parent Information");
 
   const nextStep = () => {
     if (step < totalSteps) {
@@ -50,49 +35,25 @@ const RegisterMemberComponent = () => {
     }
   };
 
-  const MAX_FILE_SIZE = 1000000; // 1MB
-  const validFileExtensions = [
-    "image/jpg",
-    "image/gif",
-    "image/jfif",
-    "image/png",
-    "image/jpeg",
-    "image/svg",
-    "image/webp",
-  ];
-
   const ParentRegistrationSchema = Yup.object()
     .shape({
       parent: Yup.object().shape({
-        firstName: Yup.string().required("First name is required!"),
-        lastName: Yup.string().required("Last name is required!"),
+        firstName: Yup.string().required("First Name is required"),
+        lastName: Yup.string().required("Last Name is required"),
         email: Yup.string()
-          .email("Invalid email address!")
-          .required("Email is required!"),
-        gender: Yup.string().required("Gender is required!"),
-        roleInChurch: Yup.string().required(
-          "Please select your role in church!"
-        ),
-        departmentInChurch: Yup.string().required(
-          "Please select your department in church!"
-        ),
-        phoneNumberPrimary: Yup.string().required(
-          "Primary phone number is required!"
-        ),
+          .email("Invalid email")
+          .required("Email is required"),
+        gender: Yup.string(),
+        roleInChurch: Yup.string().required("Role in church is required"),
+        departmentInChurch: Yup.string(),
+        ministry: Yup.string(),
+        phoneNumberPrimary: Yup.string().required("Phone Number is required"),
         phoneNumberSecondary: Yup.string(),
-        idName: Yup.string().required(
-          "Please select a means of Identification!"
-        ),
-
-        idNumber: Yup.string().required("Please enter your ID Number!"),
-        idPhoto: Yup.string().required("Please upload a photo"),
-        // .test("fileSize", "File Size is too large", (value: any) => {
-        //   if (value) {
-        //     console.log("value.size", value.size <= 1024 * 1024);
-        //     return value.size <= 1024 * 1024;
-        //   }
-        //   return true;
-        // })
+        idType: Yup.string().required("ID Type is required"),
+        idNumber: Yup.string().required("ID Number is required"),
+        idPhoto: Yup.string(),
+        photograph: Yup.string().required("Photograph is required"),
+        address: Yup.string().required("Address is required"),
       }),
     })
     .nullable();
@@ -102,28 +63,17 @@ const RegisterMemberComponent = () => {
       child: Yup.array()
         .of(
           Yup.object().shape({
-            firstName: Yup.string().required("Child First name is required!"),
-            lastName: Yup.string().required("Last name is required!"),
-            gender: Yup.string().required("Gender is required!"),
-            dateOfBirth: Yup.date().required("Date of birth is required!"),
-            ageGroup: Yup.string().required("Age group is required!"),
-            photograph: Yup.mixed().required("Photograph is required!"),
-            // .test(
-            //   "fileSize",
-            //   "Image size should be less than 1MB",
-            //   (value: any) => {
-            //     return value && value.size <= 1000000;
-            //   }
-            // )
-            // .test("fileType", "Only images are allowed", (value: any) => {
-            //   return value && value.type.includes("image");
-            // }),
-
+            firstName: Yup.string().required("First Name is required"),
+            lastName: Yup.string().required("Last Name is required"),
+            ageGroup: Yup.string().required("Age Group is required"),
+            gender: Yup.string().required("Gender is required"),
+            dateOfBirth: Yup.string().required("Date of Birth is required"),
+            photograph: Yup.string().required("Photograph is required"),
             relationshipWithChildType: Yup.string().required(
-              "Type of relationship with child is required!"
+              "Relationship with Child Type is required"
             ),
             relationshipWithChild: Yup.string().required(
-              "Relationship with child is required!"
+              "Relationship with Child is required"
             ),
             specialNeeds: Yup.string(),
           })
@@ -137,56 +87,32 @@ const RegisterMemberComponent = () => {
       caregiver: Yup.array()
         .of(
           Yup.object().shape({
-            firstName: Yup.string().required("First name is required!"),
-            lastName: Yup.string().required("Last name is required!"),
+            firstName: Yup.string().required("First Name is required"),
+            lastName: Yup.string().required("Last Name is required"),
             email: Yup.string()
-              .email("Invalid email address!")
-              .required("Email is required!"),
-            gender: Yup.string().required("Gender is required!"),
+              .email("Invalid email")
+              .required("Email is required"),
+            gender: Yup.string().required("Gender is required"),
+            roleInChurch: Yup.string().required("Role in church is required"),
+            departmentInChurch: Yup.string(),
+            ministry: Yup.string(),
             phoneNumberPrimary: Yup.string().required(
-              "Primary phone number is required!"
+              "Phone Number is required"
             ),
             phoneNumberSecondary: Yup.string(),
-            roleInChurch: Yup.string().required(
-              "Please select your role in church!"
-            ),
-            departmentInChurch: Yup.string().required(
-              "Please select your department in church!"
-            ),
             relationshipWithChildType: Yup.string().required(
-              "Type of relationship with child is required!"
+              "Relationship with Child Type is required"
             ),
             relationshipWithChild: Yup.string().required(
-              "Relationship with child is required!"
+              "Relationship with Child is required"
             ),
             caregiverRelationshipTypeWithParent: Yup.string().required(
-              "Type of relationship with parent is required!"
+              "Caregiver Relationship Type with Parent is required"
             ),
             caregiverRelationshipWithParentData: Yup.string().required(
-              "Relationship with parent is required!"
+              "Caregiver Relationship with Parent Data is required"
             ),
-
-            // churchLocation: Yup.string().required(
-            //   "Please select church location!"
-            // ),
-            // churchBranchInLocation: Yup.string().required(
-            //   "Please select the branch in the location selected!"
-            // ),
-            photograph: Yup.string().required("Please upload a photo"),
-
-            // .test(
-            //   "fileSize",
-            //   "File Size is too large",
-            //   (value: any) => {
-            //     if (value) {
-            //       return value.size <= 1024 * 1024;
-            //     }
-            //     return true;
-            //   }
-            // ),
-            // .test("fileType", "Only images are allowed", (value: any) => {
-            //   return value && value.type.includes("image");
-            // }),
+            photograph: Yup.string().required("Photograph is required"),
           })
         )
         .nullable(),
@@ -195,41 +121,98 @@ const RegisterMemberComponent = () => {
 
   const newInfo = {
     child: {
+      id: "",
       firstName: "",
       lastName: "",
       gender: "",
       dateOfBirth: new Date(),
       ageGroup: "",
       photograph: "",
-      relationshipWithChildType: "parent",
-      relationshipWithChild: "mother",
-      parent: 0,
-      caregiver: "",
+      relationshipWithChildType: "",
+      relationshipWithChild: "",
+      parentId: "",
+      caregiverIds: [""],
       specialNeeds: "",
     },
     caregiver: {
+      id: "",
       firstName: "",
       lastName: "",
       email: "",
       gender: "",
       roleInChurch: "",
       departmentInChurch: "",
+      ministry: "",
       phoneNumberPrimary: "",
       phoneNumberSecondary: "",
-      relationshipWithChildType: "parent",
-      relationshipWithChild: "mother",
+      relationshipWithChildType: "",
+      relationshipWithChild: "",
       caregiverRelationshipTypeWithParent: "",
       caregiverRelationshipWithParentData: "",
       // churchLocation: "",
       // churchBranchInLocation: "",
       photograph: "",
-      type: CareGiverType.grandDad,
     },
   };
 
+  const initialValues: RegistrationForm = {
+    parent: {
+      id: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      gender: "",
+      roleInChurch: "",
+      ministry: "",
+      departmentInChurch: "",
+      phoneNumberPrimary: "",
+      phoneNumberSecondary: "",
+      idType: "",
+      idNumber: "",
+      idPhoto: "",
+      photograph: "",
+      address: "",
+    },
+    caregiver: [
+      {
+        id: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        gender: "",
+        roleInChurch: "",
+        departmentInChurch: "",
+        ministry: "",
+        phoneNumberPrimary: "",
+        phoneNumberSecondary: "",
+        relationshipWithChildType: "",
+        relationshipWithChild: "",
+        caregiverRelationshipTypeWithParent: "",
+        caregiverRelationshipWithParentData: "",
+        photograph: "",
+      },
+    ],
+    child: [
+      {
+        id: "",
+        firstName: "",
+        lastName: "",
+        ageGroup: "",
+        gender: "",
+        dateOfBirth: "",
+        photograph: "",
+        relationshipWithChildType: "",
+        relationshipWithChild: "",
+        specialNeeds: "",
+        parentId: "",
+        caregiverIds: "",
+      },
+    ],
+  };
+
   const handleSubmit = async (
-    values: RegistrationFormValues,
-    actions: FormikHelpers<RegistrationFormValues>
+    values: RegistrationForm,
+    actions: FormikHelpers<RegistrationForm>
   ) => {
     console.log("values", values);
     if (step < totalSteps) {
@@ -267,12 +250,18 @@ const RegisterMemberComponent = () => {
   };
 
   useEffect(() => {
-    if (step === 1) {
-      setCurrentTitle("Parent Information");
-    } else if (step === 2) {
-      setCurrentTitle("Child’s Information");
-    } else {
-      setCurrentTitle("Caregiver Information");
+    switch (step) {
+      case 1:
+        setCurrentTitle("Parent Information");
+        break;
+      case 2:
+        setCurrentTitle("Child’s Information");
+        break;
+      case 3:
+        setCurrentTitle("Caregiver Information");
+        break;
+      default:
+        setCurrentTitle("Form");
     }
   }, [step]);
 
@@ -284,59 +273,8 @@ const RegisterMemberComponent = () => {
       </div>
 
       <main className="form_container flex flex-col items-center w-full h-full">
-        <Formik<RegistrationFormValues>
-          initialValues={{
-            parent: {
-              firstName: "",
-              lastName: "",
-              email: "",
-              gender: Gender.male,
-              roleInChurch: "",
-              departmentInChurch: "",
-              phoneNumberPrimary: "",
-              phoneNumberSecondary: "",
-              idName: "",
-              idNumber: "",
-              idPhoto: "",
-              type: ParentType.biological,
-            },
-            child: [
-              {
-                firstName: "",
-                lastName: "",
-                gender: "",
-                dateOfBirth: new Date(),
-                ageGroup: "",
-                photograph: "", // Image data for the photograph
-                relationshipWithChildType: "parent",
-                relationshipWithChild: "mother",
-                parent: 0,
-                caregiver: "",
-                specialNeeds: "",
-                isCheckedIn: false, // Add the missing property
-              },
-            ],
-            caregiver: [
-              {
-                firstName: "",
-                lastName: "",
-                email: "",
-                gender: "",
-                roleInChurch: "",
-                departmentInChurch: "",
-                phoneNumberPrimary: "",
-                phoneNumberSecondary: "",
-                relationshipWithChildType: "parent",
-                relationshipWithChild: "mother",
-                caregiverRelationshipTypeWithParent: "",
-                caregiverRelationshipWithParentData: "",
-                // churchLocation: "",
-                // churchBranchInLocation: "",
-                photograph: "",
-                type: CareGiverType.grandDad, // Compulsory if relationship with parent is 'Others'
-              },
-            ],
-          }}
+        <Formik<RegistrationForm>
+          initialValues={initialValues}
           validationSchema={
             step == 1
               ? ParentRegistrationSchema
@@ -349,7 +287,7 @@ const RegisterMemberComponent = () => {
         >
           {({ values, errors, touched, isSubmitting }) => (
             <Form className="form">
-              <div className="steps mb-2 w-16">
+              <div className="steps mb-2 w-18">
                 Step {step}/{totalSteps}
               </div>
               <FormHeader title={currentTitle} />

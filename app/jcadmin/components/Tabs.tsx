@@ -1,9 +1,14 @@
 import React, { useState } from "react";
-import { HomeIcon, UserIcon } from "@heroicons/react/solid";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  IconDefinition,
+  faHome,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 
 const tabs = [
-  { name: "Home", icon: HomeIcon },
-  { name: "Profile", icon: UserIcon },
+  { name: "Home", icon: { faHome } },
+  { name: "Profile", icon: { faUser } },
   //{ name: "Settings", icon: SettingsIcon },
 ];
 
@@ -23,7 +28,10 @@ const Tabs = () => {
                 : "text-gray-600 hover:text-blue-600"
             }`}
           >
-            <tab.icon className="w-5 h-5 mr-1" />
+            <FontAwesomeIcon
+              icon={tab.icon as unknown as IconDefinition}
+              className="w-5 h-5 mr-1"
+            />
             {tab.name}
           </button>
         ))}

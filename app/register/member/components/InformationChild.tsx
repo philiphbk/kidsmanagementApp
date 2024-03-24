@@ -1,12 +1,6 @@
-import { ChangeEvent, useState, useEffect } from "react";
+import { ChangeEvent, useState } from "react";
 
-import {
-  ErrorMessage,
-  Field,
-  FormikErrors,
-  FormikTouched,
-  useFormikContext,
-} from "formik";
+import { ErrorMessage, Field, useFormikContext } from "formik";
 
 import {
   ageGroupData,
@@ -14,12 +8,13 @@ import {
   relationshipData,
   relationshipTypeData,
 } from "@/lib/data/dummy-data";
-import { Child } from "@/lib/definitions/form-interfaces";
+import { ChildForm, RegistrationForm } from "@/lib/definitions/form-interfaces";
 
 import ImageFileUploader from "../../components/ImageFileUploader";
 
 const ChildComponent = ({ index }: { index: number }) => {
-  const { setFieldValue, values, errors, touched } = useFormikContext<Child>();
+  const { setFieldValue, values, errors, touched } =
+    useFormikContext<RegistrationForm>();
   const [currentType, setCurrentType] = useState("parent");
   const [otherType, setOtherType] = useState({
     status: false,
@@ -34,9 +29,7 @@ const ChildComponent = ({ index }: { index: number }) => {
       setOtherType({ ...otherType, status: false });
       setFieldValue(`child[${index}].relationshipWithChild`, "");
       setFieldValue(name, value);
-    }
-
-    if (id.includes("childGuardian")) {
+    } else if (id.includes("childGuardian")) {
       if (value === "other") {
         setOtherType({ ...otherType, status: true });
         setFieldValue(`child[${index}].relationshipWithChildType`, "guardian");
@@ -131,7 +124,7 @@ const ChildComponent = ({ index }: { index: number }) => {
       {/* photograph */}
       <div className="input_group">
         <label htmlFor={`child[${index}].photograph`}>
-          Upload a clear photograph (MaxSize: 1MB)
+          Upload a clear photograph
         </label>
         <ImageFileUploader
           id={`child[${index}].photograph`}
@@ -194,7 +187,7 @@ const ChildComponent = ({ index }: { index: number }) => {
           <label htmlFor={`child[${index}].relationshipWithChild`}>
             Specify Relationship
           </label>
-    
+
           <Field
             name="childGuardian"
             id="childGuardian"

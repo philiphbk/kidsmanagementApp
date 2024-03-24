@@ -8,18 +8,38 @@ export default async function handler(
 ) {
   const { method, body } = req;
   const { id, ...updateData } = body;
+
+  const { idCaregiver } = req.query;
+  // const idsArray = (idCaregiver as string).split(",");
+
   const connection = await connectWithRetry();
 
   const sqlQuery = `
   SELECT careGiver.firstName, careGiver.lastName
   FROM careGiver
   JOIN child ON CONCAT(careGiver.firstName, careGiver.lastName) = child.parent;
-`;
+  `;
 
   try {
     switch (method) {
       case "GET":
-        const [rows] = await connection.execute("SELECT * FROM careGiver", []);
+        let rows: any = [];
+        let sqlQuery = "";
+
+        if (idCaregiver) {
+          // const placeholders = idsArray
+          //   .map((_: any, i: number) => `$${i + 1}`)
+          //   .join(","); // Create placeholders for parameterized query
+          // sqlQuery = `SELECT * FROM careGiver WHERE id IN (${placeholders})`;
+
+          sqlQuery = `SELECT * FROM careGiver WHERE id = (${idCaregiver})`;
+          //[rows] = await connection.execute(sqlQuery, placeholders);
+          [rows] = await connection.execute(sqlQuery, []);
+        } else {
+          sqlQuery = "SELECT * FROM careGiver";
+          [rows] = await connection.execute(sqlQuery, []);
+        }
+
         connection.release();
         res.status(200).json(rows);
         break;
@@ -50,7 +70,6 @@ export default async function handler(
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   } finally {
-    // Ensure the connection is always released
     if (connection && connection.release) connection.release();
   }
 }

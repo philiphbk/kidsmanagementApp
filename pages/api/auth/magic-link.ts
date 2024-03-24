@@ -1,22 +1,24 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import nodemailer from "nodemailer";
 import jwt from "jwt-simple";
-import { getSession, useSession } from "next-auth/react";
-import User from "@/lib/definitions/user";
+import User from "./user";
+import dotenv from "dotenv";
 
-const SECRET_KEY = "secret"; // Use a secure, unique secret key.
+dotenv.config();
 
 async function sendMagicLink(email: string) {
-
-  const token = jwt.encode({ email, exp: Date.now() + 360000 }, SECRET_KEY); // Token expires in 1 hour.
+  const secretKey = process.env.SECRET_KEY || "";
+  const user_email = process.env.USER_EMAIL || "";
+  const user_password = process.env.USER_PASSWORD || "";
+  const token = jwt.encode({ email, exp: Date.now() + 360000 }, secretKey); // Token expires in 1 hour.
   const link = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback?token=${token}`;
 
   // Configure Nodemailer
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "philipfajorin@gmail.com", // Your Gmail address
-      pass: "erctdszgweijuxdb", // Your Gmail password
+      user: user_email, // Your Gmail address
+      pass: user_password, // Your Gmail password
     },
   });
 
@@ -39,7 +41,6 @@ const magicLinkHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!user) {
     return res.status(404).json({ error: "User not found" });
   }
-
 
   await sendMagicLink(email);
   res.status(200).json({ message: "Magic link sent." });
