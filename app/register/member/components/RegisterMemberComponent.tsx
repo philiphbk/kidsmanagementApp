@@ -202,7 +202,7 @@ const RegisterMemberComponent = () => {
         relationshipWithChild: "",
         specialNeeds: "",
         parentId: "",
-        caregiverIds: [""],
+        caregiverIds: "",
       },
     ],
   };

@@ -45,6 +45,7 @@ const tabs = [
 ];
 
 const ChildDetailsModal: React.FC<ChildDetailsModalProps> = ({
+  id,
   firstName,
   lastName,
   ageGroup,
@@ -69,19 +70,25 @@ const ChildDetailsModal: React.FC<ChildDetailsModalProps> = ({
     }
   };
 
+  let idValue = id;
   useEffect(() => {
-    const fetchParents = async () => {
-      const result = await axios("/api/parents");
+    const fetchParents = async (idValue: string) => {
+      const result = await axios("/api/child/parent", { params: { idValue } });
       setParents(result.data);
     };
 
-    const fetchCaregivers = async () => {
-      const result = await axios("/api/caregiver");
-      setCaregivers(result.data);
+    const fetchCaregivers = async (id: string) => {
+      const result = await axios("/api/child/caregiver", {
+        params: { idValue },
+      });
+      const caregiverIds = result.data.split(",");
+      caregiverIds.forEach((caregiver: Caregiver) => {
+        setCaregivers(caregiverIds);
+      });
     };
 
-    fetchParents();
-    fetchCaregivers();
+    fetchParents(idValue);
+    fetchCaregivers(idValue);
   }, []);
 
   return (
