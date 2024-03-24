@@ -9,8 +9,8 @@ export default async function handler(
   const { method, body } = req;
   const { id, ...updateData } = body;
 
-  const { caregiverIds } = req.query;
-  const idsArray = (caregiverIds as string).split(",");
+  const { idCaregiver } = req.query;
+  // const idsArray = (idCaregiver as string).split(",");
 
   const connection = await connectWithRetry();
 
@@ -24,15 +24,20 @@ export default async function handler(
     switch (method) {
       case "GET":
         let rows: any = [];
+        let sqlQuery = "";
 
-        if (caregiverIds) {
-          const placeholders = idsArray
-            .map((_: any, i: number) => `$${i + 1}`)
-            .join(","); // Create placeholders for parameterized query
-          const query = `SELECT * FROM caregivers_table WHERE id IN (${placeholders})`;
-          [rows] = await connection.execute(query, placeholders);
+        if (idCaregiver) {
+          // const placeholders = idsArray
+          //   .map((_: any, i: number) => `$${i + 1}`)
+          //   .join(","); // Create placeholders for parameterized query
+          // sqlQuery = `SELECT * FROM careGiver WHERE id IN (${placeholders})`;
+
+          sqlQuery = `SELECT * FROM careGiver WHERE id = (${idCaregiver})`;
+          //[rows] = await connection.execute(sqlQuery, placeholders);
+          [rows] = await connection.execute(sqlQuery, []);
         } else {
-          [rows] = await connection.execute("SELECT * FROM careGiver", []);
+          sqlQuery = "SELECT * FROM careGiver";
+          [rows] = await connection.execute(sqlQuery, []);
         }
 
         connection.release();

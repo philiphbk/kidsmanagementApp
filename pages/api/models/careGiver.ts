@@ -6,21 +6,6 @@ const buildCareGiver = () => {
   return function makeCareGiver(careGiver: CaregiverForm) {
     const id = uuidv4();
     const caregiver = { ...careGiver, id };
-    // const {
-    //   firstName,
-    //   lastName,
-    //   email,
-    //   gender,
-    //   roleInChurch,
-    //   departmentInChurch,
-    //   phoneNumberPrimary,
-    //   phoneNumberSecondary,
-    //   relationshipWithChild,
-    //   relationshipWithChildType,
-    //   caregiverRelationshipTypeWithParent,
-    //   caregiverRelationshipWithParentData,
-    //   photograph,
-    // } = careGiver;
 
     if (!caregiver.firstName) {
       throw new Error("Caregiver must have a first name.");
@@ -43,9 +28,9 @@ const buildCareGiver = () => {
     if (!caregiver.roleInChurch) {
       throw new Error("CareGiver must have a role in church.");
     }
-    if (caregiver.departmentInChurch) {
-      throw new Error("CareGiver must have a department in church.");
-    }
+    // if (caregiver.departmentInChurch) {
+    //   throw new Error("CareGiver must have a department in church.");
+    // }
     if (!caregiver.phoneNumberPrimary) {
       throw new Error("CareGiver must have a primary phone number.");
     }
@@ -70,6 +55,7 @@ const buildCareGiver = () => {
       getGender: () => caregiver.gender,
       getRoleInChurch: () => caregiver.roleInChurch,
       getDepartmentInChurch: () => caregiver.departmentInChurch,
+      getMinistry: () => caregiver.ministry,
       getPhoneNumberPrimary: () => caregiver.phoneNumberPrimary,
       getPhoneNumberSecondary: () => caregiver.phoneNumberSecondary,
       getRelationshipWithChild: () => caregiver.relationshipWithChild,
@@ -89,6 +75,7 @@ const buildCareGiver = () => {
           gender: caregiver.gender,
           roleInChurch: caregiver.roleInChurch,
           departmentInChurch: caregiver.departmentInChurch,
+          ministry: caregiver.ministry,
           phoneNumberPrimary: caregiver.phoneNumberPrimary,
           phoneNumberSecondary: caregiver.phoneNumberSecondary,
           relationshipWithChild: caregiver.relationshipWithChild,

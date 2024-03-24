@@ -15,20 +15,20 @@ export default async function handler(
   FROM parent
   JOIN child ON CONCAT(parent.firstName, parent.lastName) = child.parent;
 `;
-  const { parentId } = req.query;
+  const { idParent } = req.query;
 
   try {
     switch (method) {
       case "GET":
         let rows: any = [];
+        let sqlQuery = "";
 
-        if (parentId) {
-          [rows] = await connection.execute(
-            `SELECT * FROM parent WHERE id = $1`,
-            [parentId]
-          );
+        if (idParent) {
+          sqlQuery = `SELECT * FROM parent WHERE id = ?`;
+          [rows] = await connection.execute(sqlQuery, [idParent as string]);
         } else {
-          [rows] = await connection.execute("SELECT * FROM parent", []);
+          sqlQuery = "SELECT * FROM parent";
+          [rows] = await connection.execute(sqlQuery, []);
         }
         connection.release();
         res.status(200).json(rows);

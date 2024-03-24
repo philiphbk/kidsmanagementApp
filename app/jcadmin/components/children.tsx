@@ -34,7 +34,6 @@ const ChildrenList = () => {
         const result = await axios(
           `/api/child${searchTerm ? `?searchWord=${searchTerm}` : ""}`
         );
-        console.log(result.data, "result.data");
         setDisplayedChildren(result.data);
       } catch (error) {
         console.error("Failed to fetch data:", error);
