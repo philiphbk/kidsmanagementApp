@@ -9,12 +9,6 @@ const connectionOptions = {
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  // port: Number(process.env.DB_PORT),
-  // host: "localhost",
-  // user: "root",
-  // password: "95@SeyiDami",
-  // database: "kidsappdb",
-  // port: 3306,
   waitForConnections: true,
   connectionLimit: 10,
   connectTimeout: 100000000,
@@ -134,6 +128,6 @@ export const db = (tableName: string) => {
     getOne,
     create,
     getByEmail,
-    textSearch
+    textSearch,
   };
 };

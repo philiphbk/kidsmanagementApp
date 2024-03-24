@@ -50,7 +50,6 @@ export default async function handler(
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   } finally {
-    // Ensure the connection is always released
     if (connection && connection.release) connection.release();
   }
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useFormikContext } from "formik";
 import { Parent } from "@/lib/definitions/form-interfaces";
 import axios from "axios";
@@ -26,7 +26,6 @@ const ImageFileUploader: React.FC<ImageInputUploaderProps> = ({
         const response = await axios.post("/api/upload", formData);
 
         const data = response.data;
-        console.log(data && (data.paths[0] as string));
         if (data) {
           let newdata = data.paths[0] as string;
           newdata = newdata.replaceAll("\\", "/");
@@ -52,12 +51,6 @@ const ImageFileUploader: React.FC<ImageInputUploaderProps> = ({
     }
   };
 
-  // useEffect(() => {
-  //   if (imageData) {
-  //     formikContext.setFieldValue(id, imageData);
-  //   }
-  // }, [imageData, id, formikContext]);
-
   return (
     <div className="input_group">
       <input
@@ -68,17 +61,12 @@ const ImageFileUploader: React.FC<ImageInputUploaderProps> = ({
         aria-label={ariaLabel}
         onChange={handleFileChange}
         aria-placeholder={ariaLabel}
-        className="hod_input"
-        style={{
-          paddingTop: "0.875rem",
-          paddingBottom: "0.875rem",
-        }}
+        className="hod_input px-3 py-3"
       />
       <span className="input_group__label">
         {imageData && (
           <Image
             src={`/../../..${imageData}`}
-            //src="../../../public/upload/children-bg.jpg"
             alt="Uploaded"
             width={90}
             height={90}

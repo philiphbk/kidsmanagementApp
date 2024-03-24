@@ -1,9 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { signIn } from "next-auth/react";
 import * as jwt from "jsonwebtoken";
 import { db } from "../db";
 
-const SECRET_KEY = "wowthisisabadsecret12345"; // Same as used above.
+const secretKey = process.env.SECRET_KEY || "";
 
 // Define the JWT payload interface
 interface JwtPayload {
@@ -16,9 +15,10 @@ const callbackHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { email } = req.body;
   try {
     // Verify the token and assert its type
-    const decoded = jwt.verify(token as string, SECRET_KEY) as JwtPayload;
+    const decoded = jwt.verify(token as string, secretKey) as JwtPayload;
 
-    if (Date.now() >= decoded.exp * 1000) { // Note: JWT exp is in seconds
+    if (Date.now() >= decoded.exp * 1000) {
+      // Note: JWT exp is in seconds
       return res.status(401).end("Token expired");
     }
 
@@ -41,7 +41,7 @@ const callbackHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     res.redirect("/jcadmin/overview");
   } catch (error) {
-    console.error("JWT Verification Error:", error); 
+    console.error("JWT Verification Error:", error);
     res.status(401).end("Invalid token");
   }
 };
@@ -49,11 +49,10 @@ const callbackHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 async function signToken(user: object): Promise<{ access_token: string }> {
   const payload = {
     user,
-  };
-  const secret = "wowthisisabadsecret12345"; //this.config.get('JWT_SECRET');
+  }; //this.config.get('JWT_SECRET');
 
   try {
-    const token = await jwt.sign(payload, secret, { expiresIn: "14mins" });
+    const token = await jwt.sign(payload, secretKey, { expiresIn: "14mins" });
     return {
       access_token: token,
     };
@@ -65,8 +64,7 @@ async function signToken(user: object): Promise<{ access_token: string }> {
 
 function decodeToken(token: string): any {
   try {
-    const secret = "wowthisisabadsecret12345";
-    const decoded = jwt.verify(token, secret);
+    const decoded = jwt.verify(token, secretKey);
     return decoded;
   } catch (error) {
     console.log("error", error);

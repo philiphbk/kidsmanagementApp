@@ -4,7 +4,12 @@
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { HomeIcon, UserIcon } from "@heroicons/react/solid";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  IconDefinition,
+  faHome,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import tempimage from "@/public/upload/pexels-binyamin-mellish-186077.jpg";
 
 interface ChildDetailsModalProps {
@@ -34,8 +39,8 @@ interface Caregiver {
 }
 
 const tabs = [
-  { name: "Drop-off / Pick Up", icon: HomeIcon },
-  { name: "Activity Log", icon: UserIcon },
+  { name: "Drop-off / Pick Up", icon: { faHome } },
+  { name: "Activity Log", icon: { faUser } },
   // { name: 'Settings', icon: SettingsIcon },
 ];
 
@@ -120,7 +125,10 @@ const ChildDetailsModal: React.FC<ChildDetailsModalProps> = ({
                         : "text-gray-600 hover:text-blue-600"
                     }`}
                   >
-                    <tab.icon className="w-5 h-5 mr-1" />
+                    <FontAwesomeIcon
+                      icon={tab.icon as unknown as IconDefinition}
+                      className="w-5 h-5 mr-1"
+                    />
                     {tab.name}
                   </button>
                 ))}
