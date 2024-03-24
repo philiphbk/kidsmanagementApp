@@ -2,14 +2,6 @@ import Link from "next/link";
 import HODLogo from "@/public/images/hodlogo1.png";
 import Image from "next/image";
 
-// import { Metadata } from "next";
-
-// export const meta: Metadata = {
-//   title: "Welcome Register",
-//   description: "Register your child(ren) for Junior Church",
-//   icons: "@/public/images/hodlogo1.png"
-// };
-
 export default function Register() {
   return (
     <div className="success_container h-screen flex flex-col justify-center my-auto py-20">
@@ -19,7 +11,7 @@ export default function Register() {
       <h1 className="flex items-center justify-center mt-8 mb-12 font-extrabold text-4xl sm:text-[2.75rem] md:text-6xl leading-[2.75rem] text-center text-[#273472]">
         Welcome to <br />
         Junior Church
-        <br/> Kids App
+        <br /> Kids App
       </h1>
       <div className="flex flex-col sm:flex-row gap-x-8 gap-y-6 items-center justify-center">
         <Link

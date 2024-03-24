@@ -1,177 +1,240 @@
 export const newChildTitle = [
-  "First", "Second", "Third", "Fourth", "Fifth",
-  "Sixth", "Seventh", "Eight", "Ninth", "Tenth",
-  "Eleventh", "Twelfth", "Thirteenth", "Fourteenth", "Fifteenth"
-]
+  "First",
+  "Second",
+  "Third",
+  "Fourth",
+  "Fifth",
+  "Sixth",
+  "Seventh",
+  "Eight",
+  "Ninth",
+  "Tenth",
+  "Eleventh",
+  "Twelfth",
+  "Thirteenth",
+  "Fourteenth",
+  "Fifteenth",
+];
 
 export const genderData = [
   {
     id: "male",
-    value: "Male"
+    value: "Male",
   },
   {
     id: "female",
-    value: "Female"
+    value: "Female",
   },
-]
+];
 
 export const roleInChurchData = [
   {
     id: "pastor",
-    value: "Pastor"
+    value: "Pastor",
   },
   {
     id: "director",
-    value: "Director"
+    value: "Director",
   },
   {
     id: "hod",
-    value: "HOD"
+    value: "HOD",
   },
   {
     id: "asst_hod",
-    value: "Assistant HOD"
+    value: "Assistant HOD",
+  },
+  {
+    id: "worker",
+    value: "Worker",
   },
   {
     id: "member",
-    value: "Member"
+    value: "Member",
   },
   {
     id: "visitor",
-    value: "Visitor"
+    value: "Visitor",
   },
-]
+];
+
+export const ministryData = [
+  {
+    id: "evangelism&Mission",
+    value: "Evangelism & Mission",
+  },
+  {
+    id: "smallGroup",
+    value: "Small Group",
+  },
+  {
+    id: "worship&Communication",
+    value: "Worship & Communication",
+  },
+  {
+    id: "assimilation",
+    value: "Assimilation",
+  },
+  {
+    id: "fellowship",
+    value: "Fellowship",
+  },
+  {
+    id: "hodAcademy",
+    value: "HOD Academy",
+  },
+  {
+    id: "prayer",
+    value: "Prayer",
+  },
+  {
+    id: "stewardship",
+    value: "Stewardship",
+  },
+];
 
 export const departmentInChurchData = [
   {
     id: "1",
-    value: "Audio"
+    value: "Audio",
   },
   {
     id: "2",
-    value: "Ambience & Aesthetics"
+    value: "Ambience & Aesthetics",
   },
   {
     id: "3",
-    value: "BigDaddy's House"
+    value: "BigDaddy's House",
   },
   {
     id: "4",
-    value: "Car Park"
+    value: "Car Park",
   },
   {
     id: "5",
-    value: "Camp David"
+    value: "Camp David",
   },
   {
     id: "6",
-    value: "Drama"
+    value: "Drama",
   },
   {
     id: "7",
-    value: "Directorate"
+    value: "Directorate",
   },
   {
     id: "8",
-    value: "Evangelism"
+    value: "Evangelism",
   },
   {
     id: "9",
-    value: "Focused Groups"
+    value: "Focused Groups",
   },
   {
     id: "10",
-    value: "Follow Up"
+    value: "Follow Up",
   },
   {
     id: "11",
-    value: "Greeters"
+    value: "Greeters",
   },
   {
     id: "12",
-    value: "HOD Academy"
+    value: "HOD Academy",
   },
   {
     id: "13",
-    value: "Information & Data Insight"
+    value: "Information & Data Insight",
   },
   {
     id: "14",
-    value: "iForum"
+    value: "iForum",
   },
   {
     id: "15",
-    value: "Isaachar Team"
+    value: "Isaachar Team",
   },
   {
     id: "16",
-    value: "Junior Church"
+    value: "Junior Church",
   },
   {
     id: "17",
-    value: "Media"
+    value: "Media",
   },
   {
     id: "18",
-    value: "Missions"
+    value: "Missions",
   },
   {
     id: "19",
-    value: "Missions"
+    value: "Missions",
   },
   {
     id: "20",
-    value: "Publicity"
+    value: "Publicity",
   },
   {
     id: "21",
-    value: "Prayer"
-  }, {
+    value: "Prayer",
+  },
+  {
     id: "22",
-    value: "Protocol"
-  }, {
+    value: "Protocol",
+  },
+  {
     id: "23",
-    value: "Pastorate"
-  }, {
+    value: "Pastorate",
+  },
+  {
     id: "24",
-    value: "Partnership"
-  }, {
+    value: "Partnership",
+  },
+  {
     id: "25",
-    value: "River of Life"
-  }, {
+    value: "River of Life",
+  },
+  {
     id: "26",
-    value: "Sanitation"
-  }, {
+    value: "Sanitation",
+  },
+  {
     id: "27",
-    value: "Security"
-  }, {
+    value: "Security",
+  },
+  {
     id: "28",
-    value: "Social Media & Communication"
-  }, {
+    value: "Social Media & Communication",
+  },
+  {
     id: "29",
-    value: "Tech Team"
-  }, {
+    value: "Tech Team",
+  },
+  {
     id: "30",
-    value: "TSOM"
-  }, {
+    value: "TSOM",
+  },
+  {
     id: "31",
-    value: "Treasury"
-  }, {
+    value: "Treasury",
+  },
+  {
     id: "32",
-    value: "Transportation"
-  }, {
+    value: "Transportation",
+  },
+  {
     id: "33",
-    value: "Ushering"
+    value: "Ushering",
   },
   {
     id: "34",
-    value: "Visitation"
+    value: "Visitation",
   },
   {
     id: "35",
-    value: "Welfare"
-  }
-]
+    value: "Welfare",
+  },
+];
 
 export const meansOfId = [
   {
@@ -191,25 +254,25 @@ export const meansOfId = [
 export const ageGroupData = [
   {
     id: "creche",
-    value: "Creche (6 months - 1 year)"
+    value: "Creche (6 months - 1 year)",
   },
   {
     id: "age_1_3",
-    value: "Ages 1 - 3"
+    value: "Ages 1 - 3",
   },
   {
     id: "age_4_5",
-    value: "Ages 4 - 5"
+    value: "Ages 4 - 5",
   },
   {
     id: "age_6_8",
-    value: "Ages 6 - 8"
+    value: "Ages 6 - 8",
   },
   {
     id: "age_9_12",
-    value: "Ages 9 - 12"
+    value: "Ages 9 - 12",
   },
-]
+];
 
 export const relationshipTypeData = [
   {
@@ -220,7 +283,7 @@ export const relationshipTypeData = [
     id: "guardian",
     type: "Guardian",
   },
-]
+];
 
 export const caregiverRelationshipTypeWithParent = [
   {
@@ -231,8 +294,7 @@ export const caregiverRelationshipTypeWithParent = [
     id: "relative & friend",
     type: "Relative & Friend",
   },
-]
-
+];
 
 export const caregiverRelationshipWithParentData = [
   {
@@ -240,48 +302,48 @@ export const caregiverRelationshipWithParentData = [
     relationship: [
       {
         id: "husband",
-        value: "Husband"
+        value: "Husband",
       },
       {
         id: "wife",
-        value: "Wife"
+        value: "Wife",
       },
-    ]
+    ],
   },
   {
     type: "relative & friend",
     relationship: [
       {
         id: "brother",
-        value: "Brother"
+        value: "Brother",
       },
       {
         id: "sister",
-        value: "Sister"
+        value: "Sister",
       },
       {
         id: "uncle",
-        value: "Uncle"
+        value: "Uncle",
       },
       {
         id: "aunt",
-        value: "Aunt"
+        value: "Aunt",
       },
       {
         id: "grandDad",
-        value: "Grand Dad"
+        value: "Grand Dad",
       },
       {
         id: "grandMom",
-        value: "Grand Mom"
+        value: "Grand Mom",
       },
       {
         id: "friend",
-        value: "Friend"
+        value: "Friend",
       },
-    ]
+    ],
   },
-]
+];
 
 export const relationshipData = [
   {
@@ -289,48 +351,48 @@ export const relationshipData = [
     relationship: [
       {
         id: "father",
-        value: "Father"
+        value: "Father",
       },
       {
         id: "mother",
-        value: "Mother"
+        value: "Mother",
       },
-    ]
+    ],
   },
   {
     type: "guardian",
     relationship: [
       {
         id: "grand_dad",
-        value: "Grand Dad"
+        value: "Grand Dad",
       },
       {
         id: "grand_mom",
-        value: "Grand Mum"
+        value: "Grand Mum",
       },
       {
         id: "brother",
-        value: "Brother"
+        value: "Brother",
       },
       {
         id: "sister",
-        value: "Sister"
+        value: "Sister",
       },
       {
         id: "uncle",
-        value: "Uncle"
+        value: "Uncle",
       },
       {
         id: "aunt",
-        value: "Aunt"
+        value: "Aunt",
       },
       {
         id: "other",
-        value: "Other"
+        value: "Other",
       },
-    ]
+    ],
   },
-]
+];
 
 export const locationTypeData = [
   {
@@ -345,7 +407,7 @@ export const locationTypeData = [
     id: "united_kingdom",
     value: "United Kingdom",
   },
-]
+];
 
 export const branchAndCenterData = [
   {
@@ -353,31 +415,30 @@ export const branchAndCenterData = [
     branches: [
       {
         id: "ikeja",
-        value: "Ikeja"
+        value: "Ikeja",
       },
       {
         id: "victoria_island",
-        value: "Victoria Island"
+        value: "Victoria Island",
       },
-    ]
+    ],
   },
   {
     locationId: "Ogun",
     branches: [
       {
         id: "arepo",
-        value: "Arepo"
+        value: "Arepo",
       },
-    ]
+    ],
   },
   {
     locationId: "United_kingdom",
     branches: [
       {
         id: "manchester",
-        value: "Manchester"
+        value: "Manchester",
       },
-    ]
+    ],
   },
-]
-
+];

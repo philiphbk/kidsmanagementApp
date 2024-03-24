@@ -8,6 +8,7 @@ export default async function handler(
 ) {
   const { method, body } = req;
   const { searchWord } = req.query;
+  const { idValue } = req.query;
 
   const connection = await connectWithRetry();
 
@@ -20,6 +21,16 @@ export default async function handler(
         if (searchWord) {
           sqlQuery = `SELECT * FROM child WHERE firstName = ? OR lastName = ?`;
           [rows] = await connection.execute(sqlQuery, [searchWord, searchWord]);
+        } else if (`parent/$[idValue]`) {
+          [rows] = await connection.execute(
+            `SELECT parentId FROM child WHERE id = $1`,
+            [idValue]
+          );
+        } else if (`caregiver/$[idValue]`) {
+          [rows] = await connection.execute(
+            `SELECT caregiverIds FROM child WHERE id = $1`,
+            [idValue]
+          );
         } else {
           sqlQuery = "SELECT * FROM child LIMIT 10";
           [rows] = await connection.execute(sqlQuery);

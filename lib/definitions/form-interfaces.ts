@@ -4,13 +4,13 @@ export interface FormHeaderType {
 }
 
 export enum Gender {
-  male = 'male',
-  female = 'female'
+  male = "male",
+  female = "female",
 }
 
 export enum ParentType {
-  biological = 'biological',
-  guardian = 'guardian'
+  biological = "biological",
+  guardian = "guardian",
 }
 
 // member registration interface
@@ -25,8 +25,64 @@ export interface CreateParentData {
   phoneNumberSecondary?: string;
   idName: string;
   idNumber: string;
-  idPhoto: any; // Image data for the ID picture
+  idPhoto: any;
   type: ParentType;
+}
+
+export interface ParentForm {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  gender: string;
+  roleInChurch: string;
+  departmentInChurch?: string;
+  ministry?: string;
+  phoneNumberPrimary: string;
+  phoneNumberSecondary?: string;
+  idType: string;
+  idNumber: string;
+  idPhoto: any;
+  photograph: any;
+  address: string;
+}
+
+export interface ChildForm {
+  id: string;
+  firstName: string;
+  lastName: string;
+  ageGroup: string;
+  gender: string;
+  dateOfBirth: string;
+  photograph: any;
+  relationshipWithChildType: string;
+  relationshipWithChild: string;
+  specialNeeds: string;
+  parentId: string;
+  caregiverIds: string;
+}
+
+export interface CaregiverForm {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  gender: string;
+  roleInChurch: string;
+  departmentInChurch: string;
+  phoneNumberPrimary: string;
+  phoneNumberSecondary?: string;
+  relationshipWithChildType: string;
+  relationshipWithChild: string;
+  caregiverRelationshipTypeWithParent: string;
+  caregiverRelationshipWithParentData: string;
+  photograph?: any;
+}
+
+export interface RegistrationForm {
+  parent: ParentForm;
+  caregiver: CaregiverForm[];
+  child: ChildForm[];
 }
 
 export interface Parent extends CreateParentData {
@@ -47,7 +103,6 @@ export interface MySelectComponentProps {
   departmentInChurchData: Department[];
 }
 
-
 export interface Child {
   firstName: string;
   lastName: string;
@@ -64,13 +119,13 @@ export interface Child {
 }
 
 export enum CareGiverType {
-  grandDad = 'grandDad',
-  grandMom = 'grandMom',
-  uncle = 'uncle',
-  aunt = 'aunt',
-  brother = 'brother',
-  sister = 'sister',
-  other = 'other'
+  grandDad = "grandDad",
+  grandMom = "grandMom",
+  uncle = "uncle",
+  aunt = "aunt",
+  brother = "brother",
+  sister = "sister",
+  other = "other",
 }
 
 export interface Caregiver {

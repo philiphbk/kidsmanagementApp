@@ -1,10 +1,12 @@
-import {
-  CreateParentData
-} from "@/lib/definitions/form-interfaces";
+import { v4 as uuidv4 } from "uuid";
+import { ParentForm } from "@/lib/definitions/form-interfaces";
 import { db } from "../db";
 
 const buildMakeParent = () => {
-  return function makeParent(parent: CreateParentData) {
+  return function makeParent(parentInput: ParentForm) {
+    const id = uuidv4();
+    const parent = { ...parentInput, id };
+
     if (parent === undefined) {
       throw new Error("Parent object is required.");
     }
@@ -26,23 +28,27 @@ const buildMakeParent = () => {
     if (!parent.gender) {
       throw new Error("Parent must have a gender.");
     }
-    // if (Object.values(Gender).includes(parent.gender)) {
-    //   throw new Error("Please enter a valid gender.");
-    // }
+    if (!parent.roleInChurch) {
+      throw new Error("Parent must have a role in church.");
+    }
     if (!parent.phoneNumberPrimary) {
       throw new Error("Parent must have a primary phone number.");
     }
-    if (!parent.idName) {
+    if (!parent.idType) {
       throw new Error("Please select a means of identification.");
     }
     if (!parent.idNumber) {
       throw new Error("Please enter the identification number.");
     }
-    if (!parent.idPhoto) {
+    if (parent.idPhoto) {
       throw new Error("Please upload a photo of the identification.");
+    }
+    if (!parent.address) {
+      throw new Error("Parent must have an address.");
     }
 
     return Object.freeze({
+      getId: () => parent.id,
       getFirstName: () => parent.firstName,
       getLastName: () => parent.lastName,
       getEmail: () => parent.email,
@@ -50,14 +56,16 @@ const buildMakeParent = () => {
       getRoleInChurch: () => parent.roleInChurch,
       getDepartmentInChurch: () => parent.departmentInChurch,
       getPhoneNumberPrimary: () => parent.phoneNumberPrimary,
-      getphoneNumberSecondary: () => parent.phoneNumberSecondary,
-      getIdName: () => parent.idName,
+      getPhoneNumberSecondary: () => parent.phoneNumberSecondary,
+      getIdType: () => parent.idType,
       getIdNumber: () => parent.idNumber,
       getIdPhoto: () => parent.idPhoto,
-      getType: () => parent.type,
+      getPhotograph: () => parent.photograph,
+      getAddress: () => parent.address,
 
-      getCreateParentData: (): CreateParentData => {
+      getCreateParentData: (): ParentForm => {
         return {
+          id: parent.id,
           firstName: parent.firstName,
           lastName: parent.lastName,
           email: parent.email,
@@ -66,10 +74,11 @@ const buildMakeParent = () => {
           departmentInChurch: parent.departmentInChurch,
           phoneNumberPrimary: parent.phoneNumberPrimary,
           phoneNumberSecondary: parent.phoneNumberSecondary,
-          idName: parent.idName,
+          idType: parent.idType,
           idNumber: parent.idNumber,
           idPhoto: parent.idPhoto,
-          type: parent.type,
+          photograph: parent.photograph,
+          address: parent.address,
         };
       },
 
@@ -82,7 +91,7 @@ const buildMakeParent = () => {
         return parent;
       },
 
-      save: async (data: CreateParentData) => {
+      save: async (data: ParentForm) => {
         const parentDb = db("parent");
         return await parentDb.create(data);
       },

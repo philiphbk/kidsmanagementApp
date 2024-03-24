@@ -1,44 +1,38 @@
-import { Child } from "@/lib/definitions/form-interfaces";
+import { v4 as uuidv4 } from "uuid";
+import { ChildForm } from "@/lib/definitions/form-interfaces";
 import { db } from "../db";
 
 const buildMakeChild = () => {
-  return function makeChild(childInfo: Child, parentid: number) {
-    const {
-      firstName,
-      lastName,
-      gender,
-      dateOfBirth,
-      ageGroup,
-      photograph,
-      parent,
-      caregiver,
-      relationshipWithChildType,
-      relationshipWithChild,
-      specialNeeds,
-      isCheckedIn,
-    } = childInfo;
-    if (!firstName) {
+  return function makeChild(
+    childInfo: ChildForm,
+    parentId: string,
+    caregiverIds: string
+  ) {
+    const id = uuidv4();
+    const child = { ...childInfo, id };
+
+    if (!child.firstName) {
       throw new Error("Child must have a first name.");
     }
-    if (firstName.length < 2) {
+    if (child.firstName.length < 2) {
       throw new Error("Child first name must be longer than 2 characters.");
     }
-    if (!lastName) {
+    if (!child.lastName) {
       throw new Error("Child must have a last name.");
     }
-    if (lastName.length < 2) {
+    if (child.lastName.length < 2) {
       throw new Error("Child last name must be longer than 2 characters.");
     }
-    if (!gender) {
+    if (!child.gender) {
       throw new Error("Child must have a gender.");
     }
-    if (!dateOfBirth) {
+    if (!child.dateOfBirth) {
       throw new Error("Child must have a date of birth.");
     }
-    if (!ageGroup) {
+    if (!child.ageGroup) {
       throw new Error("Child must have an age group.");
     }
-    if (!photograph) {
+    if (!child.photograph) {
       throw new Error("Child must have a photograph.");
     }
     // if (!parent.length) {
@@ -49,39 +43,46 @@ const buildMakeChild = () => {
     // }
 
     return Object.freeze({
-      getFirstName: () => firstName,
-      getLastName: () => lastName,
-      getGender: () => gender,
-      getDateOfBirth: () => dateOfBirth,
-      getAgeGroup: () => ageGroup,
-      getPhotograph: () => photograph,
-      parent: () => (parent ? parent : null),
-      caregiver: () => (caregiver ? caregiver : null),
-      getRelationshipWithChildType: () => relationshipWithChildType,
-      getRelationshipWithChild: () => relationshipWithChild,
-      getSpecialNeeds: () => (specialNeeds ? specialNeeds : null),
-      isCheckedIn: () => childInfo.isCheckedIn,
+      getId: () => child.id,
+      getFirstName: () => child.firstName,
+      getLastName: () => child.lastName,
+      getGender: () => child.gender,
+      getDateOfBirth: () => child.dateOfBirth,
+      getAgeGroup: () => child.ageGroup,
+      getPhotograph: () => child.photograph,
+      getParentId: () => parentId,
+      getCaregiverIds: () => caregiverIds,
+      getRelationshipWithChildType: () => child.relationshipWithChildType,
+      getRelationshipWithChild: () => child.relationshipWithChild,
+      getSpecialNeeds: () => (child.specialNeeds ? child.specialNeeds : null),
 
-      getCreateChildData: () => ({
-        firstName,
-        lastName,
-        gender,
-        dateOfBirth,
-        ageGroup,
-        photograph,
-        parent: parentid,
-        caregiver,
-        relationshipWithChildType,
-        relationshipWithChild,
-        specialNeeds,
-        isCheckedIn: false,
-      }),
-
-      checkIn: () => {
-        childInfo.isCheckedIn = true;
+      getCreateChildData: (): ChildForm => {
+        return {
+          id: child.id,
+          firstName: child.firstName,
+          lastName: child.lastName,
+          gender: child.gender,
+          dateOfBirth: child.dateOfBirth,
+          ageGroup: child.ageGroup,
+          photograph: child.photograph,
+          parentId: parentId,
+          caregiverIds: caregiverIds,
+          relationshipWithChildType: child.relationshipWithChildType,
+          relationshipWithChild: child.relationshipWithChild,
+          specialNeeds: child.specialNeeds,
+        };
       },
 
-      save: async (data: Child, careGIds = []) => {
+      getById: async (childId: string) => {
+        const childDb = db("child");
+        const childData = await childDb.getOne(childId);
+        if (!childData) {
+          throw new Error("Child not found.");
+        }
+        return childData;
+      },
+
+      save: async (data: ChildForm) => {
         const parentDb = db("child");
         await parentDb.create(data);
       },
