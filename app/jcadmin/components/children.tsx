@@ -107,6 +107,8 @@ const ChildrenList = () => {
             status={selectedChild.status}
             photograph={setChildPhoto(selectedChild.photograph) as string}
             onClose={() => setSelectedChild(null)}
+            parentId={""}
+            caregiverIds={""}
           />
         )}
       </div>
