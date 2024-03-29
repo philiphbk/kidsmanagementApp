@@ -35,15 +35,13 @@ const ChildCard: React.FC<ChildCardProps> = ({
       onClick={onClick}
     >
       <div className="flex items-center space-x-4">
-        <div className="w-16 h-16 relative">
-          <Image
-            src={photograph}
-            alt={firstName}
-            width={80}
-            height={80}
-            className="rounded-full"
-          />
-        </div>
+        <Image
+          src={photograph}
+          alt={firstName}
+          width={60}
+          height={60}
+          className=" rounded-2xl "
+        />
         <div>
           <h3 className="text-lg font-semibold">
             {firstName} {lastName}

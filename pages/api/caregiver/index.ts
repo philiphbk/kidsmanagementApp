@@ -1,4 +1,4 @@
-// pages/api/parent.ts
+// pages/api/caregiver.ts
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectWithRetry } from "../db";
 
@@ -10,7 +10,6 @@ export default async function handler(
   const { id, ...updateData } = body;
 
   const { idCaregiver } = req.query;
-  // const idsArray = (idCaregiver as string).split(",");
 
   const connection = await connectWithRetry();
 
@@ -27,14 +26,8 @@ export default async function handler(
         let sqlQuery = "";
 
         if (idCaregiver) {
-          // const placeholders = idsArray
-          //   .map((_: any, i: number) => `$${i + 1}`)
-          //   .join(","); // Create placeholders for parameterized query
-          // sqlQuery = `SELECT * FROM careGiver WHERE id IN (${placeholders})`;
-
-          sqlQuery = `SELECT * FROM careGiver WHERE id = (${idCaregiver})`;
-          //[rows] = await connection.execute(sqlQuery, placeholders);
-          [rows] = await connection.execute(sqlQuery, []);
+          sqlQuery = `SELECT * FROM careGiver WHERE id = ?`;
+          [rows] = await connection.execute(sqlQuery, [idCaregiver as string]);
         } else {
           sqlQuery = "SELECT * FROM careGiver";
           [rows] = await connection.execute(sqlQuery, []);

@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import ChildCard from "./ChildCard";
-import ChildModal from "./ChildModal";
 
 const ChildHome = ({ childrenData }: { childrenData: Array<any> }) => {
   const [selectedChild, setSelectedChild] = useState(null);
@@ -38,10 +37,6 @@ const ChildHome = ({ childrenData }: { childrenData: Array<any> }) => {
           />
         ))}
       </div>
-
-      {isModalOpen && selectedChild && (
-        <ChildModal child={selectedChild} onClose={handleCloseModal} />
-      )}
     </div>
   );
 };

@@ -6,8 +6,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { method, body } = req;
-  const { searchWord } = req.query;
-  const { idValue, childId, parentId, status, ...updateData } = req.query;
+  const { idValue, child_id, parent_id, status, ...updateData } = req.query;
 
   const connection = await connectWithRetry();
 
@@ -16,40 +15,40 @@ export default async function handler(
       case "GET":
         let sqlQuery = "";
         let rows: any = [];
-
-        if (searchWord) {
-          sqlQuery = `SELECT * FROM child WHERE firstName = ? OR lastName = ?`;
-          [rows] = await connection.execute(sqlQuery, [searchWord, searchWord]);
-        } else if (idValue) {
-          sqlQuery = `SELECT parentId FROM child WHERE id = ?`;
-          [rows] = await connection.execute(sqlQuery, [idValue]);
-        } else {
-          sqlQuery = "SELECT * FROM child LIMIT 10";
-          [rows] = await connection.execute(sqlQuery);
-        }
+        sqlQuery = "SELECT * FROM activity_log LIMIT 10";
+        [rows] = await connection.execute(sqlQuery);
         connection.release();
         res.status(200).json(rows);
         break;
 
       case "POST":
         let query = "";
-        if (status) {
-          query = "UPDATE child SET status = ?";
-          await connection.execute(query, [status]);
+        // if (status) {
+        //   query = "UPDATE activity_log SET status = ?";
+        //   await connection.execute(query, [status]);
+        //   connection.release();
+        //   res
+        //     .status(200)
+        //     .json({ success: true, message: "Status updated successfully." });
+        // } else
+        if (status && child_id && parent_id) {
+          query =
+            "INSERT INTO activity_log (child_id, parent_id, status) VALUES (?, ?, ?)";
+          await connection.execute(query, [child_id, parent_id, status]);
           connection.release();
           res
             .status(200)
             .json({ success: true, message: "Status updated successfully." });
         } else {
-          await connection.query("INSERT INTO child SET ?", body);
+          await connection.query("INSERT INTO activity_log SET ?", body);
         }
         res.status(201).end();
         break;
 
       case "PUT":
-        await connection.query("UPDATE child SET ? WHERE id = ?", [
+        await connection.query("UPDATE activity_log SET ? WHERE id = ?", [
           updateData,
-          childId,
+          child_id,
         ]);
         connection.release();
         res.status(200).end();
@@ -58,7 +57,7 @@ export default async function handler(
 
       case "DELETE":
         const { id } = body; // Assuming 'id' is sent in the request body
-        await connection.query("DELETE FROM child WHERE id = ?", [id]);
+        await connection.query("DELETE FROM activity_log WHERE id = ?", [id]);
         res.status(200).end();
         break;
 

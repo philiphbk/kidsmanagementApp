@@ -14,7 +14,7 @@ export default function TopNavBar() {
 
   return (
     <div>
-      <nav className="flex flex-row justify-between items-center border-b-2 my-5 mx-10 pb-5">
+      <nav className="flex flex-row justify-between items-center border-b-2 my-5 mx-10 pb-4">
         <div>
           <Link href="/jcadmin/overview">
             <Image src={HODLogo} width={60} height={60} alt="hodlogo" />
