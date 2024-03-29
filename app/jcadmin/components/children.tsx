@@ -118,6 +118,7 @@ const ChildrenList = () => {
             photograph={setChildPhoto(selectedChild?.photograph) as string}
             parentId={selectedChild?.parentId}
             caregiverIds={selectedChild?.caregiverIds}
+            specialNeeds={selectedChild?.specialNeeds}
             show={showModal}
             onClose={handleClose}
           />

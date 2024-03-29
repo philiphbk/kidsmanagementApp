@@ -18,6 +18,7 @@ interface ChildDetailsModalProps {
   photograph: string;
   parentId: string;
   caregiverIds: string;
+  specialNeeds: string;
   onClose: () => void;
   show: boolean;
 }
@@ -54,6 +55,7 @@ const ChildDetailsModal = ({
   photograph,
   parentId,
   caregiverIds,
+  specialNeeds,
   onClose,
   show,
 }: ChildDetailsModalProps) => {
@@ -205,7 +207,7 @@ const ChildDetailsModal = ({
               {firstName} {lastName}
             </h2>
             <p>{`${ageGroup} yrs, ${gender}`}</p>
-            <span className="italic text-red-800">specialNeeds</span>
+            <span className="italic text-red-800">{specialNeeds}</span>
           </div>
           <span className="ml-4 bg-red-100 text-red-600 rounded-full text-sm p-2">
             {status}
@@ -215,7 +217,6 @@ const ChildDetailsModal = ({
           id="controlled-tab-example"
           defaultActiveKey="home"
           className="mt-3 mb-3 flex justify-center gap-3 items-center"
-          fill
         >
           <Tab
             eventKey="home"
@@ -263,7 +264,7 @@ const ChildDetailsModal = ({
             className="flex justify-center gap-3 items-center"
           >
             {/* Content for Activity Log */}
-            <Table striped bordered hover size="sm">
+            <Table responsive striped bordered hover size="sm">
               <thead>
                 <tr>
                   <th>#</th>
@@ -291,7 +292,7 @@ const ChildDetailsModal = ({
           </Tab>
         </Tabs>
       </Modal.Body>
-      <Modal.Footer className=" flex justify-center gap-5">
+      <Modal.Footer className=" flex justify-center gap-2">
         <Button
           className=" border-2 border-gray-200 p-2 hover:bg-gray-100 cursor-pointer rounded-lg mb-2"
           variant="primary"
