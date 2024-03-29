@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, ChangeEvent, KeyboardEvent } from "react";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 function debounce<T extends any[]>(
   func: (...args: T) => void,
@@ -55,29 +57,32 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
 
   return (
     <div className="">
-      <input
-        className=" border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none shadow-md"
-        type="text"
-        placeholder={
-          isTyping
-            ? "Press enter to view all results."
-            : "Search for parents, child or caregivers."
-        }
-        value={searchTerm}
-        onKeyDown={handleSearch}
-        onChange={handleInputChange}
-      />
+      <Form className="d-flex">
+        <Form.Control
+          type="search"
+          placeholder={
+            isTyping
+              ? "Press enter to view all results."
+              : "Search for parents, child or caregivers."
+          }
+          className="me-2"
+          aria-label="Search"
+          value={searchTerm}
+          onChange={handleInputChange}
+          onKeyDown={handleSearch}
+        />
 
-      <select
-        className=" border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none shadow-md"
-        value={searchType}
-        title="Search Type"
-        onChange={(e) => setSearchType(e.target.value)}
-      >
-        <option value="child">Child</option>
-        <option value="parent">Parent</option>
-        <option value="caregiver">Caregiver</option>
-      </select>
+        <Form.Select
+          aria-label="Search Type"
+          value={searchType}
+          title="Search Type"
+          onChange={(e) => setSearchType(e.target.value)}
+        >
+          <option value="child">Child</option>
+          <option value="parent">Parent</option>
+          <option value="caregiver">Caregiver</option>
+        </Form.Select>
+      </Form>
     </div>
   );
 }
