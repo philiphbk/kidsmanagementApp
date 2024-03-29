@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
+import useSWR from "swr";
 import { Modal, Button, Tab, Tabs, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faUser } from "@fortawesome/free-solid-svg-icons";
@@ -59,14 +60,31 @@ const ChildDetailsModal = ({
   const [parents, setParents] = useState<Parent[]>([]);
   const [caregivers, setCaregivers] = useState<Caregiver[]>([]);
   const [activityLog, setActivityLog] = useState<ActivityLog[]>([]);
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
 
-  const updateStatus = async (newStatus: string) => {
+  const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+
+  function useActivityLog() {
+    const { data, error, mutate } = useSWR("/api/activity_log", fetcher);
+
+    return {
+      activityLog: data,
+      isLoading: !error && !data,
+      isError: error,
+      refresh: mutate, // You can call this function to re-fetch the data
+    };
+  }
+
+  const { refresh } = useActivityLog();
+
+  const checkInOutChild = async (status: string, id: string) => {
     try {
-      await axios.post("/api/child", { status: newStatus });
+      console.log("Checking in child with id:", id);
+      await axios.put("/api/child", { status: status, id: id });
+      refresh();
       onClose();
     } catch (error) {
-      console.error("Error updating status:", error);
-      // Handle error (e.g., show a message to the user)
+      console.error("Error checking in child:", error);
     }
   };
 
@@ -278,7 +296,7 @@ const ChildDetailsModal = ({
           className=" border-2 border-gray-200 p-2 hover:bg-gray-100 cursor-pointer rounded-lg mb-2"
           variant="primary"
           onClick={() => {
-            updateStatus("checked_in");
+            checkInOutChild("checked_in", id);
             updateActivity("checked_in", id, parentId);
           }}
         >
@@ -288,7 +306,7 @@ const ChildDetailsModal = ({
           className=" border-2  border-gray-200 p-2 hover:bg-gray-100 cursor-pointer rounded-lg mb-2"
           variant="secondary"
           onClick={() => {
-            updateStatus("checked_out");
+            checkInOutChild("checked_in", id);
             updateActivity("checked_out", id, parentId);
           }}
         >

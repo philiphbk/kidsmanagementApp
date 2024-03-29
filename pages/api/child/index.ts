@@ -7,9 +7,12 @@ export default async function handler(
 ) {
   const { method, body } = req;
   const { searchWord } = req.query;
-  const { idValue, childId, parentId, status, ...updateData } = req.query;
-
+  const { idValue, child_id, parent_id, ...updateData } = req.query;
+  const { id, status } = body;
   const connection = await connectWithRetry();
+
+  console.log("status", status);
+  console.log("child_id", id);
 
   try {
     switch (method) {
@@ -47,17 +50,27 @@ export default async function handler(
         break;
 
       case "PUT":
-        await connection.query("UPDATE child SET ? WHERE id = ?", [
-          updateData,
-          childId,
-        ]);
+        let queryUpdate = "";
+        if (status && id) {
+          queryUpdate = "UPDATE child SET status = ? WHERE id = ?";
+          await connection.execute(queryUpdate, [status, id]);
+          connection.release();
+          res
+            .status(200)
+            .json({ success: true, message: "Status updated successfully." });
+        } else {
+          await connection.query("UPDATE child SET ? WHERE id = ?", [
+            updateData,
+            id,
+          ]);
+        }
+
         connection.release();
         res.status(200).end();
 
         break;
 
       case "DELETE":
-        const { id } = body; // Assuming 'id' is sent in the request body
         await connection.query("DELETE FROM child WHERE id = ?", [id]);
         res.status(200).end();
         break;
