@@ -16,6 +16,8 @@ interface Child {
   parent: string;
   gender: string;
   status: string;
+  parentId: string;
+  caregiverIds: string;
   photograph: string;
   specialNeeds: string;
 }
@@ -27,6 +29,12 @@ const ChildrenList = () => {
   //const [currentPage, setCurrentPage] = useState(1);
   //const [childrenPerPage] = useState(6);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showModal, setShowModal] = useState(false);
+
+  const handleClose = () => {
+    setShowModal(false);
+    setSelectedChild(null);
+  };
 
   useEffect(() => {
     const fetchData = async (searchTerm?: string) => {
@@ -49,7 +57,6 @@ const ChildrenList = () => {
   let value = "child";
 
   const handleSearch = async (searchTerm: string) => {
-    console.log(searchTerm, "searchTerm");
     setSearchTerm(searchTerm);
   };
 
@@ -66,7 +73,7 @@ const ChildrenList = () => {
       ) as string;
     }
   }
-  // // Get current children for pagination
+  // Get current children for pagination
   // const indexOfLastChild = currentPage * childrenPerPage;
   // const indexOfFirstChild = indexOfLastChild - childrenPerPage;
   // const currentChildren = allChildren?.slice(
@@ -94,21 +101,25 @@ const ChildrenList = () => {
             gender={child.gender}
             status={child.status}
             specialNeeds={child.specialNeeds}
-            onClick={() => setSelectedChild(child)}
+            onClick={() => {
+              setShowModal(true);
+              setSelectedChild(child);
+            }}
           />
         ))}
         {selectedChild && (
           <ChildDetailsModal
-            id={selectedChild.id}
-            firstName={selectedChild.firstName}
-            lastName={selectedChild.lastName}
-            ageGroup={selectedChild.ageGroup}
-            gender={selectedChild.gender}
-            status={selectedChild.status}
-            photograph={setChildPhoto(selectedChild.photograph) as string}
-            onClose={() => setSelectedChild(null)}
-            parentId={""}
-            caregiverIds={""}
+            id={selectedChild?.id}
+            firstName={selectedChild?.firstName}
+            lastName={selectedChild?.lastName}
+            ageGroup={selectedChild?.ageGroup}
+            gender={selectedChild?.gender}
+            status={selectedChild?.status}
+            photograph={setChildPhoto(selectedChild?.photograph) as string}
+            parentId={selectedChild?.parentId}
+            caregiverIds={selectedChild?.caregiverIds}
+            show={showModal}
+            onClose={handleClose}
           />
         )}
       </div>

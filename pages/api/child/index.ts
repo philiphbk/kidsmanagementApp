@@ -1,4 +1,3 @@
-// pages/api/parent.ts
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectWithRetry } from "../db";
 
@@ -8,9 +7,12 @@ export default async function handler(
 ) {
   const { method, body } = req;
   const { searchWord } = req.query;
-  const { idValue } = req.query;
-
+  const { idValue, child_id, parent_id, ...updateData } = req.query;
+  const { id, status } = body;
   const connection = await connectWithRetry();
+
+  console.log("status", status);
+  console.log("child_id", id);
 
   try {
     switch (method) {
@@ -24,14 +26,7 @@ export default async function handler(
         } else if (idValue) {
           sqlQuery = `SELECT parentId FROM child WHERE id = ?`;
           [rows] = await connection.execute(sqlQuery, [idValue]);
-        }
-        //else if (`caregiver/$[idValue]`) {
-        //   [rows] = await connection.execute(
-        //     `SELECT caregiverIds FROM child WHERE id = $1`,
-        //     [idValue]
-        //   );
-        //}
-        else {
+        } else {
           sqlQuery = "SELECT * FROM child LIMIT 10";
           [rows] = await connection.execute(sqlQuery);
         }
@@ -40,43 +35,42 @@ export default async function handler(
         break;
 
       case "POST":
-        await connection.query("INSERT INTO child SET ?", body);
-        res.status(201).end();
-        break;
-
-      case "PUT":
-        // Check if this is a status update
-        if (
-          "status" in body &&
-          Object.keys(body).length === 2 &&
-          "id" in body
-        ) {
-          // Handle status update
-          const { id, status } = body;
-          const query = "UPDATE child SET status = ? WHERE id = ?";
-          await connection.execute(query, [status, id]);
-          const logQuery =
-            "INSERT INTO activity_log (child_id, status) VALUES (?, ?)";
-          await connection.execute(logQuery, [id, status]);
+        let query = "";
+        if (status) {
+          query = "UPDATE child SET status = ?";
+          await connection.execute(query, [status]);
           connection.release();
           res
             .status(200)
             .json({ success: true, message: "Status updated successfully." });
         } else {
-          // Handle other updates
+          await connection.query("INSERT INTO child SET ?", body);
+        }
+        res.status(201).end();
+        break;
 
-          const { id, ...updateData } = body;
+      case "PUT":
+        let queryUpdate = "";
+        if (status && id) {
+          queryUpdate = "UPDATE child SET status = ? WHERE id = ?";
+          await connection.execute(queryUpdate, [status, id]);
+          connection.release();
+          res
+            .status(200)
+            .json({ success: true, message: "Status updated successfully." });
+        } else {
           await connection.query("UPDATE child SET ? WHERE id = ?", [
             updateData,
             id,
           ]);
-          connection.release();
-          res.status(200).end();
         }
+
+        connection.release();
+        res.status(200).end();
+
         break;
 
       case "DELETE":
-        const { id } = body; // Assuming 'id' is sent in the request body
         await connection.query("DELETE FROM child WHERE id = ?", [id]);
         res.status(200).end();
         break;
