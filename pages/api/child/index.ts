@@ -11,9 +11,6 @@ export default async function handler(
   const { id, status } = body;
   const connection = await connectWithRetry();
 
-  console.log("status", status);
-  console.log("child_id", id);
-
   try {
     switch (method) {
       case "GET":
