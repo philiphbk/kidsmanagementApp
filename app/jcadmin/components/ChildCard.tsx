@@ -2,6 +2,9 @@
 
 import React from "react";
 import Image from "next/image";
+import Card from "react-bootstrap/Card";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 
 interface ChildCardProps {
   id: string;
@@ -30,38 +33,39 @@ const ChildCard: React.FC<ChildCardProps> = ({
   onClick,
 }) => {
   return (
-    <div
+    <Card
       className="p-4 bg-white shadow rounded-lg cursor-pointer"
+      style={{ width: "18rem", height: "10rem", margin: "1" }}
+      border="primary"
       onClick={onClick}
     >
-      <div className="flex items-center space-x-4">
-        <div className="w-16 h-16 relative">
-          <Image
-            src={photograph}
-            alt={firstName}
-            width={80}
-            height={80}
-            className="rounded-full"
-          />
-        </div>
+      <Card.Body className="flex justify-center items-center space-x-4">
+        <Image
+          src={photograph}
+          alt={`${firstName} ${lastName}`}
+          width={60}
+          height={50}
+          className="rounded-full"
+        />
+        {/* <Card.Img className=" w-24" variant="top" src={photograph} /> */}
         <div>
-          <h3 className="text-lg font-semibold">
+          <Card.Title>
             {firstName} {lastName}
-          </h3>
-          <p>{`${ageGroup}yrs, ${gender}`}</p>
-          {/* <p>{`DOB: ${dateOfBirth}`}</p>
-          <p>{`Parent: ${parent}`}</p> 
-          <p>{`Special Needs: ${specialNeeds}`}</p>*/}
-          <span
-            className={`text-sm ${
-              status === "Checked In" ? "text-green-500" : "text-red-500"
-            }`}
-          >
-            {status}
-          </span>
+          </Card.Title>
+          <Card.Text>
+            <span className=" text-xs"> {`${ageGroup} yrs, ${gender}`}</span>
+            <br />
+            <span
+              className={`text-sm ${
+                status === "Checked In" ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {status}
+            </span>
+          </Card.Text>
         </div>
-      </div>
-    </div>
+      </Card.Body>
+    </Card>
   );
 };
 

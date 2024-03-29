@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "../styles/globals.css";
 import "../styles/register.module.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;
 

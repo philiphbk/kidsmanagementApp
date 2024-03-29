@@ -10,11 +10,10 @@ export default async function handler(
   const connection = await connectWithRetry();
 
   const { id, ...updateData } = body;
-  const sqlQuery = `
-  SELECT parent.firstName, parent.lastName
-  FROM parent
-  JOIN child ON CONCAT(parent.firstName, parent.lastName) = child.parent;
-`;
+  //   SELECT parent.firstName, parent.lastName
+  //   FROM parent
+  //   JOIN child ON CONCAT(parent.firstName, parent.lastName) = child.parent;
+  // `;
   const { idParent } = req.query;
 
   try {
