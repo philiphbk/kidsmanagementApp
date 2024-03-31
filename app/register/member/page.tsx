@@ -4,7 +4,6 @@ const RegisterComponent = () => {
   return (
     <>
       <RegisterMemberComponent />
-      {/* <RegisterComponent /> */}
     </>
   );
 };

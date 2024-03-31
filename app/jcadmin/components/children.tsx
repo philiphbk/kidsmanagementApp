@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Box, SimpleGrid, Grid, useDisclosure } from "@chakra-ui/react";
 import ChildCard from "../components/ChildCard";
 import ChildDetailsModal from "../components/ChildDetailsModal";
 import Pagination from "../components/Pagination";
@@ -35,6 +36,8 @@ const ChildrenList = () => {
     setShowModal(false);
     setSelectedChild(null);
   };
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     const fetchData = async (searchTerm?: string) => {
@@ -82,12 +85,12 @@ const ChildrenList = () => {
   // );
 
   return (
-    <div>
-      <div className=" flex justify-center mb-7">
+    <Box>
+      <Box className="mb-7" display="flex" justifyContent="center">
         <SearchBar onSearch={(e: any) => handleSearch(e)} />
-      </div>
+      </Box>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <SimpleGrid columns={3} spacing="40px">
         {displayedChildren.map((child) => (
           <ChildCard
             key={child.id}
@@ -102,7 +105,8 @@ const ChildrenList = () => {
             status={child.status}
             specialNeeds={child.specialNeeds}
             onClick={() => {
-              setShowModal(true);
+              // setShowModal(true);
+              onOpen();
               setSelectedChild(child);
             }}
           />
@@ -119,18 +123,18 @@ const ChildrenList = () => {
             parentId={selectedChild?.parentId}
             caregiverIds={selectedChild?.caregiverIds}
             specialNeeds={selectedChild?.specialNeeds}
-            show={showModal}
-            onClose={handleClose}
+            isOpen={isOpen} // isOpen prop replaces the show prop
+            onClose={onClose}
           />
         )}
-      </div>
+      </SimpleGrid>
       {/* <Pagination
         totalItems={allChildren.length}
         itemsPerPage={childrenPerPage}
         currentPage={currentPage}
         onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
       /> */}
-    </div>
+    </Box>
   );
 };
 

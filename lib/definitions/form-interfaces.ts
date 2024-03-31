@@ -104,21 +104,6 @@ export interface MySelectComponentProps {
   departmentInChurchData: Department[];
 }
 
-export interface Child {
-  firstName: string;
-  lastName: string;
-  gender: string;
-  dateOfBirth: Date;
-  ageGroup: string;
-  photograph: string; // Image data for the photograph
-  relationshipWithChildType: string;
-  relationshipWithChild: string;
-  parent: number;
-  caregiver: string;
-  specialNeeds?: string;
-  isCheckedIn: boolean;
-}
-
 export enum CareGiverType {
   grandDad = "grandDad",
   grandMom = "grandMom",
@@ -127,25 +112,6 @@ export enum CareGiverType {
   brother = "brother",
   sister = "sister",
   other = "other",
-}
-
-export interface Caregiver {
-  firstName: string;
-  lastName: string;
-  email: string;
-  gender: string;
-  roleInChurch: string;
-  departmentInChurch: string;
-  phoneNumberPrimary: string;
-  phoneNumberSecondary?: string;
-  relationshipWithChildType: string;
-  relationshipWithChild: string;
-  caregiverRelationshipTypeWithParent: string;
-  caregiverRelationshipWithParentData: string;
-  // churchLocation: string;
-  // churchBranchInLocation: string;
-  photograph: string; // Compulsory if relationship with parent is 'Others'
-  type: CareGiverType;
 }
 
 export interface RoleFormValues {
@@ -158,12 +124,6 @@ export interface RoleFormValues {
 
 export interface RoleDropdownProps {
   onRoleChange: (values: RoleFormValues) => void;
-}
-
-export interface RegistrationFormValues {
-  parent: Parent;
-  child: Child[];
-  caregiver: Caregiver[];
 }
 
 // visitor registration interface
