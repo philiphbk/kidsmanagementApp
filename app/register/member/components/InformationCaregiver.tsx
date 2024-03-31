@@ -35,8 +35,6 @@ import {
   RegistrationForm,
 } from "@/lib/definitions/form-interfaces";
 
-// import Select, { ActionMeta, SingleValue } from "react-select";
-
 import ImageFileUploader from "../../components/ImageFileUploader";
 
 const CaregiverComponent = ({ index }: { index: number }) => {
@@ -88,9 +86,7 @@ const CaregiverComponent = ({ index }: { index: number }) => {
       setOtherType({ ...otherType, status: false });
       setFieldValue(`caregiver[${index}].relationshipWithChild`, "");
       setFieldValue(name, value);
-    }
-
-    if (id.includes("caregiverGuardian")) {
+    } else if (id.includes("caregiverGuardian")) {
       if (value === "other") {
         setOtherType({ ...otherType, status: true });
         setFieldValue(
@@ -101,9 +97,7 @@ const CaregiverComponent = ({ index }: { index: number }) => {
         setOtherType({ ...otherType, status: false });
         setFieldValue(`caregiver[${index}].relationshipWithChild`, value);
       }
-    }
-
-    if (id.includes("caregiverRelationshipTypeWithParent")) {
+    } else if (id.includes("caregiverRelationshipTypeWithParent")) {
       setCurrentCaregiverType(value);
       setFieldValue(
         `caregiver[${index}].caregiverRelationshipWithParentData`,
@@ -137,14 +131,18 @@ const CaregiverComponent = ({ index }: { index: number }) => {
     (branch) => branch.locationId === currentLocation
   );
 
+  if (!values.caregiver || values.caregiver.length <= index) {
+    return <span>No caregiver data available</span>;
+  }
+
   return (
     <VStack spacing={4} align="stretch">
       {/* Full name section */}
       <FormControl
-        isInvalid={
-          !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
-            .firstName && touched.caregiver?.[index]?.firstName
-        }
+      // isInvalid={
+      //   !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
+      //     .firstName && touched.caregiver?.[index]?.firstName
+      // }
       >
         <FormLabel htmlFor={`caregiver[${index}].firstName`}>
           First Name
@@ -157,16 +155,16 @@ const CaregiverComponent = ({ index }: { index: number }) => {
           }
         />
         <FormErrorMessage>
-          {(errors.caregiver?.[index] as FormikErrors<CaregiverForm>).firstName}
+          {/* {(errors.caregiver?.[index] as FormikErrors<CaregiverForm>).firstName} */}
         </FormErrorMessage>
       </FormControl>
 
       {/* Last name section */}
       <FormControl
-        isInvalid={
-          !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
-            .lastName && touched.caregiver?.[index]?.lastName
-        }
+      // isInvalid={
+      //   !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
+      //     .lastName && touched.caregiver?.[index]?.lastName
+      // }
       >
         <FormLabel htmlFor={`caregiver[${index}].lastName`}>
           Last Name
@@ -179,16 +177,16 @@ const CaregiverComponent = ({ index }: { index: number }) => {
           }
         />
         <FormErrorMessage>
-          {(errors.caregiver?.[index] as FormikErrors<CaregiverForm>).lastName}
+          {/* {(errors.caregiver?.[index] as FormikErrors<CaregiverForm>).lastName} */}
         </FormErrorMessage>
       </FormControl>
 
       {/* Email */}
       <FormControl
-        isInvalid={
-          !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>).email &&
-          touched.caregiver?.[index]?.email
-        }
+      // isInvalid={
+      //   !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>).email &&
+      //   touched.caregiver?.[index]?.email
+      // }
       >
         <FormLabel htmlFor={`caregiver[${index}].email`}>Email</FormLabel>
         <Input
@@ -199,16 +197,16 @@ const CaregiverComponent = ({ index }: { index: number }) => {
           }
         />
         <FormErrorMessage>
-          {(errors.caregiver?.[index] as FormikErrors<CaregiverForm>).email}
+          {/* {(errors.caregiver?.[index] as FormikErrors<CaregiverForm>).email} */}
         </FormErrorMessage>
       </FormControl>
 
       {/* Gender Select */}
       <FormControl
-        isInvalid={
-          !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>).gender &&
-          touched.caregiver?.[index]?.gender
-        }
+      // isInvalid={
+      //   !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>).gender &&
+      //   touched.caregiver?.[index]?.gender
+      // }
       >
         <FormLabel htmlFor={`caregiver[${index}].gender`}>Gender</FormLabel>
         <Select
@@ -225,16 +223,16 @@ const CaregiverComponent = ({ index }: { index: number }) => {
           ))}
         </Select>
         <FormErrorMessage>
-          {(errors.caregiver?.[index] as FormikErrors<CaregiverForm>).gender}
+          {/* {(errors.caregiver?.[index] as FormikErrors<CaregiverForm>).gender} */}
         </FormErrorMessage>
       </FormControl>
 
       {/* Role in Church Select */}
       <FormControl
-        isInvalid={
-          !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
-            .roleInChurch && touched.caregiver?.[index]?.roleInChurch
-        }
+      // isInvalid={
+      //   !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
+      //     .roleInChurch && touched.caregiver?.[index]?.roleInChurch
+      // }
       >
         <FormLabel htmlFor={`caregiver[${index}].roleInChurch`}>
           Role in Church
@@ -257,22 +255,22 @@ const CaregiverComponent = ({ index }: { index: number }) => {
             </option>
           ))}
         </Select>
-        <FormErrorMessage>
+        {/* <FormErrorMessage>
           {
             (errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
               .roleInChurch
           }
-        </FormErrorMessage>
+        </FormErrorMessage> */}
       </FormControl>
 
       {/* Department in Church Select */}
       {showDepartmentDropdown && (
         <FormControl
-          isInvalid={
-            !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
-              .departmentInChurch &&
-            touched.caregiver?.[index]?.departmentInChurch
-          }
+        // isInvalid={
+        //   !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
+        //     .departmentInChurch &&
+        //   touched.caregiver?.[index]?.departmentInChurch
+        // }
         >
           <FormLabel htmlFor={`caregiver[${index}].departmentInChurch`}>
             Department in Church
@@ -294,22 +292,22 @@ const CaregiverComponent = ({ index }: { index: number }) => {
               </option>
             ))}
           </Select>
-          <FormErrorMessage>
+          {/* <FormErrorMessage>
             {
               (errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
                 .departmentInChurch
             }
-          </FormErrorMessage>
+          </FormErrorMessage> */}
         </FormControl>
       )}
 
       {/* Ministry Select */}
       {showMinistryDropdown && (
         <FormControl
-          isInvalid={
-            !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
-              .ministry && touched.caregiver?.[index]?.ministry
-          }
+        // isInvalid={
+        //   !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
+        //     .ministry && touched.caregiver?.[index]?.ministry
+        // }
         >
           <FormLabel htmlFor={`caregiver[${index}].ministry`}>
             Ministry
@@ -328,22 +326,22 @@ const CaregiverComponent = ({ index }: { index: number }) => {
               </option>
             ))}
           </Select>
-          <FormErrorMessage>
+          {/* <FormErrorMessage>
             {
               (errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
                 .ministry
             }
-          </FormErrorMessage>
+          </FormErrorMessage> */}
         </FormControl>
       )}
 
       {/* Phone Number */}
       <FormControl
-        isInvalid={
-          !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
-            .phoneNumberPrimary &&
-          touched.caregiver?.[index]?.phoneNumberPrimary
-        }
+      // isInvalid={
+      //   !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
+      //     .phoneNumberPrimary &&
+      //   touched.caregiver?.[index]?.phoneNumberPrimary
+      // }
       >
         <FormLabel htmlFor={`caregiver[${index}].phoneNumberPrimary`}>
           Phone Number
@@ -358,21 +356,21 @@ const CaregiverComponent = ({ index }: { index: number }) => {
             )
           }
         />
-        <FormErrorMessage>
+        {/* <FormErrorMessage>
           {
             (errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
               .phoneNumberPrimary
           }
-        </FormErrorMessage>
+        </FormErrorMessage> */}
       </FormControl>
 
       {/* Alternative Phone Number */}
       <FormControl
-        isInvalid={
-          !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
-            .phoneNumberSecondary &&
-          touched.caregiver?.[index]?.phoneNumberSecondary
-        }
+      // isInvalid={
+      //   !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
+      //     .phoneNumberSecondary &&
+      //   touched.caregiver?.[index]?.phoneNumberSecondary
+      // }
       >
         <FormLabel htmlFor={`caregiver[${index}].phoneNumberSecondary`}>
           Alternative Phone Number
@@ -387,21 +385,21 @@ const CaregiverComponent = ({ index }: { index: number }) => {
             )
           }
         />
-        <FormErrorMessage>
+        {/* <FormErrorMessage>
           {
             (errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
               .phoneNumberSecondary
           }
-        </FormErrorMessage>
+        </FormErrorMessage> */}
       </FormControl>
 
       {/* Relationship Type Select */}
       <FormControl
-        isInvalid={
-          !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
-            .relationshipWithChildType &&
-          touched.caregiver?.[index]?.relationshipWithChildType
-        }
+      // isInvalid={
+      //   !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
+      //     .relationshipWithChildType &&
+      //   touched.caregiver?.[index]?.relationshipWithChildType
+      // }
       >
         <FormLabel htmlFor={`caregiver[${index}].relationshipWithChildType`}>
           Relationship Type with Child
@@ -423,21 +421,21 @@ const CaregiverComponent = ({ index }: { index: number }) => {
             </option>
           ))}
         </Select>
-        <FormErrorMessage>
+        {/* <FormErrorMessage>
           {
             (errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
               .relationshipWithChildType
           }
-        </FormErrorMessage>
+        </FormErrorMessage> */}
       </FormControl>
 
       {/* Relationship Select */}
       <FormControl
-        isInvalid={
-          !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
-            .relationshipWithChild &&
-          touched.caregiver?.[index]?.relationshipWithChild
-        }
+      // isInvalid={
+      //   !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
+      //     .relationshipWithChild &&
+      //   touched.caregiver?.[index]?.relationshipWithChild
+      // }
       >
         <FormLabel htmlFor={`caregiver[${index}].relationshipWithChild`}>
           Relationship with Child
@@ -461,22 +459,22 @@ const CaregiverComponent = ({ index }: { index: number }) => {
             )
           )}
         </Select>
-        <FormErrorMessage>
+        {/* <FormErrorMessage>
           {
             (errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
               .relationshipWithChild
           }
-        </FormErrorMessage>
+        </FormErrorMessage> */}
       </FormControl>
 
       {/* exact relationship */}
       {otherType.status && (
         <FormControl
-          isInvalid={
-            !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
-              .relationshipWithChild &&
-            touched.caregiver?.[index]?.relationshipWithChild
-          }
+        // isInvalid={
+        //   !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
+        //     .relationshipWithChild &&
+        //   touched.caregiver?.[index]?.relationshipWithChild
+        // }
         >
           <FormLabel htmlFor="otherGuardian">
             Please enter the exact relationship with child
@@ -487,22 +485,22 @@ const CaregiverComponent = ({ index }: { index: number }) => {
             onChange={handleInputChange}
             defaultValue={otherType.value}
           />
-          <FormErrorMessage>
+          {/* <FormErrorMessage>
             {
               (errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
                 .relationshipWithChild
             }
-          </FormErrorMessage>
+          </FormErrorMessage> */}
         </FormControl>
       )}
 
       {/* Relationship Select */}
       <FormControl
-        isInvalid={
-          !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
-            .caregiverRelationshipTypeWithParent &&
-          touched.caregiver?.[index]?.caregiverRelationshipTypeWithParent
-        }
+      // isInvalid={
+      //   !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
+      //     .caregiverRelationshipTypeWithParent &&
+      //   touched.caregiver?.[index]?.caregiverRelationshipTypeWithParent
+      // }
       >
         <FormLabel
           htmlFor={`caregiver[${index}].caregiverRelationshipTypeWithParent`}
@@ -526,21 +524,21 @@ const CaregiverComponent = ({ index }: { index: number }) => {
             </option>
           ))}
         </Select>
-        <FormErrorMessage>
+        {/* <FormErrorMessage>
           {
             (errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
               .caregiverRelationshipTypeWithParent
           }
-        </FormErrorMessage>
+        </FormErrorMessage> */}
       </FormControl>
 
       {/* Relationship Type Select */}
       <FormControl
-        isInvalid={
-          !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
-            .caregiverRelationshipWithParentData &&
-          touched.caregiver?.[index]?.caregiverRelationshipWithParentData
-        }
+      // isInvalid={
+      //   !!(errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
+      //     .caregiverRelationshipWithParentData &&
+      //   touched.caregiver?.[index]?.caregiverRelationshipWithParentData
+      // }
       >
         <FormLabel
           htmlFor={`caregiver[${index}].caregiverRelationshipWithParentData`}
@@ -566,12 +564,12 @@ const CaregiverComponent = ({ index }: { index: number }) => {
             )
           )}
         </Select>
-        <FormErrorMessage>
+        {/* <FormErrorMessage>
           {
             (errors.caregiver?.[index] as FormikErrors<CaregiverForm>)
               .caregiverRelationshipWithParentData
           }
-        </FormErrorMessage>
+        </FormErrorMessage> */}
       </FormControl>
 
       {/* Upload Photo */}
