@@ -1,7 +1,16 @@
 "use client";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
+import {
+  TableContainer,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Box,
+} from "@chakra-ui/react";
 
 interface Users {
   id: string;
@@ -39,28 +48,30 @@ export default function RegisteredUsers() {
   }, []);
 
   return (
-    <div className=" p-6">
+    <Box py="20" px="20">
       <h1>Registered Users</h1>
-      <Table responsive striped bordered hover size="sm">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>FirstName</th>
-            <th>LastName</th>
-            <th>Email</th>
-          </tr>
-        </thead>
-        <tbody>
-          {registeredUsers.map((user) => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
-              <td>{user.firstName}</td>
-              <td>{user.lastName}</td>
-              <td>{user.email}</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </div>
+      <TableContainer>
+        <Table variant="striped" colorScheme="teal" size="sm">
+          <Thead>
+            <Tr>
+              <Th>#</Th>
+              <Th>FirstName</Th>
+              <Th>LastName</Th>
+              <Th>Email</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {registeredUsers.map((user) => (
+              <Tr key={user.id}>
+                <Td>{user.id}</Td>
+                <Td>{user.firstName}</Td>
+                <Td>{user.lastName}</Td>
+                <Td>{user.email}</Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 }

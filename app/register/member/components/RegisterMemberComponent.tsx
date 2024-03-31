@@ -5,6 +5,17 @@ import axios from "axios";
 
 import { Formik, FormikHelpers, Form, FieldArray } from "formik";
 import * as Yup from "yup";
+import {
+  Box,
+  Button,
+  VStack,
+  Heading,
+  Container,
+  useToast,
+  HStack,
+  Flex,
+  Icon,
+} from "@chakra-ui/react";
 
 import { RegistrationForm } from "@/lib/definitions/form-interfaces";
 
@@ -16,6 +27,7 @@ import CaregiverComponent from "./InformationCaregiver";
 import { BsPlusCircle } from "react-icons/bs";
 import NewChildInstanceTitle from "../../components/NewChildInstanceTitle";
 import { useRouter } from "next/navigation";
+import { useStore } from "./Store";
 
 const RegisterMemberComponent = () => {
   const router = useRouter();
@@ -38,22 +50,22 @@ const RegisterMemberComponent = () => {
   const ParentRegistrationSchema = Yup.object()
     .shape({
       parent: Yup.object().shape({
-        firstName: Yup.string().required("First Name is required"),
-        lastName: Yup.string().required("Last Name is required"),
-        email: Yup.string()
-          .email("Invalid email")
-          .required("Email is required"),
-        gender: Yup.string(),
-        roleInChurch: Yup.string().required("Role in church is required"),
-        departmentInChurch: Yup.string(),
-        ministry: Yup.string(),
-        phoneNumberPrimary: Yup.string().required("Phone Number is required"),
-        phoneNumberSecondary: Yup.string(),
-        idType: Yup.string().required("ID Type is required"),
-        idNumber: Yup.string().required("ID Number is required"),
-        idPhoto: Yup.string(),
-        photograph: Yup.string().required("Photograph is required"),
-        address: Yup.string().required("Address is required"),
+        // firstName: Yup.string().required("First Name is required"),
+        // lastName: Yup.string().required("Last Name is required"),
+        // email: Yup.string()
+        //   .email("Invalid email")
+        //   .required("Email is required"),
+        // gender: Yup.string(),
+        // roleInChurch: Yup.string().required("Role in church is required"),
+        // departmentInChurch: Yup.string(),
+        // ministry: Yup.string(),
+        // phoneNumberPrimary: Yup.string().required("Phone Number is required"),
+        // phoneNumberSecondary: Yup.string(),
+        // idType: Yup.string().required("ID Type is required"),
+        // idNumber: Yup.string().required("ID Number is required"),
+        // idPhoto: Yup.string(),
+        // photograph: Yup.string().required("Photograph is required"),
+        // address: Yup.string().required("Address is required"),
       }),
     })
     .nullable();
@@ -63,19 +75,19 @@ const RegisterMemberComponent = () => {
       child: Yup.array()
         .of(
           Yup.object().shape({
-            firstName: Yup.string().required("First Name is required"),
-            lastName: Yup.string().required("Last Name is required"),
-            ageGroup: Yup.string().required("Age Group is required"),
-            gender: Yup.string().required("Gender is required"),
-            dateOfBirth: Yup.string().required("Date of Birth is required"),
-            photograph: Yup.string().required("Photograph is required"),
-            relationshipWithChildType: Yup.string().required(
-              "Relationship with Child Type is required"
-            ),
-            relationshipWithChild: Yup.string().required(
-              "Relationship with Child is required"
-            ),
-            specialNeeds: Yup.string(),
+            // firstName: Yup.string().required("First Name is required"),
+            // lastName: Yup.string().required("Last Name is required"),
+            // ageGroup: Yup.string().required("Age Group is required"),
+            // gender: Yup.string().required("Gender is required"),
+            // dateOfBirth: Yup.string().required("Date of Birth is required"),
+            // photograph: Yup.string().required("Photograph is required"),
+            // relationshipWithChildType: Yup.string().required(
+            //   "Relationship with Child Type is required"
+            // ),
+            // relationshipWithChild: Yup.string().required(
+            //   "Relationship with Child is required"
+            // ),
+            // specialNeeds: Yup.string(),
           })
         )
         .nullable(),
@@ -87,32 +99,32 @@ const RegisterMemberComponent = () => {
       caregiver: Yup.array()
         .of(
           Yup.object().shape({
-            firstName: Yup.string().required("First Name is required"),
-            lastName: Yup.string().required("Last Name is required"),
-            email: Yup.string()
-              .email("Invalid email")
-              .required("Email is required"),
-            gender: Yup.string().required("Gender is required"),
-            roleInChurch: Yup.string().required("Role in church is required"),
-            departmentInChurch: Yup.string(),
-            ministry: Yup.string(),
-            phoneNumberPrimary: Yup.string().required(
-              "Phone Number is required"
-            ),
-            phoneNumberSecondary: Yup.string(),
-            relationshipWithChildType: Yup.string().required(
-              "Relationship with Child Type is required"
-            ),
-            relationshipWithChild: Yup.string().required(
-              "Relationship with Child is required"
-            ),
-            caregiverRelationshipTypeWithParent: Yup.string().required(
-              "Caregiver Relationship Type with Parent is required"
-            ),
-            caregiverRelationshipWithParentData: Yup.string().required(
-              "Caregiver Relationship with Parent Data is required"
-            ),
-            photograph: Yup.string().required("Photograph is required"),
+            // firstName: Yup.string().required("First Name is required"),
+            // lastName: Yup.string().required("Last Name is required"),
+            // email: Yup.string()
+            //   .email("Invalid email")
+            //   .required("Email is required"),
+            // gender: Yup.string().required("Gender is required"),
+            // roleInChurch: Yup.string().required("Role in church is required"),
+            // departmentInChurch: Yup.string(),
+            // ministry: Yup.string(),
+            // phoneNumberPrimary: Yup.string().required(
+            //   "Phone Number is required"
+            // ),
+            // phoneNumberSecondary: Yup.string(),
+            // relationshipWithChildType: Yup.string().required(
+            //   "Relationship with Child Type is required"
+            // ),
+            // relationshipWithChild: Yup.string().required(
+            //   "Relationship with Child is required"
+            // ),
+            // caregiverRelationshipTypeWithParent: Yup.string().required(
+            //   "Caregiver Relationship Type with Parent is required"
+            // ),
+            // caregiverRelationshipWithParentData: Yup.string().required(
+            //   "Caregiver Relationship with Parent Data is required"
+            // ),
+            // photograph: Yup.string().required("Photograph is required"),
           })
         )
         .nullable(),
@@ -214,6 +226,8 @@ const RegisterMemberComponent = () => {
     values: RegistrationForm,
     actions: FormikHelpers<RegistrationForm>
   ) => {
+    useStore.getState().setFormData(values);
+
     console.log("values", values);
     if (step < totalSteps) {
       console.log("values", values);
@@ -228,19 +242,20 @@ const RegisterMemberComponent = () => {
       console.log("is submitting!", values);
 
       try {
-        const response = await axios.post("/api/registration", values, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          maxContentLength: 100000000,
-          maxBodyLength: 1000000000,
-        });
+        router.push("/member/summary");
+        // const response = await axios.post("/api/registration", values, {
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   maxContentLength: 100000000,
+        //   maxBodyLength: 1000000000,
+        // });
 
-        console.log(response.data, "Registration form submitted!");
+        // console.log(response.data, "Registration form submitted!");
 
-        setStep(1);
-        actions.resetForm();
-        router.push("/register/success");
+        // setStep(1);
+        // actions.resetForm();
+        // router.push("/register/success");
       } catch (err) {
         console.log(err);
       } finally {
@@ -266,13 +281,13 @@ const RegisterMemberComponent = () => {
   }, [step]);
 
   return (
-    <div className="registration_container">
-      <div className="flex flex-col gap-6 items-center">
+    <Box maxWidth="container.md" py={8} px={4} margin="auto">
+      <VStack spacing={8} align="center">
         <HodLogoOnly />
-        <h1 className="platform_title">Junior Church Monitor</h1>
-      </div>
+        <Heading as="h1" size="lg">
+          Junior Church Monitor
+        </Heading>
 
-      <main className="form_container flex flex-col items-center w-full h-full">
         <Formik<RegistrationForm>
           initialValues={initialValues}
           validationSchema={
@@ -308,11 +323,11 @@ const RegisterMemberComponent = () => {
                   <FieldArray
                     name="child"
                     render={({ push, remove }) => (
-                      <>
+                      <VStack spacing={4}>
                         {values.child &&
                           values.child.length > 0 &&
                           values.child.map((child, index) => (
-                            <div key={index}>
+                            <Box key={index}>
                               <NewChildInstanceTitle
                                 index={index}
                                 remove={remove}
@@ -320,18 +335,18 @@ const RegisterMemberComponent = () => {
                               />
 
                               <ChildComponent index={index} />
-                            </div>
+                            </Box>
                           ))}
 
-                        <button
-                          type="button"
-                          className="flex gap-2 items-center text-hod-secondary text-base font-normal"
+                        <Button
+                          leftIcon={<Icon as={BsPlusCircle} />}
+                          colorScheme="teal"
+                          variant="outline"
                           onClick={() => push(newInfo.child)}
                         >
-                          <BsPlusCircle className="text-hod-secondary" />{" "}
                           Include another child
-                        </button>
-                      </>
+                        </Button>
+                      </VStack>
                     )}
                   />
                 </>
@@ -342,11 +357,11 @@ const RegisterMemberComponent = () => {
                   <FieldArray
                     name="caregiver"
                     render={({ push, remove }) => (
-                      <>
+                      <VStack spacing={4}>
                         {values.caregiver &&
                           values.caregiver.length > 0 &&
                           values.caregiver.map((caregiver, index) => (
-                            <div key={index}>
+                            <Box key={index}>
                               <NewChildInstanceTitle
                                 index={index}
                                 remove={remove}
@@ -354,36 +369,36 @@ const RegisterMemberComponent = () => {
                               />
 
                               <CaregiverComponent index={index} />
-                            </div>
+                            </Box>
                           ))}
 
-                        <button
-                          type="button"
-                          className="flex gap-2 items-center text-hod-secondary text-base font-normal"
+                        <Button
+                          leftIcon={<Icon as={BsPlusCircle} />}
+                          colorScheme="teal"
+                          variant="outline"
                           onClick={() => push(newInfo.caregiver)}
                         >
-                          <BsPlusCircle className="text-hod-secondary" />{" "}
                           Include new caregiver
-                        </button>
-                      </>
+                        </Button>
+                      </VStack>
                     )}
                   />
                 </>
               )}
 
-              <div className="form_button_container">
+              <Flex justifyContent="space-between" mt={4}>
                 {step > 1 && (
-                  <button
-                    type="button"
-                    className="hod_button hod_button_secondary"
+                  <Button
+                    colorScheme="pink"
+                    variant="ghost"
                     onClick={previousStep}
                   >
                     Previous
-                  </button>
+                  </Button>
                 )}
-                <button
+                <Button
                   type="submit"
-                  className="hod_button hod_button_primary"
+                  colorScheme="blue"
                   disabled={isSubmitting}
                 >
                   {isSubmitting
@@ -391,13 +406,13 @@ const RegisterMemberComponent = () => {
                     : step < totalSteps
                     ? "Next"
                     : "Submit"}
-                </button>
-              </div>
+                </Button>
+              </Flex>
             </Form>
           )}
         </Formik>
-      </main>
-    </div>
+      </VStack>
+    </Box>
   );
 };
 

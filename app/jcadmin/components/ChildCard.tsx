@@ -1,10 +1,9 @@
 // components/ChildCard.tsx
 
 import React from "react";
-import Image from "next/image";
-import Card from "react-bootstrap/Card";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
+// import Image from "next/image";
+// import Card from "react-bootstrap/Card";
+import { Box, Image, Text, VStack, Badge } from "@chakra-ui/react";
 
 interface ChildCardProps {
   id: string;
@@ -33,39 +32,42 @@ const ChildCard: React.FC<ChildCardProps> = ({
   onClick,
 }) => {
   return (
-    <Card
-      className="p-4 bg-white shadow rounded-lg cursor-pointer"
-      style={{ width: "18rem", height: "10rem", margin: "1" }}
-      border="primary"
+    <Box
+      p={4}
+      bg="white"
+      boxShadow="base"
+      rounded="lg"
+      cursor="pointer"
+      maxW="18rem"
+      h="13rem"
+      m={1}
+      borderWidth="1px"
+      borderColor="blue.500"
       onClick={onClick}
     >
-      <Card.Body className="flex justify-center items-center space-x-4">
+      <VStack align="center" justify="center" spacing={4}>
         <Image
           src={photograph}
           alt={`${firstName} ${lastName}`}
-          width={60}
-          height={50}
-          className="rounded-full"
+          borderRadius="full"
+          boxSize="50px"
+          objectFit="cover"
         />
-        {/* <Card.Img className=" w-24" variant="top" src={photograph} /> */}
-        <div>
-          <Card.Title>
+
+        <Box textAlign="center">
+          <Text fontSize="lg" fontWeight="bold">
             {firstName} {lastName}
-          </Card.Title>
-          <Card.Text>
-            <span className=" text-xs"> {`${ageGroup} yrs, ${gender}`}</span>
-            <br />
-            <span
-              className={`text-sm ${
-                status === "Checked In" ? "text-green-500" : "text-red-500"
-              }`}
-            >
-              {status}
-            </span>
-          </Card.Text>
-        </div>
-      </Card.Body>
-    </Card>
+          </Text>
+          <Text fontSize="xs">{`${ageGroup} yrs, ${gender}`}</Text>
+          <Badge
+            colorScheme={status === "checked_in" ? "green" : "red"}
+            borderRadius={3}
+          >
+            {status}
+          </Badge>
+        </Box>
+      </VStack>
+    </Box>
   );
 };
 
