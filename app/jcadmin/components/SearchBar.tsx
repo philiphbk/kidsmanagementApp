@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, ChangeEvent, KeyboardEvent } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+// import Form from "react-bootstrap/Form";
+// import Button from "react-bootstrap/Button";
+import { Box, Input, Select, Flex } from "@chakra-ui/react";
 
 function debounce<T extends any[]>(
   func: (...args: T) => void,
@@ -56,33 +57,61 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
   };
 
   return (
-    <div className="">
-      <Form className="d-flex">
-        <Form.Control
+    <Box>
+      <Flex as="form" className="d-flex">
+        <Input
           type="search"
           placeholder={
             isTyping
               ? "Press enter to view all results."
               : "Search for parents, child or caregivers."
           }
-          className="me-2"
-          aria-label="Search"
           value={searchTerm}
           onChange={handleInputChange}
           onKeyDown={handleSearch}
+          marginRight="2"
+          aria-label="Search"
         />
 
-        <Form.Select
+        <Select
           aria-label="Search Type"
           value={searchType}
-          title="Search Type"
           onChange={(e) => setSearchType(e.target.value)}
+          placeholder="Select option"
         >
           <option value="child">Child</option>
           <option value="parent">Parent</option>
           <option value="caregiver">Caregiver</option>
-        </Form.Select>
-      </Form>
-    </div>
+        </Select>
+      </Flex>
+    </Box>
+    // <div className="">
+    //   <Form className="d-flex">
+    //     <Form.Control
+    //       type="search"
+    //       placeholder={
+    //         isTyping
+    //           ? "Press enter to view all results."
+    //           : "Search for parents, child or caregivers."
+    //       }
+    //       className="me-2"
+    //       aria-label="Search"
+    //       value={searchTerm}
+    //       onChange={handleInputChange}
+    //       onKeyDown={handleSearch}
+    //     />
+
+    //     <Form.Select
+    //       aria-label="Search Type"
+    //       value={searchType}
+    //       title="Search Type"
+    //       onChange={(e) => setSearchType(e.target.value)}
+    //     >
+    //       <option value="child">Child</option>
+    //       <option value="parent">Parent</option>
+    //       <option value="caregiver">Caregiver</option>
+    //     </Form.Select>
+    //   </Form>
+    // </div>
   );
 }

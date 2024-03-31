@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { StaticImageData } from "next/image";
-
+import { Box, Text, Flex } from "@chakra-ui/react";
 import ChildrenList from "../components/children";
 import { GiHighFive } from "react-icons/gi";
 import { HiOutlineEmojiHappy } from "react-icons/hi";
@@ -68,15 +68,15 @@ const childrenPickupProfiles: ChildPickUpProfile[] = [
 
 export default function Overview() {
   return (
-    <div className=" flex flex-col items-center">
-      <div className=" py-5 px-6">
-        <h1 className=" my-5 text-2xl flex justify-center">
-          Welcome to Junior Church!
-          <HiOutlineEmojiHappy className="ml-3" />
-          <GiHighFive className="ml-3" />
-        </h1>
-        <ChildrenList />
-      </div>
-    </div>
+    <Flex direction="column" align="center">
+      <Box py="5" px="6">
+        <Flex direction="column" align="center">
+          <Text my="5" fontSize="2xl" fontWeight={900} textAlign="center">
+            Welcome to Junior Church!
+          </Text>
+          <ChildrenList />
+        </Flex>
+      </Box>
+    </Flex>
   );
 }
