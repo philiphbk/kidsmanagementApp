@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { connectWithRetry } from "../db";
+import { db } from "../db";
 import registrationServices from "./services";
 import {
   ParentForm,
@@ -13,14 +13,12 @@ export default async function handler(
 ) {
   const { method, body } = req;
   const { id, ...updateData } = body;
-  const connection = await connectWithRetry();
 
   try {
     switch (method) {
       case "GET":
-        const [rows] = await connection.execute("SELECT * FROM parent", []);
-        connection.release();
-        res.status(200).json({ result: rows });
+        const parents = await db.getAll("parent");
+        res.status(200).json({ result: parents });
         break;
 
       case "POST":
@@ -43,15 +41,12 @@ export default async function handler(
         break;
 
       case "PUT":
-        await connection.query("UPDATE registration SET ? WHERE id = ?", [
-          updateData,
-          id,
-        ]);
+        await db.update("registration", id, updateData);
         res.status(200).end();
         break;
 
       case "DELETE":
-        await connection.query("DELETE FROM registration WHERE id = ?", [id]);
+        await db.delete("registration", id);
         res.status(200).end();
         break;
 
@@ -62,8 +57,5 @@ export default async function handler(
   } catch (error: any) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
-  } finally {
-    // Ensure the connection is always released
-    if (connection && connection.release) connection.release();
   }
 }

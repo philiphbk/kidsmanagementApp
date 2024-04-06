@@ -1,23 +1,22 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { connectWithRetry } from "../db";
+import { db } from "../db";
 import { generateMagicLink, sendEmail } from "./sendEmail";
-
 
 // initializeDatabase();
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-
   const { method, body } = req;
-  const connection = await connectWithRetry();
+
   switch (method) {
     case "POST":
       try {
         const { email } = body;
 
         console.log(email);
-        const [rows] = await connection.execute("SELECT * FROM user WHERE email = ?", [email]);
+
+        const rows = await db.getAll("user", email);
 
         if (!rows) {
           return res.status(404).json({ error: "User not found" });
@@ -30,14 +29,11 @@ export default async function handler(
           to: email,
           subject: "Your Magic Login Link",
           html: `<p>Click <a href="${loginLink}">here</a> to log in.</p>`,
-        }
+        };
 
-        await sendEmail(options)
-        res.status(201).end('Email sent');
-
+        await sendEmail(options);
+        res.status(201).end("Email sent");
       } catch (error: any) {
-        console.log(error);
-        console.log(error.error);
         res.status(500).json({ error });
       }
       break;

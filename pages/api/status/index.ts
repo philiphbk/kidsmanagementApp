@@ -1,56 +1,42 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { connectWithRetry } from "../db";
+import { db } from "../db";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const { method, body } = req;
-  const connection = await connectWithRetry();
+  const { id, ...updateData } = body;
   switch (method) {
     case "GET":
       try {
-        const [rows] = await connection.execute("SELECT * FROM status", []);
-        connection.release();
-        res.status(200).json(rows);
+        const statuses = await db.getAll("status");
+        res.status(200).json(statuses);
       } catch (error: any) {
-        console.log(error);
-        console.log(error.error);
         res.status(500).json({ error });
       }
       break;
     case "POST":
       try {
-        await connection.query("INSERT INTO status SET ?", body);
+        await db.create("status", body);
         res.status(201).end();
       } catch (error: any) {
-        console.log(error);
-        console.log(error.error);
         res.status(500).json({ error });
       }
       break;
     case "PUT":
       try {
-        const { id, ...updateData } = body; // Assuming 'id' is sent in the request body
-        await connection.query("UPDATE status SET ? WHERE id = ?", [
-          updateData,
-          id,
-        ]);
+        await db.update("status", id, updateData);
         res.status(200).end();
       } catch (error: any) {
-        console.log(error);
-        console.log(error.error);
         res.status(500).json({ error });
       }
       break;
     case "DELETE":
       try {
-        const { id } = body; // Assuming 'id' is sent in the request body
-        await connection.query("DELETE FROM status WHERE id = ?", [id]);
+        await db.delete("status", id);
         res.status(200).end();
       } catch (error: any) {
-        console.log(error);
-        console.log(error.error);
         res.status(500).json({ error: "Internal Server Error" });
       }
       break;

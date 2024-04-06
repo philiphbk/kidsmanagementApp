@@ -3,31 +3,7 @@ export interface FormHeaderType {
   description?: string;
 }
 
-export enum Gender {
-  male = "male",
-  female = "female",
-}
-
-export enum ParentType {
-  biological = "biological",
-  guardian = "guardian",
-}
-
 // member registration interface
-export interface CreateParentData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  gender: Gender;
-  roleInChurch: string;
-  departmentInChurch: string;
-  phoneNumberPrimary: string;
-  phoneNumberSecondary?: string;
-  idName: string;
-  idNumber: string;
-  idPhoto: any;
-  type: ParentType;
-}
 
 export interface ParentForm {
   id: string;
@@ -86,22 +62,9 @@ export interface RegistrationForm {
   child: ChildForm[];
 }
 
-export interface Parent extends CreateParentData {
-  // Additional properties specify to Parent entity
-}
-
 export interface Department {
   id: string;
   value: string;
-}
-
-export interface OptionType {
-  label: string;
-  value: string;
-}
-
-export interface MySelectComponentProps {
-  departmentInChurchData: Department[];
 }
 
 export enum CareGiverType {

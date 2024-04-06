@@ -83,8 +83,7 @@ const buildMakeParent = () => {
       },
 
       getById: async (parentId: string) => {
-        const parentDb = db("parent");
-        const parent = await parentDb.getOne(parentId);
+        const parent = await db.getOne("parent", parentId);
         if (!parent) {
           throw new Error("Parent not found.");
         }
@@ -92,8 +91,7 @@ const buildMakeParent = () => {
       },
 
       save: async (data: ParentForm) => {
-        const parentDb = db("parent");
-        return await parentDb.create(data);
+        return await db.create("parent", data);
       },
     });
   };

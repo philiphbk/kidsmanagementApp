@@ -1,13 +1,12 @@
 // pages/api/parent.ts
 import { NextApiRequest, NextApiResponse } from "next";
-import { connectWithRetry } from "../db";
+import { db } from "../db";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const { method, body } = req;
-  const connection = await connectWithRetry();
 
   const { id, ...updateData } = body;
   //   SELECT parent.firstName, parent.lastName
@@ -23,31 +22,25 @@ export default async function handler(
         let sqlQuery = "";
 
         if (idParent) {
-          sqlQuery = `SELECT * FROM parent WHERE id = ?`;
-          [rows] = await connection.execute(sqlQuery, [idParent as string]);
+          rows = await db.getOne("parent", idParent[0]);
         } else {
-          sqlQuery = "SELECT * FROM parent";
-          [rows] = await connection.execute(sqlQuery, []);
+          rows = await db.getAll("parent");
         }
-        connection.release();
-        res.status(200).json(rows);
+        res.status(200).json([rows]);
         break;
 
       case "POST":
-        await connection.query("INSERT INTO parent SET ?", body);
+        await db.create("parent", body);
         res.status(201).end();
         break;
 
       case "PUT":
-        await connection.query("UPDATE parent SET ? WHERE id = ?", [
-          updateData,
-          id,
-        ]);
+        await db.update("parent", id, updateData);
         res.status(200).end();
 
         break;
       case "DELETE":
-        await connection.query("DELETE FROM parent WHERE id = ?", [id]);
+        await db.delete("parent", id);
         res.status(200).end();
         break;
 
@@ -58,8 +51,5 @@ export default async function handler(
   } catch (error: any) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
-  } finally {
-    // Ensure the connection is always released
-    if (connection && connection.release) connection.release();
   }
 }
