@@ -86,18 +86,21 @@ const CaregiverComponent = ({ index }: { index: number }) => {
       setOtherType({ ...otherType, status: false });
       setFieldValue(`caregiver[${index}].relationshipWithChild`, "");
       setFieldValue(name, value);
-    } else if (id.includes("caregiverGuardian")) {
+    }
+    if (id.includes("caregiverGuardian")) {
       if (value === "other") {
         setOtherType({ ...otherType, status: true });
         setFieldValue(
           `caregiver[${index}].relationshipWithChildType`,
           "guardian"
         );
+        setFieldValue(name, value);
       } else {
         setOtherType({ ...otherType, status: false });
         setFieldValue(`caregiver[${index}].relationshipWithChild`, value);
       }
-    } else if (id.includes("caregiverRelationshipTypeWithParent")) {
+    }
+    if (id.includes("caregiverRelationshipTypeWithParent")) {
       setCurrentCaregiverType(value);
       setFieldValue(
         `caregiver[${index}].caregiverRelationshipWithParentData`,
@@ -349,12 +352,16 @@ const CaregiverComponent = ({ index }: { index: number }) => {
         <Input
           id={`caregiver[${index}].phoneNumberPrimary`}
           name={`caregiver[${index}].phoneNumberPrimary`}
-          onChange={(e) =>
-            setFieldValue(
-              `caregiver[${index}].phoneNumberPrimary`,
-              e.target.value
-            )
-          }
+          type="number"
+          onChange={(e) => {
+            const { value } = e.target;
+            if (value.length > 11) {
+              setFieldValue(
+                `caregiver[${index}].phoneNumberPrimary`,
+                e.target.value.toString()
+              );
+            }
+          }}
         />
         {/* <FormErrorMessage>
           {
@@ -378,12 +385,16 @@ const CaregiverComponent = ({ index }: { index: number }) => {
         <Input
           id={`caregiver[${index}].phoneNumberSecondary`}
           name={`caregiver[${index}].phoneNumberSecondary`}
-          onChange={(e) =>
-            setFieldValue(
-              `caregiver[${index}].phoneNumberSecondary`,
-              e.target.value
-            )
-          }
+          type="number"
+          onChange={(e) => {
+            const { value } = e.target;
+            if (value.length > 11) {
+              setFieldValue(
+                `caregiver[${index}].phoneNumberSecondary`,
+                e.target.value.toString()
+              );
+            }
+          }}
         />
         {/* <FormErrorMessage>
           {
@@ -408,12 +419,13 @@ const CaregiverComponent = ({ index }: { index: number }) => {
           id={`caregiver[${index}].relationshipWithChildType`}
           name={`caregiver[${index}].relationshipWithChildType`}
           placeholder="Select relationship type"
-          onChange={(e) =>
-            setFieldValue(
-              `caregiver[${index}].relationshipWithChildType`,
-              e.target.value
-            )
-          }
+          onChange={handleRelationshipChange}
+          // onChange={(e) =>
+          //   setFieldValue(
+          //     `caregiver[${index}].relationshipWithChildType`,
+          //     e.target.value
+          //   )
+          // }
         >
           {relationshipTypeData.map((relationshipType) => (
             <option key={relationshipType.id} value={relationshipType.id}>

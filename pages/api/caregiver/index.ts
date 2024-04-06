@@ -1,6 +1,6 @@
 // pages/api/caregiver.ts
 import { NextApiRequest, NextApiResponse } from "next";
-import { connectWithRetry } from "../db";
+import { db } from "../db";
 
 export default async function handler(
   req: NextApiRequest,
@@ -10,8 +10,6 @@ export default async function handler(
   const { id, ...updateData } = body;
 
   const { idCaregiver } = req.query;
-
-  const connection = await connectWithRetry();
 
   const sqlQuery = `
   SELECT careGiver.firstName, careGiver.lastName
@@ -27,31 +25,26 @@ export default async function handler(
 
         if (idCaregiver) {
           sqlQuery = `SELECT * FROM careGiver WHERE id = ?`;
-          [rows] = await connection.execute(sqlQuery, [idCaregiver as string]);
+          [rows] = await db.executeQuery(sqlQuery, [idCaregiver as string]);
         } else {
-          sqlQuery = "SELECT * FROM careGiver";
-          [rows] = await connection.execute(sqlQuery, []);
+          rows = await db.getAll("careGiver");
         }
 
-        connection.release();
-        res.status(200).json(rows);
+        res.status(200).json([rows]);
         break;
 
       case "POST":
-        await connection.query("INSERT INTO careGiver SET ?", body);
+        await db.create("careGiver", body);
         res.status(201).end();
         break;
 
       case "PUT":
-        await connection.query("UPDATE careGiver SET ? WHERE id = ?", [
-          updateData,
-          id,
-        ]);
+        await db.update("careGiver", id, updateData);
         res.status(200).end();
         break;
 
       case "DELETE":
-        await connection.query("DELETE FROM careGiver WHERE id = ?", [id]);
+        await db.delete("careGiver", id);
         res.status(200).end();
         break;
 
@@ -62,7 +55,5 @@ export default async function handler(
   } catch (error: any) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
-  } finally {
-    if (connection && connection.release) connection.release();
   }
 }
