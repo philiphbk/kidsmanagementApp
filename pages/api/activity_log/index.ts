@@ -14,7 +14,7 @@ export default async function handler(
         let sqlQuery = "";
         let rows: any = [];
         sqlQuery = "SELECT * FROM activity_log LIMIT 10";
-        [rows] = await db.executeQuery(sqlQuery);
+        rows = await db.executeQuery(sqlQuery);
         res.status(200).json(rows);
         break;
 

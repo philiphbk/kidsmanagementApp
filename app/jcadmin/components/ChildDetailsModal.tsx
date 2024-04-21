@@ -123,11 +123,12 @@ const ChildDetailsModal = ({
     parent_id: string
   ) => {
     try {
-      await axios.post("/api/activity_log", {
+      const response = await axios.post("/api/activity_log", {
         status: newStatus,
         child_id: id,
         parent_id: parentId,
       });
+      setActivityLog([...activityLog, response.data]);
     } catch (error) {
       console.error("Error updating status:", error);
       // Handle error (e.g., show a message to the user)
@@ -164,6 +165,7 @@ const ChildDetailsModal = ({
     const fetchParents = async () => {
       try {
         const result = await axios(`/api/parents?idParent=${parentId}`);
+        console.log("Parents:", result.data);
         if (!didCancel) {
           setParents(result.data);
         }
@@ -180,6 +182,7 @@ const ChildDetailsModal = ({
         if (!didCancel) {
           //const newData = results.map((result) => result.data);
           const newData = results.flatMap((result) => result.data);
+          console.log("Caregivers:", newData);
           setCaregivers(newData);
         }
       } catch (error) {

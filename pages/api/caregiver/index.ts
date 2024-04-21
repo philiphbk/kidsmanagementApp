@@ -25,12 +25,12 @@ export default async function handler(
 
         if (idCaregiver) {
           sqlQuery = `SELECT * FROM careGiver WHERE id = ?`;
-          [rows] = await db.executeQuery(sqlQuery, [idCaregiver as string]);
+          rows = await db.executeQuery(sqlQuery, [idCaregiver as string]);
         } else {
           rows = await db.getAll("careGiver");
         }
 
-        res.status(200).json([rows]);
+        res.status(200).json(rows);
         break;
 
       case "POST":

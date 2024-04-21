@@ -108,6 +108,16 @@ const ImageFileUploader: React.FC<ImageFileUploaderProps> = ({
           const result = reader.result as string;
           setImagePreview(result);
         };
+
+        reader.onerror = (error: any) => {
+          toast({
+            title: "Failed to read file",
+            description: error.message,
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        };
         reader.readAsDataURL(file);
 
         // Prepare for upload

@@ -45,7 +45,6 @@ const ChildrenList = () => {
         const result = await axios(
           `/api/child${searchTerm ? `?searchWord=${searchTerm}` : ""}`
         );
-        console.log(result.data);
         setDisplayedChildren(result.data);
       } catch (error) {
         console.error("Failed to fetch data:", error);
@@ -67,16 +66,16 @@ const ChildrenList = () => {
   function setChildPhoto(photo: string) {
     //console.log(photo);
 
-    // if (photo.includes("/public")) {
-    //   return photo.replace("/public", "") as string;
-    // } else if (
-    //   photo.includes("https://householdofdavid.org/wp-content/uploads")
-    // ) {
-    //   return photo.replace(
-    //     "https://householdofdavid.org/wp-content/uploads",
-    //     ""
-    //   ) as string;
-    // }
+    if (photo.includes("/public")) {
+      return photo.replace("/public", "") as string;
+    } else if (
+      photo.includes("https://householdofdavid.org/wp-content/uploads")
+    ) {
+      return photo.replace(
+        "https://householdofdavid.org/wp-content/uploads",
+        ""
+      ) as string;
+    }
     return photo;
   }
   // Get current children for pagination
