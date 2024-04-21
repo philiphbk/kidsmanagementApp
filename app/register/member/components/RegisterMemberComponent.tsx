@@ -344,6 +344,7 @@ const RegisterMemberComponent = () => {
                           colorScheme="teal"
                           variant="outline"
                           onClick={() => push(newInfo.child)}
+                          mb={3}
                         >
                           Include another child
                         </Button>

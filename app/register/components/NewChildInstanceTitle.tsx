@@ -11,7 +11,7 @@ const NewChildInstanceTitle = ({ index, remove, desc }: NewChildInstanceTitleInt
     return (
         <>
             <div className="flex gap-x-4 items-center">
-                <h3>{newChildTitle[index]} {desc}</h3>
+                <h3 className="mb-0">{newChildTitle[index]} {desc}</h3>
 
                 {index > 0 && (
                     <button

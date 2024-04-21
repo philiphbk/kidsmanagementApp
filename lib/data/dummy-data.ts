@@ -164,7 +164,7 @@ export const departmentInChurchData = [
   },
   {
     id: "18",
-    value: "Missions",
+    value: "Welfare",
   },
   {
     id: "19",
@@ -229,10 +229,6 @@ export const departmentInChurchData = [
   {
     id: "34",
     value: "Visitation",
-  },
-  {
-    id: "35",
-    value: "Welfare",
   },
 ];
 

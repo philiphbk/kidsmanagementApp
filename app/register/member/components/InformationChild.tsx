@@ -38,12 +38,11 @@ const ChildComponent = ({ index }: { index: number }) => {
     if (id.includes("relationshipWithChildType")) {
       setCurrentType(value);
       setOtherType({ ...otherType, status: false });
-      setFieldValue(`child[${index}].relationshipWithChild`, value);
+      setFieldValue(`child[${index}].relationshipWithChildType`, value);
       console.log(value);
       // setFieldValue(name, value);
-    }
-    if (id.includes("childGuardian")) {
-      if (value === "other") {
+    } else {
+      if (value.toLowerCase() === "other") {
         setOtherType({ ...otherType, status: true });
         setFieldValue(`child[${index}].relationshipWithChildType`, "guardian");
       } else {
@@ -88,7 +87,7 @@ const ChildComponent = ({ index }: { index: number }) => {
   };
 
   return (
-    <VStack spacing={4} align="stretch">
+    <VStack spacing={4} align="stretch" mb={5}>
       {/* Full Name */}
       <FormControl
         isInvalid={
@@ -179,7 +178,7 @@ const ChildComponent = ({ index }: { index: number }) => {
 
       {/* Display Age (Read-Only Field for Age) */}
       <FormControl
-        mt={4}
+        // mt={4}
         isInvalid={
           !!(errors.child?.[index] as FormikErrors<ChildForm>)?.ageGroup &&
           touched.child?.[index]?.ageGroup
@@ -242,13 +241,7 @@ const ChildComponent = ({ index }: { index: number }) => {
         <Select
           id={`child[${index}].relationshipWithChildType`}
           name={`child[${index}].relationshipWithChildType`}
-          onChange={(e) =>
-            setFieldValue(
-              `child[${index}].relationshipWithChildType`,
-              e.target.value
-            )
-          }
-          // onChange={handleRelationshipChange}
+          onChange={handleRelationshipChange}
         >
           {relationshipTypeData?.map((relationship) => (
             <option key={relationship.id} value={relationship.id}>
