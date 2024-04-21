@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import axios from "axios";
 
 import { Formik, FormikHelpers, Form, FieldArray } from "formik";
@@ -62,7 +62,7 @@ const RegisterMemberComponent = () => {
         phoneNumberPrimary: Yup.string().required("Phone Number is required"),
         phoneNumberSecondary: Yup.string(),
         idType: Yup.string().required("ID Type is required"),
-        idNumber: Yup.string().required("ID Number is required"),
+        idNumber: Yup.string(),
         idPhoto: Yup.string(),
         photograph: Yup.string().required("Photograph is required"),
         address: Yup.string().required("Address is required"),
@@ -222,13 +222,22 @@ const RegisterMemberComponent = () => {
     ],
   };
 
+  // State to hold the entire form values
+  const [formValues, setFormValues] = useState(initialValues);
+
+  // Function to update form state
+  const updateFormValues = (values: SetStateAction<RegistrationForm>) => {
+    setFormValues(values);
+  };
+
   const handleSubmit = async (
     values: RegistrationForm,
     actions: FormikHelpers<RegistrationForm>
   ) => {
-    useStore.getState().setFormData(values);
+    // useStore.getState().setFormData(values);
 
     console.log("values", values);
+    console.log("is clicked!");
     if (step < totalSteps) {
       console.log("values", values);
       console.log("is clicked!");
@@ -253,7 +262,7 @@ const RegisterMemberComponent = () => {
 
         console.log(response.data, "Registration form submitted!");
 
-        setStep(1);
+        // setStep(1);
         actions.resetForm();
         router.push("/register/success");
       } catch (err) {
@@ -297,119 +306,124 @@ const RegisterMemberComponent = () => {
               ? ChildRegistrationSchema
               : CareGiverRegistrationSchema
           }
-          // enableReinitialize={true}
-          onSubmit={handleSubmit}
+          enableReinitialize={true}
+          onSubmit={(values, actions) => {
+            updateFormValues(values); // Update external form state on submit
+            handleSubmit(values, actions);
+          }}
         >
-          {({ values, errors, touched, isSubmitting }) => (
-            <Form className="form">
-              <div className="steps mb-2 w-18">
-                Step {step}/{totalSteps}
-              </div>
-              <FormHeader title={currentTitle} />
-              <hr className="text-hod-text-gray2 mt-6 mb-10" />
+          {({ values, errors, touched, isSubmitting, setFieldValue }) => {
+            return (
+              <Form className="form">
+                <div className="steps mb-2 w-18">
+                  Step {step}/{totalSteps}
+                </div>
+                <FormHeader title={currentTitle} />
+                <hr className="text-hod-text-gray2 mt-6 mb-10" />
 
-              {step === 1 && (
-                <>
-                  <ParentComponent
-                    {...values.parent}
-                    errors={errors}
-                    touched={touched}
-                  />
-                </>
-              )}
-
-              {step === 2 && (
-                <>
-                  <FieldArray
-                    name="child"
-                    render={({ push, remove }) => (
-                      <VStack spacing={4}>
-                        {values.child &&
-                          values.child.length > 0 &&
-                          values.child.map((child, index) => (
-                            <Box key={index}>
-                              <NewChildInstanceTitle
-                                index={index}
-                                remove={remove}
-                                desc="Child"
-                              />
-
-                              <ChildComponent index={index} />
-                            </Box>
-                          ))}
-
-                        <Button
-                          leftIcon={<Icon as={BsPlusCircle} />}
-                          colorScheme="teal"
-                          variant="outline"
-                          onClick={() => push(newInfo.child)}
-                        >
-                          Include another child
-                        </Button>
-                      </VStack>
-                    )}
-                  />
-                </>
-              )}
-
-              {step === 3 && (
-                <>
-                  <FieldArray
-                    name="caregiver"
-                    render={({ push, remove }) => (
-                      <VStack spacing={4}>
-                        {values.caregiver &&
-                          values.caregiver.length > 0 &&
-                          values.caregiver.map((caregiver, index) => (
-                            <Box key={index}>
-                              <NewChildInstanceTitle
-                                index={index}
-                                remove={remove}
-                                desc="Caregiver"
-                              />
-
-                              <CaregiverComponent index={index} />
-                            </Box>
-                          ))}
-
-                        <Button
-                          leftIcon={<Icon as={BsPlusCircle} />}
-                          colorScheme="teal"
-                          variant="outline"
-                          onClick={() => push(newInfo.caregiver)}
-                        >
-                          Include new caregiver
-                        </Button>
-                      </VStack>
-                    )}
-                  />
-                </>
-              )}
-
-              <Flex justifyContent="space-between" mt={4}>
-                {step > 1 && (
-                  <Button
-                    colorScheme="pink"
-                    variant="ghost"
-                    onClick={previousStep}
-                  >
-                    Previous
-                  </Button>
+                {step === 1 && (
+                  <>
+                    <ParentComponent
+                      {...values.parent}
+                      errors={errors}
+                      touched={touched}
+                    />
+                  </>
                 )}
-                <Button
-                  type="submit"
-                  colorScheme="blue"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting
-                    ? "Submitting..."
-                    : step < totalSteps
-                    ? "Next"
-                    : "Submit"}
-                </Button>
-              </Flex>
-            </Form>
-          )}
+
+                {step === 2 && (
+                  <>
+                    <FieldArray
+                      name="child"
+                      render={({ push, remove }) => (
+                        <VStack spacing={4}>
+                          {values.child &&
+                            values.child.length > 0 &&
+                            values.child.map((child, index) => (
+                              <Box key={index}>
+                                <NewChildInstanceTitle
+                                  index={index}
+                                  remove={remove}
+                                  desc="Child"
+                                />
+
+                                <ChildComponent index={index} />
+                              </Box>
+                            ))}
+
+                          <Button
+                            leftIcon={<Icon as={BsPlusCircle} />}
+                            colorScheme="teal"
+                            variant="outline"
+                            onClick={() => push(newInfo.child)}
+                          >
+                            Include another child
+                          </Button>
+                        </VStack>
+                      )}
+                    />
+                  </>
+                )}
+
+                {step === 3 && (
+                  <>
+                    <FieldArray
+                      name="caregiver"
+                      render={({ push, remove }) => (
+                        <VStack spacing={4}>
+                          {values.caregiver &&
+                            values.caregiver.length > 0 &&
+                            values.caregiver.map((caregiver, index) => (
+                              <Box key={index}>
+                                <NewChildInstanceTitle
+                                  index={index}
+                                  remove={remove}
+                                  desc="Caregiver"
+                                />
+
+                                <CaregiverComponent index={index} />
+                              </Box>
+                            ))}
+
+                          <Button
+                            leftIcon={<Icon as={BsPlusCircle} />}
+                            colorScheme="teal"
+                            variant="outline"
+                            onClick={() => push(newInfo.caregiver)}
+                          >
+                            Include new caregiver
+                          </Button>
+                        </VStack>
+                      )}
+                    />
+                  </>
+                )}
+
+                <Flex justifyContent="space-between" mt={4}>
+                  {step > 1 && (
+                    <Button
+                      colorScheme="pink"
+                      variant="ghost"
+                      onClick={previousStep}
+                    >
+                      Previous
+                    </Button>
+                  )}
+                  <Button
+                    type="submit"
+                    colorScheme="blue"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting
+                      ? "Submitting..."
+                      : step < totalSteps
+                      ? "Next"
+                      : "Submit"}
+                  </Button>
+                </Flex>
+              </Form>
+            );
+          }}
         </Formik>
       </VStack>
     </Box>

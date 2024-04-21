@@ -108,6 +108,16 @@ const ImageFileUploader: React.FC<ImageFileUploaderProps> = ({
           const result = reader.result as string;
           setImagePreview(result);
         };
+
+        reader.onerror = (error: any) => {
+          toast({
+            title: "Failed to read file",
+            description: error.message,
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        };
         reader.readAsDataURL(file);
 
         // Prepare for upload
@@ -120,8 +130,14 @@ const ImageFileUploader: React.FC<ImageFileUploaderProps> = ({
               "Content-Type": "multipart/form-data",
             },
           });
+
+          console.log("Response:", response.data);
           // Assuming API response includes the path
-          const imagePath = response.data.path;
+          const imagePath = response.data.paths[0];
+
+          //           const imagePaths = [...response.data.paths];
+          // console.log("Stored Image Paths:", imagePaths);
+          console.log("Image uploaded:", imagePath);
           setFieldValue(id, imagePath);
         } catch (error: any) {
           console.error("Error uploading file:", error);

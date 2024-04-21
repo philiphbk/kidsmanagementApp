@@ -32,29 +32,77 @@ const ChildComponent = ({ index }: { index: number }) => {
     value: "",
   });
 
+  // const handleRelationshipChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  //   const { name, value, id } = e.target;
+
+  //   if (id.includes("relationshipWithChildType")) {
+  //     setCurrentType(value);
+  //     setOtherType({ ...otherType, status: false });
+  //     setFieldValue(`child[${index}].relationshipWithChild`, value);
+  //     console.log(value);
+  //     // setFieldValue(name, value);
+  //   }
+  //   if (id.includes("childGuardian")) {
+  //     if (value === "other") {
+  //       setOtherType({ ...otherType, status: true });
+  //       setFieldValue(`child[${index}].relationshipWithChildType`, "guardian");
+  //     } else {
+  //       setOtherType({ ...otherType, status: false });
+  //       setFieldValue(`child[${index}].relationshipWithChild`, value);
+  //       console.log(value);
+  //       // setFieldValue(name, value);
+  //     }
+  //   }
+  // };
+
   const handleRelationshipChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const { name, value, id } = e.target;
+    const { value, id } = e.target;
 
     if (id.includes("relationshipWithChildType")) {
       setCurrentType(value);
-      setOtherType({ ...otherType, status: false });
-      setFieldValue(`child[${index}].relationshipWithChild`, "");
-      setFieldValue(name, value);
-    } else if (id.includes("childGuardian")) {
+      // Automatically set a default relation when a type is selected
+      const defaultRelation =
+        relationshipData?.find((relationship) => relationship.type === value)
+          ?.relationship?.[0]?.id || "";
+
+      setFieldValue(`child[${index}].relationshipWithChildType`, value);
+      setFieldValue(`child[${index}].relationshipWithChild`, defaultRelation);
+      setOtherType({ status: value === "other", value: "" }); // Handle 'other' type specifically
+    } else if (id.includes("relationshipWithChild")) {
+      setFieldValue(`child[${index}].relationshipWithChild`, value);
       if (value === "other") {
-        setOtherType({ ...otherType, status: true });
-        setFieldValue(`child[${index}].relationshipWithChildType`, "guardian");
+        setOtherType({ status: true, value: "" });
       } else {
-        setOtherType({ ...otherType, status: false });
-        setFieldValue(`child[${index}].relationshipWithChild`, value);
+        setOtherType({ status: false, value: "" });
       }
     }
+
+    // if (id.includes("relationshipWithChild")) {
+    //   if (value === "other") {
+    //     setOtherType({ status: true, value: "" });
+    //     // Assuming 'index' is properly scoped and available
+    //     setFieldValue(`child[${index}].relationshipWithChildType`, "guardian");
+    //   } else {
+    //     setOtherType({ status: false, value: "" });
+    //     // setFieldValue(`child[${index}].relationshipWithChild`, value);
+    //     setFieldValue(`child[${index}].relationshipWithChild`, value);
+    //   }
+    // } else if (id.includes("relationshipWithChildType")) {
+    //   // Assuming setCurrentType is a state hook for another piece of state
+    //   setCurrentType(value);
+    //   setOtherType({ status: false, value: "" });
+    //   setFieldValue(`child[${index}].relationshipWithChild`, value);
+    // }
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setFieldValue(`child[${index}].relationshipWithChild`, value);
+    const { value, id } = e.target;
+    setOtherType({ ...otherType, value });
   };
+  // const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const { value } = e.target;
+  //   setFieldValue(`child[${index}].relationshipWithChild`, value);
+  // };
 
   const relationshipDataFiltered = relationshipData?.find(
     (relationship) => relationship.type === currentType
@@ -185,9 +233,12 @@ const ChildComponent = ({ index }: { index: number }) => {
         <Input
           id={`child[${index}].ageGroup`}
           name={`child[${index}].ageGroup`}
-          type="text"
+          type="number"
           onChange={(e) => {
-            setFieldValue(`child[${index}].ageGroup`, e.target.value);
+            setFieldValue(
+              `child[${index}].ageGroup`,
+              e.target.value.toString()
+            );
           }}
         />
         <FormErrorMessage>
@@ -230,11 +281,12 @@ const ChildComponent = ({ index }: { index: number }) => {
         }
       >
         <FormLabel htmlFor={`child[${index}].relationshipWithChildType`}>
-          Relationship with child
+          Relationship with child Type
         </FormLabel>
         <Select
           id={`child[${index}].relationshipWithChildType`}
           name={`child[${index}].relationshipWithChildType`}
+          value={values.child[index].relationshipWithChildType}
           onChange={handleRelationshipChange}
         >
           {relationshipTypeData?.map((relationship) => (
@@ -263,10 +315,9 @@ const ChildComponent = ({ index }: { index: number }) => {
           Relationship with child
         </FormLabel>
         <Select
-          // id={`child[${index}].relationshipWithChild`}
-          // name={`child[${index}].relationshipWithChild`}
-          name="childGuardian"
-          id="childGuardian"
+          id={`child[${index}].relationshipWithChild`}
+          name={`child[${index}].relationshipWithChild`}
+          value={values.child[index].relationshipWithChild}
           onChange={handleRelationshipChange}
         >
           <option value="" disabled>
@@ -291,7 +342,11 @@ const ChildComponent = ({ index }: { index: number }) => {
       {otherType.status && (
         <FormControl>
           <FormLabel htmlFor="otherGuardian">Specify Relationship</FormLabel>
-          <Input id="otherGuardian" onChange={handleInputChange} />
+          <Input
+            id="otherGuardian"
+            value={otherType.value}
+            onChange={handleInputChange}
+          />
           <ErrorMessage name="otherGuardian" component={FormErrorMessage} />
         </FormControl>
       )}
@@ -331,208 +386,6 @@ const ChildComponent = ({ index }: { index: number }) => {
         </FormErrorMessage>
       </FormControl>
     </VStack>
-    // <div className="personal_info">
-    //   {/* full name */}
-    //   <div className="flex gap-x-6 flex-col md:flex-row">
-    //     <div className="input_group">
-    //       <label htmlFor={`child[${index}].firstName`}>First Name</label>
-    //       <Field
-    //         name={`child[${index}].firstName`}
-    //         id={`child[${index}].firstName`}
-    //         type="text"
-    //         onChange={(e: any) => {
-    //           setFieldValue(`child[${index}].firstName`, e.target.value);
-    //         }}
-    //         className="hod_input"
-    //         aria-placeholder="Enter first name"
-    //         aria-label="First Name"
-    //       />
-    //       <ErrorMessage name={`child[${index}].firstName`} />
-    //     </div>
-
-    //     <div className="input_group">
-    //       <label htmlFor={`child[${index}].lastName`}>Last Name</label>
-    //       <Field
-    //         name={`child[${index}].lastName`}
-    //         id={`child[${index}].lastName`}
-    //         type="text"
-    //         className="hod_input"
-    //         aria-placeholder="Enter last name"
-    //         aria-label="Last Name"
-    //       />
-    //       <ErrorMessage name={`child[${index}].lastName`} />
-    //     </div>
-    //   </div>
-
-    //   {/* date of birth and gender */}
-    //   <div className="flex gap-x-6 flex-col md:flex-row">
-    //     <div className="input_group">
-    //       <label htmlFor={`child[${index}].dateOfBirth`}>Date of birth</label>
-    //       <Field
-    //         name={`child[${index}].dateOfBirth`}
-    //         id={`child[${index}].dateOfBirth`}
-    //         type="date"
-    //         className="hod_input"
-    //         aria-placeholder="Enter date of birth name"
-    //         aria-label="Date of birth"
-    //       />
-    //       <ErrorMessage name={`child[${index}].dateOfBirth`} />
-    //     </div>
-
-    //     <div className="input_group">
-    //       <label htmlFor={`child[${index}].gender`}>Gender</label>
-    //       <Field
-    //         name={`child[${index}].gender`}
-    //         id={`child[${index}].gender`}
-    //         as="select"
-    //         className="hod_input"
-    //         aria-label="Gender"
-    //       >
-    //         <option value="" disabled>
-    //           select gender
-    //         </option>
-
-    //         {genderData?.map((gender) => (
-    //           <option key={gender.id} value={gender.id}>
-    //             {gender.value}
-    //           </option>
-    //         ))}
-    //       </Field>
-    //       <ErrorMessage name={`child[${index}].gender`} />
-    //     </div>
-    //   </div>
-
-    //   {/* photograph */}
-    //   <div className="input_group">
-    //     <label htmlFor={`child[${index}].photograph`}>
-    //       Upload a clear photograph
-    //     </label>
-    //     <ImageFileUploader
-    //       id={`child[${index}].photograph`}
-    //       ariaLabel="Upload a clear photograph"
-    //     />
-    //     <ErrorMessage name={`child[${index}].photograph`} />
-    //   </div>
-
-    //   {/* age group */}
-    //   <div className="input_group">
-    //     <label htmlFor={`child[${index}].ageGroup`}>Age Group</label>
-    //     <Field
-    //       name={`child[${index}].ageGroup`}
-    //       id={`child[${index}].ageGroup`}
-    //       as="select"
-    //       className="hod_input"
-    //       aria-label="Age Group"
-    //     >
-    //       <option value="" disabled>
-    //         select age group
-    //       </option>
-
-    //       {ageGroupData?.map((group) => (
-    //         <option key={group.id} value={group.id}>
-    //           {group.value}
-    //         </option>
-    //       ))}
-    //     </Field>
-    //     <ErrorMessage name={`child[${index}].ageGroup`} />
-    //   </div>
-
-    //   {/* relationship with child */}
-    //   <div className="flex gap-x-6 flex-col md:flex-row">
-    //     <div className="input_group">
-    //       <label htmlFor={`child[${index}].relationshipWithChildType`}>
-    //         Relationship with child
-    //       </label>
-    //       <Field
-    //         name={`child[${index}].relationshipWithChildType`}
-    //         id={`child[${index}].relationshipWithChildType`}
-    //         as="select"
-    //         className="hod_input"
-    //         aria-label="Relationship with child"
-    //         onChange={handleRelationshipChange}
-    //       >
-    //         <option value="" disabled>
-    //           select relationship
-    //         </option>
-
-    //         {relationshipTypeData?.map((relationship) => (
-    //           <option key={relationship.id} value={relationship.id}>
-    //             {relationship.type}
-    //           </option>
-    //         ))}
-    //       </Field>
-    //       <ErrorMessage name={`child[${index}].relationshipWithChildType`} />
-    //     </div>
-
-    //     <div className="input_group">
-    //       <label htmlFor={`child[${index}].relationshipWithChild`}>
-    //         Specify Relationship
-    //       </label>
-
-    //       <Field
-    //         name="childGuardian"
-    //         id="childGuardian"
-    //         as="select"
-    //         className="hod_input"
-    //         aria-label="Specify Relationship"
-    //         onChange={handleRelationshipChange}
-    //       >
-    //         <option value="" disabled>
-    //           choose relationship
-    //         </option>
-
-    //         {relationshipDataFiltered?.relationship?.map(
-    //           (item: { id: string; value: string }) => (
-    //             <option key={item.id} value={item.id}>
-    //               {item.value}
-    //             </option>
-    //           )
-    //         )}
-    //       </Field>
-    //       <ErrorMessage name="childGuardian" />
-    //     </div>
-    //   </div>
-
-    //   {/* exact relationship */}
-    //   {otherType.status && (
-    //     <div className="input_group">
-    //       <label htmlFor="otherGuardian">
-    //         Please enter the exact relationship with child
-    //       </label>
-
-    //       <Field
-    //         name="otherGuardian"
-    //         id="otherGuardian"
-    //         type="text"
-    //         className="hod_input"
-    //         aria-placeholder="Enter relationship with child"
-    //         aria-label="Enter relationship with child"
-    //         onChange={handleInputChange}
-    //         defaultValue={otherType.value}
-    //       />
-    //       <ErrorMessage name="otherGuardian" />
-    //     </div>
-    //   )}
-
-    //   {/* special need */}
-    //   <div className="input_group">
-    //     <label htmlFor={`child[${index}].specialNeeds`}>
-    //       Special Needs{" "}
-    //       <span className="font-normal text-hod-text-gray2 text-base leading-6 italic">
-    //         (Any special type of care for the child)
-    //       </span>
-    //     </label>
-    //     <Field
-    //       name={`child[${index}].specialNeeds`}
-    //       id={`child[${index}].specialNeeds`}
-    //       type="text"
-    //       className="hod_input"
-    //       aria-placeholder="Enter any special needs for the child"
-    //       aria-label="Special Needs"
-    //     />
-    //     <ErrorMessage name={`child[${index}].specialNeeds`} />
-    //   </div>
-    // </div>
   );
 };
 

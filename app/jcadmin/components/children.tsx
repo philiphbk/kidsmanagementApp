@@ -65,6 +65,7 @@ const ChildrenList = () => {
 
   function setChildPhoto(photo: string) {
     //console.log(photo);
+
     if (photo.includes("/public")) {
       return photo.replace("/public", "") as string;
     } else if (
@@ -75,6 +76,7 @@ const ChildrenList = () => {
         ""
       ) as string;
     }
+    return photo;
   }
   // Get current children for pagination
   // const indexOfLastChild = currentPage * childrenPerPage;

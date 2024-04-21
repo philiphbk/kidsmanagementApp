@@ -89,8 +89,7 @@ const buildCareGiver = () => {
       },
 
       getById: async (caregiverId: string) => {
-        const careGiverDb = db("careGiver");
-        const caregiver = await careGiverDb.getOne(caregiverId);
+        const caregiver = await db.getOne("careGiver", caregiverId);
         if (!caregiver) {
           throw new Error("CareGiver not found.");
         }
@@ -98,8 +97,7 @@ const buildCareGiver = () => {
       },
 
       save: async (data: CaregiverForm) => {
-        const careGiverDb = db("careGiver");
-        return await careGiverDb.create(data);
+        return await db.create("careGiver", data);
       },
     });
   };

@@ -99,14 +99,12 @@ export default function TopNavBar() {
       <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
         <Box>
           <NextLink href="#" passHref>
-            <Link>
-              <Image
-                src={HODLogo.toString()}
-                width={60}
-                height={60}
-                alt="HOD Logo"
-              />
-            </Link>
+            <Image
+              src={HODLogo.toString()}
+              width={60}
+              height={60}
+              alt="HOD Logo"
+            />
           </NextLink>
         </Box>
         <Menu>
@@ -117,7 +115,22 @@ export default function TopNavBar() {
             variant="outline"
           />
           <MenuList>
-            <NextLink href="/jcadmin/overview" passHref>
+            <MenuItem as={NextLink} href="/jcadmin/overview" passHref>
+              Overview
+            </MenuItem>
+            <MenuItem as={NextLink} href="/jcadmin/checkInOut" passHref>
+              Check In/Out
+            </MenuItem>
+            <MenuItem as={NextLink} href="/jcadmin/registerUsers" passHref>
+              Registered Users
+            </MenuItem>
+            <MenuItem as={NextLink} href="/jcadmin/settings" passHref>
+              Settings
+            </MenuItem>
+            <MenuItem as={NextLink} href="/login" passHref>
+              Logout
+            </MenuItem>
+            {/* <NextLink href="/jcadmin/overview" passHref>
               <MenuItem as={Link}>Overview</MenuItem>
             </NextLink>
             <NextLink href="/jcadmin/checkInOut" passHref>
@@ -131,7 +144,7 @@ export default function TopNavBar() {
             </NextLink>
             <NextLink href="/login" passHref>
               <MenuItem as={Link}>Logout</MenuItem>
-            </NextLink>
+            </NextLink> */}
           </MenuList>
         </Menu>
       </Flex>

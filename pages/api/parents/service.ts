@@ -17,7 +17,7 @@ export const createParent = async (parentData: ParentForm) => {
 };
 
 export const loginParent = async (email: string, password: string) => {
-  const parent = await db("parent").getByEmail(email);
+  const parent = await db.getByEmail("parent", email);
   if (!parent) {
     throw new Error("User not found");
   }

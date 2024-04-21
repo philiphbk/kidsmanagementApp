@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { connectWithRetry } from "../db";
+import { db } from "../db";
 
 export default async function handler(
   req: NextApiRequest,
@@ -7,17 +7,14 @@ export default async function handler(
 ) {
   const { method, body } = req;
   const { idValue, child_id, parent_id, status, ...updateData } = req.query;
-
-  const connection = await connectWithRetry();
-
+  const { id } = body;
   try {
     switch (method) {
       case "GET":
         let sqlQuery = "";
         let rows: any = [];
         sqlQuery = "SELECT * FROM activity_log LIMIT 10";
-        [rows] = await connection.execute(sqlQuery);
-        connection.release();
+        rows = await db.executeQuery(sqlQuery);
         res.status(200).json(rows);
         break;
 
@@ -34,30 +31,30 @@ export default async function handler(
         if (status && child_id && parent_id) {
           query =
             "INSERT INTO activity_log (child_id, parent_id, status) VALUES (?, ?, ?)";
-          await connection.execute(query, [child_id, parent_id, status]);
-          connection.release();
+          await db.executeQuery(query, [
+            child_id.toString(),
+            parent_id.toString(),
+            status.toString(),
+          ]);
           res
             .status(200)
             .json({ success: true, message: "Status updated successfully." });
         } else {
-          await connection.query("INSERT INTO activity_log SET ?", body);
+          await db.create("activity_log", body);
         }
         res.status(201).end();
         break;
 
       case "PUT":
-        await connection.query("UPDATE activity_log SET ? WHERE id = ?", [
-          updateData,
-          child_id,
+        await db.executeQuery("UPDATE activity_log SET ? WHERE id = ?", [
+          updateData.toString(),
+          child_id?.toString() || "",
         ]);
-        connection.release();
         res.status(200).end();
-
         break;
 
       case "DELETE":
-        const { id } = body; // Assuming 'id' is sent in the request body
-        await connection.query("DELETE FROM activity_log WHERE id = ?", [id]);
+        await db.delete("activity_log", id);
         res.status(200).end();
         break;
 
@@ -68,8 +65,5 @@ export default async function handler(
   } catch (error: any) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
-  } finally {
-    // Ensure the connection is always released
-    if (connection && connection.release) connection.release();
   }
 }

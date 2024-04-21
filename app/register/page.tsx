@@ -45,11 +45,9 @@ export default function Register() {
             justify="center"
           >
             <NextLink href="/register/member" passHref>
-              <ChakraLink>
-                <Button colorScheme="blue" fontWeight="500" size="lg">
-                  Register as a Member
-                </Button>
-              </ChakraLink>
+              <Button colorScheme="blue" fontWeight="500" size="lg">
+                Register as a Member
+              </Button>
             </NextLink>
             {/* Uncomment and use when the visitor registration is needed */}
             {/* <NextLink href="/register/visitor" passHref>
