@@ -27,7 +27,7 @@ const callbackHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     // const email = value?.user?.email;
 
-    const user = await db("user").getByEmail(email);
+    const user = await db.getByEmail("user", email);
     console.log(user);
 
     if (!user) {

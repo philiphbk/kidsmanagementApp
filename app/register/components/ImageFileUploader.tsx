@@ -120,8 +120,14 @@ const ImageFileUploader: React.FC<ImageFileUploaderProps> = ({
               "Content-Type": "multipart/form-data",
             },
           });
+
+          console.log("Response:", response.data);
           // Assuming API response includes the path
-          const imagePath = response.data.path;
+          const imagePath = response.data.paths[0];
+
+          //           const imagePaths = [...response.data.paths];
+          // console.log("Stored Image Paths:", imagePaths);
+          console.log("Image uploaded:", imagePath);
           setFieldValue(id, imagePath);
         } catch (error: any) {
           console.error("Error uploading file:", error);

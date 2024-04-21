@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { connectWithRetry } from "../db";
+import { db } from "../db";
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,7 +9,6 @@ export default async function handler(
   const { searchWord } = req.query;
   const { idValue, child_id, parent_id, ...updateData } = req.query;
   const { id, status } = body;
-  const connection = await connectWithRetry();
 
   try {
     switch (method) {
@@ -19,29 +18,33 @@ export default async function handler(
 
         if (searchWord) {
           sqlQuery = `SELECT * FROM child WHERE firstName = ? OR lastName = ?`;
-          [rows] = await connection.execute(sqlQuery, [searchWord, searchWord]);
+          [rows] = await db.executeQuery(sqlQuery, [
+            searchWord.toString(),
+            searchWord.toString(),
+          ]);
         } else if (idValue) {
           sqlQuery = `SELECT parentId FROM child WHERE id = ?`;
-          [rows] = await connection.execute(sqlQuery, [idValue]);
-        } else {
+          [rows] = await db.executeQuery(sqlQuery, [idValue.toString()]);
+        } else if (id) {
           sqlQuery = "SELECT * FROM child LIMIT 10";
-          [rows] = await connection.execute(sqlQuery);
+          [rows] = await db.executeQuery(sqlQuery);
+        } else {
+          rows = await db.getAll("child");
         }
-        connection.release();
-        res.status(200).json(rows);
+
+        res.status(200).json([rows]);
         break;
 
       case "POST":
         let query = "";
         if (status) {
           query = "UPDATE child SET status = ?";
-          await connection.execute(query, [status]);
-          connection.release();
+          await db.executeQuery(query, [status]);
           res
             .status(200)
             .json({ success: true, message: "Status updated successfully." });
         } else {
-          await connection.query("INSERT INTO child SET ?", body);
+          await db.create("child", body);
         }
         res.status(201).end();
         break;
@@ -50,25 +53,18 @@ export default async function handler(
         let queryUpdate = "";
         if (status && id) {
           queryUpdate = "UPDATE child SET status = ? WHERE id = ?";
-          await connection.execute(queryUpdate, [status, id]);
-          connection.release();
+          await db.executeQuery(queryUpdate, [status, id]);
           res
             .status(200)
             .json({ success: true, message: "Status updated successfully." });
         } else {
-          await connection.query("UPDATE child SET ? WHERE id = ?", [
-            updateData,
-            id,
-          ]);
+          await db.update("child", id, updateData);
         }
-
-        connection.release();
         res.status(200).end();
-
         break;
 
       case "DELETE":
-        await connection.query("DELETE FROM child WHERE id = ?", [id]);
+        await db.delete("child", id);
         res.status(200).end();
         break;
 
@@ -79,8 +75,5 @@ export default async function handler(
   } catch (error: any) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
-  } finally {
-    // Ensure the connection is always released
-    if (connection && connection.release) connection.release();
   }
 }

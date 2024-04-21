@@ -50,22 +50,22 @@ const RegisterMemberComponent = () => {
   const ParentRegistrationSchema = Yup.object()
     .shape({
       parent: Yup.object().shape({
-        firstName: Yup.string().required("First Name is required"),
-        lastName: Yup.string().required("Last Name is required"),
-        email: Yup.string()
-          .email("Invalid email")
-          .required("Email is required"),
-        gender: Yup.string(),
-        roleInChurch: Yup.string().required("Role in church is required"),
-        departmentInChurch: Yup.string(),
-        ministry: Yup.string(),
-        phoneNumberPrimary: Yup.string().required("Phone Number is required"),
-        phoneNumberSecondary: Yup.string(),
-        idType: Yup.string().required("ID Type is required"),
-        idNumber: Yup.string().required("ID Number is required"),
-        idPhoto: Yup.string(),
-        photograph: Yup.string().required("Photograph is required"),
-        address: Yup.string().required("Address is required"),
+        // firstName: Yup.string().required("First Name is required"),
+        // lastName: Yup.string().required("Last Name is required"),
+        // email: Yup.string()
+        //   .email("Invalid email")
+        //   .required("Email is required"),
+        // gender: Yup.string(),
+        // roleInChurch: Yup.string().required("Role in church is required"),
+        // departmentInChurch: Yup.string(),
+        // ministry: Yup.string(),
+        // phoneNumberPrimary: Yup.string().required("Phone Number is required"),
+        // phoneNumberSecondary: Yup.string(),
+        // idType: Yup.string().required("ID Type is required"),
+        // idNumber: Yup.string(),
+        // idPhoto: Yup.string(),
+        // photograph: Yup.string().required("Photograph is required"),
+        // address: Yup.string().required("Address is required"),
       }),
     })
     .nullable();
@@ -75,19 +75,19 @@ const RegisterMemberComponent = () => {
       child: Yup.array()
         .of(
           Yup.object().shape({
-            firstName: Yup.string().required("First Name is required"),
-            lastName: Yup.string().required("Last Name is required"),
-            ageGroup: Yup.string().required("Age Group is required"),
-            gender: Yup.string().required("Gender is required"),
-            dateOfBirth: Yup.string().required("Date of Birth is required"),
-            photograph: Yup.string().required("Photograph is required"),
-            relationshipWithChildType: Yup.string().required(
-              "Relationship with Child Type is required"
-            ),
-            relationshipWithChild: Yup.string().required(
-              "Relationship with Child is required"
-            ),
-            specialNeeds: Yup.string(),
+            // firstName: Yup.string().required("First Name is required"),
+            // lastName: Yup.string().required("Last Name is required"),
+            // ageGroup: Yup.string().required("Age Group is required"),
+            // gender: Yup.string().required("Gender is required"),
+            // dateOfBirth: Yup.string().required("Date of Birth is required"),
+            // photograph: Yup.string().required("Photograph is required"),
+            // relationshipWithChildType: Yup.string().required(
+            //   "Relationship with Child Type is required"
+            // ),
+            // relationshipWithChild: Yup.string().required(
+            //   "Relationship with Child is required"
+            // ),
+            // specialNeeds: Yup.string(),
           })
         )
         .nullable(),
@@ -99,32 +99,32 @@ const RegisterMemberComponent = () => {
       caregiver: Yup.array()
         .of(
           Yup.object().shape({
-            firstName: Yup.string().required("First Name is required"),
-            lastName: Yup.string().required("Last Name is required"),
-            email: Yup.string()
-              .email("Invalid email")
-              .required("Email is required"),
-            gender: Yup.string().required("Gender is required"),
-            roleInChurch: Yup.string().required("Role in church is required"),
-            departmentInChurch: Yup.string(),
-            ministry: Yup.string(),
-            phoneNumberPrimary: Yup.string().required(
-              "Phone Number is required"
-            ),
-            phoneNumberSecondary: Yup.string(),
-            relationshipWithChildType: Yup.string().required(
-              "Relationship with Child Type is required"
-            ),
-            relationshipWithChild: Yup.string().required(
-              "Relationship with Child is required"
-            ),
-            caregiverRelationshipTypeWithParent: Yup.string().required(
-              "Caregiver Relationship Type with Parent is required"
-            ),
-            caregiverRelationshipWithParentData: Yup.string().required(
-              "Caregiver Relationship with Parent Data is required"
-            ),
-            photograph: Yup.string().required("Photograph is required"),
+            // firstName: Yup.string().required("First Name is required"),
+            // lastName: Yup.string().required("Last Name is required"),
+            // email: Yup.string()
+            //   .email("Invalid email")
+            //   .required("Email is required"),
+            // gender: Yup.string().required("Gender is required"),
+            // roleInChurch: Yup.string().required("Role in church is required"),
+            // departmentInChurch: Yup.string(),
+            // ministry: Yup.string(),
+            // phoneNumberPrimary: Yup.string().required(
+            //   "Phone Number is required"
+            // ),
+            // phoneNumberSecondary: Yup.string(),
+            // relationshipWithChildType: Yup.string().required(
+            //   "Relationship with Child Type is required"
+            // ),
+            // relationshipWithChild: Yup.string().required(
+            //   "Relationship with Child is required"
+            // ),
+            // caregiverRelationshipTypeWithParent: Yup.string().required(
+            //   "Caregiver Relationship Type with Parent is required"
+            // ),
+            // caregiverRelationshipWithParentData: Yup.string().required(
+            //   "Caregiver Relationship with Parent Data is required"
+            // ),
+            // photograph: Yup.string().required("Photograph is required"),
           })
         )
         .nullable(),
@@ -229,6 +229,7 @@ const RegisterMemberComponent = () => {
     useStore.getState().setFormData(values);
 
     console.log("values", values);
+    console.log("is clicked!");
     if (step < totalSteps) {
       console.log("values", values);
       console.log("is clicked!");
@@ -343,6 +344,7 @@ const RegisterMemberComponent = () => {
                           colorScheme="teal"
                           variant="outline"
                           onClick={() => push(newInfo.child)}
+                          mb={3}
                         >
                           Include another child
                         </Button>

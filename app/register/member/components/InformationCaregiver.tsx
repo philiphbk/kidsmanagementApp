@@ -81,29 +81,49 @@ const CaregiverComponent = ({ index }: { index: number }) => {
   const handleRelationshipChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const { name, value, id } = e.target;
 
-    if (id.includes("relationshipWithChildType")) {
+    if (id.includes("relationshipWithChildType") && !id.includes("caregiverRelationshipTypeWithParent")) {
       setCurrentType(value);
       setOtherType({ ...otherType, status: false });
-      setFieldValue(`caregiver[${index}].relationshipWithChild`, "");
+      // setFieldValue(`caregiver[${index}].relationshipWithChild`, "");
       setFieldValue(name, value);
-    } else if (id.includes("caregiverGuardian")) {
-      if (value === "other") {
+    } else {
+      if (value.toLowerCase() === "other") {
         setOtherType({ ...otherType, status: true });
-        setFieldValue(
-          `caregiver[${index}].relationshipWithChildType`,
-          "guardian"
-        );
+        setFieldValue(`child[${index}].relationshipWithChildType`, "guardian");
       } else {
         setOtherType({ ...otherType, status: false });
-        setFieldValue(`caregiver[${index}].relationshipWithChild`, value);
+        setFieldValue(`child[${index}].relationshipWithChild`, value);
       }
-    } else if (id.includes("caregiverRelationshipTypeWithParent")) {
+    }
+
+    // if (id.includes("caregiverGuardian")) {
+    //   console.log(value, name);
+    //   if (value === "other") {
+    //     setOtherType({ ...otherType, status: true });
+    //     setFieldValue(
+    //       `caregiver[${index}].relationshipWithChildType`,
+    //       "guardian"
+    //     );
+    //     setFieldValue(name, value);
+    //   } else {
+    //     setOtherType({ ...otherType, status: false });
+    //     setFieldValue(`caregiver[${index}].relationshipWithChild`, value);
+    //   }
+    // }
+
+    if (id.includes("caregiverRelationshipTypeWithParent")) {
       setCurrentCaregiverType(value);
+      setFieldValue(
+        `caregiver[${index}].caregiverRelationshipTypeWithParent`,
+        value
+      );
+    }
+
+    if (id.includes("caregiverRelationshipWithParentData")) {
       setFieldValue(
         `caregiver[${index}].caregiverRelationshipWithParentData`,
         value
       );
-      setFieldValue(name, value);
     }
 
     // if (id.includes("churchLocation")) {
@@ -119,8 +139,7 @@ const CaregiverComponent = ({ index }: { index: number }) => {
 
   const caregiverRelationshipFiltered =
     caregiverRelationshipWithParentData?.find(
-      (CaregiverRelationship) =>
-        CaregiverRelationship.type === currentCaregiverType
+      (cgr) => cgr.type === currentCaregiverType
     );
 
   const relationshipDataFiltered = relationshipData?.find(
@@ -349,12 +368,18 @@ const CaregiverComponent = ({ index }: { index: number }) => {
         <Input
           id={`caregiver[${index}].phoneNumberPrimary`}
           name={`caregiver[${index}].phoneNumberPrimary`}
-          onChange={(e) =>
+          type="number"
+          onChange={(e) => {
+            const { value } = e.target;
+            console.log(value.length)
+
+            // if (value.length > 11) {
             setFieldValue(
               `caregiver[${index}].phoneNumberPrimary`,
-              e.target.value
-            )
-          }
+              e.target.value.toString()
+            );
+            // }
+          }}
         />
         {/* <FormErrorMessage>
           {
@@ -378,12 +403,16 @@ const CaregiverComponent = ({ index }: { index: number }) => {
         <Input
           id={`caregiver[${index}].phoneNumberSecondary`}
           name={`caregiver[${index}].phoneNumberSecondary`}
-          onChange={(e) =>
+          type="number"
+          onChange={(e) => {
+            const { value } = e.target;
+            // if (value.length > 11) {
             setFieldValue(
               `caregiver[${index}].phoneNumberSecondary`,
-              e.target.value
-            )
-          }
+              e.target.value.toString()
+            );
+            // }
+          }}
         />
         {/* <FormErrorMessage>
           {
@@ -408,12 +437,13 @@ const CaregiverComponent = ({ index }: { index: number }) => {
           id={`caregiver[${index}].relationshipWithChildType`}
           name={`caregiver[${index}].relationshipWithChildType`}
           placeholder="Select relationship type"
-          onChange={(e) =>
-            setFieldValue(
-              `caregiver[${index}].relationshipWithChildType`,
-              e.target.value
-            )
-          }
+          onChange={handleRelationshipChange}
+        // onChange={(e) =>
+        //   setFieldValue(
+        //     `caregiver[${index}].relationshipWithChildType`,
+        //     e.target.value
+        //   )
+        // }
         >
           {relationshipTypeData.map((relationshipType) => (
             <option key={relationshipType.id} value={relationshipType.id}>
@@ -444,12 +474,12 @@ const CaregiverComponent = ({ index }: { index: number }) => {
           id={`caregiver[${index}].relationshipWithChild`}
           placeholder="Select relationship"
           onChange={handleRelationshipChange}
-          // onChange={(e) =>
-          //   setFieldValue(
-          //     `caregiver[${index}].relationshipWithChild`,
-          //     e.target.value
-          //   )
-          // }
+        // onChange={(e) =>
+        //   setFieldValue(
+        //     `caregiver[${index}].relationshipWithChild`,
+        //     e.target.value
+        //   )
+        // }
         >
           {relationshipDataFiltered?.relationship?.map(
             (item: { id: string; value: string }) => (
@@ -511,12 +541,12 @@ const CaregiverComponent = ({ index }: { index: number }) => {
           id={`caregiver[${index}].caregiverRelationshipTypeWithParent`}
           placeholder="Select relationship"
           onChange={handleRelationshipChange}
-          // onChange={(e) =>
-          //   setFieldValue(
-          //     `caregiver[${index}].caregiverRelationshipTypeWithParent`,
-          //     e.target.value
-          //   )
-          // }
+        // onChange={(e) =>
+        //   setFieldValue(
+        //     `caregiver[${index}].caregiverRelationshipTypeWithParent`,
+        //     e.target.value
+        //   )
+        // }
         >
           {caregiverRelationshipTypeWithParent?.map((relationship) => (
             <option key={relationship.id} value={relationship.id}>
@@ -549,12 +579,12 @@ const CaregiverComponent = ({ index }: { index: number }) => {
           id={`caregiver[${index}].caregiverRelationshipWithParentData`}
           placeholder="Select relationship type"
           onChange={handleRelationshipChange}
-          // onChange={(e) =>
-          //   setFieldValue(
-          //     `caregiver[${index}].caregiverRelationshipWithParentData`,
-          //     e.target.value
-          //   )
-          // }
+        // onChange={(e) =>
+        //   setFieldValue(
+        //     `caregiver[${index}].caregiverRelationshipWithParentData`,
+        //     e.target.value
+        //   )
+        // }
         >
           {caregiverRelationshipFiltered?.relationship?.map(
             (item: { id: string; value: string }) => (
