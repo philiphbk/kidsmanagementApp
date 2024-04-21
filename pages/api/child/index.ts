@@ -32,7 +32,7 @@ export default async function handler(
           rows = await db.getAll("child");
         }
 
-        res.status(200).json([rows]);
+        res.status(200).json(rows);
         break;
 
       case "POST":

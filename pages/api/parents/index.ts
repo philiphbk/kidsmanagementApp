@@ -22,11 +22,12 @@ export default async function handler(
         let sqlQuery = "";
 
         if (idParent) {
-          rows = await db.getOne("parent", idParent[0]);
+          sqlQuery = `SELECT * FROM parent WHERE id = ?`;
+          rows = await db.executeQuery(sqlQuery, [idParent as string]);
         } else {
           rows = await db.getAll("parent");
         }
-        res.status(200).json([rows]);
+        res.status(200).json(rows);
         break;
 
       case "POST":

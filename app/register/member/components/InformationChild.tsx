@@ -32,33 +32,77 @@ const ChildComponent = ({ index }: { index: number }) => {
     value: "",
   });
 
+  // const handleRelationshipChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  //   const { name, value, id } = e.target;
+
+  //   if (id.includes("relationshipWithChildType")) {
+  //     setCurrentType(value);
+  //     setOtherType({ ...otherType, status: false });
+  //     setFieldValue(`child[${index}].relationshipWithChild`, value);
+  //     console.log(value);
+  //     // setFieldValue(name, value);
+  //   }
+  //   if (id.includes("childGuardian")) {
+  //     if (value === "other") {
+  //       setOtherType({ ...otherType, status: true });
+  //       setFieldValue(`child[${index}].relationshipWithChildType`, "guardian");
+  //     } else {
+  //       setOtherType({ ...otherType, status: false });
+  //       setFieldValue(`child[${index}].relationshipWithChild`, value);
+  //       console.log(value);
+  //       // setFieldValue(name, value);
+  //     }
+  //   }
+  // };
+
   const handleRelationshipChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const { name, value, id } = e.target;
+    const { value, id } = e.target;
 
     if (id.includes("relationshipWithChildType")) {
       setCurrentType(value);
-      setOtherType({ ...otherType, status: false });
+      // Automatically set a default relation when a type is selected
+      const defaultRelation =
+        relationshipData?.find((relationship) => relationship.type === value)
+          ?.relationship?.[0]?.id || "";
+
+      setFieldValue(`child[${index}].relationshipWithChildType`, value);
+      setFieldValue(`child[${index}].relationshipWithChild`, defaultRelation);
+      setOtherType({ status: value === "other", value: "" }); // Handle 'other' type specifically
+    } else if (id.includes("relationshipWithChild")) {
       setFieldValue(`child[${index}].relationshipWithChild`, value);
-      console.log(value);
-      // setFieldValue(name, value);
-    }
-    if (id.includes("childGuardian")) {
       if (value === "other") {
-        setOtherType({ ...otherType, status: true });
-        setFieldValue(`child[${index}].relationshipWithChildType`, "guardian");
+        setOtherType({ status: true, value: "" });
       } else {
-        setOtherType({ ...otherType, status: false });
-        setFieldValue(`child[${index}].relationshipWithChild`, value);
-        console.log(value);
-        // setFieldValue(name, value);
+        setOtherType({ status: false, value: "" });
       }
     }
+
+    // if (id.includes("relationshipWithChild")) {
+    //   if (value === "other") {
+    //     setOtherType({ status: true, value: "" });
+    //     // Assuming 'index' is properly scoped and available
+    //     setFieldValue(`child[${index}].relationshipWithChildType`, "guardian");
+    //   } else {
+    //     setOtherType({ status: false, value: "" });
+    //     // setFieldValue(`child[${index}].relationshipWithChild`, value);
+    //     setFieldValue(`child[${index}].relationshipWithChild`, value);
+    //   }
+    // } else if (id.includes("relationshipWithChildType")) {
+    //   // Assuming setCurrentType is a state hook for another piece of state
+    //   setCurrentType(value);
+    //   setOtherType({ status: false, value: "" });
+    //   setFieldValue(`child[${index}].relationshipWithChild`, value);
+    // }
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setFieldValue(`child[${index}].relationshipWithChild`, value);
+    const { value, id } = e.target;
+    setOtherType({ ...otherType, value });
   };
+  // const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const { value } = e.target;
+  //   setFieldValue(`child[${index}].relationshipWithChild`, value);
+  // };
 
   const relationshipDataFiltered = relationshipData?.find(
     (relationship) => relationship.type === currentType
@@ -237,18 +281,13 @@ const ChildComponent = ({ index }: { index: number }) => {
         }
       >
         <FormLabel htmlFor={`child[${index}].relationshipWithChildType`}>
-          Relationship with child
+          Relationship with child Type
         </FormLabel>
         <Select
           id={`child[${index}].relationshipWithChildType`}
           name={`child[${index}].relationshipWithChildType`}
-          onChange={(e) =>
-            setFieldValue(
-              `child[${index}].relationshipWithChildType`,
-              e.target.value
-            )
-          }
-          // onChange={handleRelationshipChange}
+          value={values.child[index].relationshipWithChildType}
+          onChange={handleRelationshipChange}
         >
           {relationshipTypeData?.map((relationship) => (
             <option key={relationship.id} value={relationship.id}>
@@ -278,8 +317,7 @@ const ChildComponent = ({ index }: { index: number }) => {
         <Select
           id={`child[${index}].relationshipWithChild`}
           name={`child[${index}].relationshipWithChild`}
-          // name="childGuardian"
-          // id="childGuardian"
+          value={values.child[index].relationshipWithChild}
           onChange={handleRelationshipChange}
         >
           <option value="" disabled>
@@ -304,7 +342,11 @@ const ChildComponent = ({ index }: { index: number }) => {
       {otherType.status && (
         <FormControl>
           <FormLabel htmlFor="otherGuardian">Specify Relationship</FormLabel>
-          <Input id="otherGuardian" onChange={handleInputChange} />
+          <Input
+            id="otherGuardian"
+            value={otherType.value}
+            onChange={handleInputChange}
+          />
           <ErrorMessage name="otherGuardian" component={FormErrorMessage} />
         </FormControl>
       )}

@@ -6,7 +6,7 @@ import Image from "next/image";
 export default function CheckInOut() {
   return (
     <div>
-      CheckInOut
+      CheckInOut Page
       <Image
         src="/public/upload/children-bg.jpg"
         alt="children"
