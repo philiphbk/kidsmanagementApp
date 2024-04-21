@@ -134,10 +134,10 @@ const ChildDetailsModal = ({
     }
   };
 
-  const listOfCaregiverId = useMemo(
-    () => caregiverIds.split(","),
-    [caregiverIds]
-  );
+  const listOfCaregiverId = useMemo(() => {
+    // Check if caregiverIds is a string and is not undefined
+    return typeof caregiverIds === "string" ? caregiverIds.split(",") : [];
+  }, [caregiverIds]);
 
   function convertToReadableFormat(utcTimestamp: string): {
     time: string;

@@ -84,10 +84,17 @@ const CaregiverComponent = ({ index }: { index: number }) => {
     if (id.includes("relationshipWithChildType")) {
       setCurrentType(value);
       setOtherType({ ...otherType, status: false });
-      setFieldValue(`caregiver[${index}].relationshipWithChild`, "");
+      // This will clear the previous value of relationshipWithChild only if necessary
+      const defaultRelationship =
+        relationshipData.find((r) => r.type === value)?.relationship[0]?.id ||
+        "";
+      setFieldValue(
+        `caregiver[${index}].relationshipWithChild`,
+        defaultRelationship
+      );
+      // setFieldValue(`caregiver[${index}].relationshipWithChild`, "");
       setFieldValue(name, value);
-    }
-    if (id.includes("caregiverGuardian")) {
+    } else if (id.includes("relationshipWithChild")) {
       if (value === "other") {
         setOtherType({ ...otherType, status: true });
         setFieldValue(
@@ -97,15 +104,15 @@ const CaregiverComponent = ({ index }: { index: number }) => {
         setFieldValue(name, value);
       } else {
         setOtherType({ ...otherType, status: false });
-        setFieldValue(`caregiver[${index}].relationshipWithChild`, value);
+        // setFieldValue(`caregiver[${index}].relationshipWithChild`, value);
       }
-    }
-    if (id.includes("caregiverRelationshipTypeWithParent")) {
+      setFieldValue(name, value);
+    } else if (id.includes("caregiverRelationshipTypeWithParent")) {
+      console.log("value temp", value);
       setCurrentCaregiverType(value);
-      setFieldValue(
-        `caregiver[${index}].caregiverRelationshipWithParentData`,
-        value
-      );
+      //setFieldValue("dldldl", value);
+      setFieldValue(name, value);
+    } else if (id.includes("caregiverRelationshipWithParentData")) {
       setFieldValue(name, value);
     }
 
@@ -115,8 +122,14 @@ const CaregiverComponent = ({ index }: { index: number }) => {
     // }
   };
 
+  // const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const { value } = e.target;
+  //   setFieldValue(`caregiver[${index}].relationshipWithChild`, value);
+  // };
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
+    setOtherType({ ...otherType, value }); // Assuming you want to store the input value for "other" relationship
     setFieldValue(`caregiver[${index}].relationshipWithChild`, value);
   };
 
@@ -137,6 +150,8 @@ const CaregiverComponent = ({ index }: { index: number }) => {
   if (!values.caregiver || values.caregiver.length <= index) {
     return <span>No caregiver data available</span>;
   }
+
+  console.log("caregiver values", values);
 
   return (
     <VStack spacing={4} align="stretch">
@@ -352,15 +367,13 @@ const CaregiverComponent = ({ index }: { index: number }) => {
         <Input
           id={`caregiver[${index}].phoneNumberPrimary`}
           name={`caregiver[${index}].phoneNumberPrimary`}
-          type="number"
+          type="text"
+          value={values.caregiver[index].phoneNumberPrimary}
           onChange={(e) => {
-            const { value } = e.target;
-            if (value.length > 11) {
-              setFieldValue(
-                `caregiver[${index}].phoneNumberPrimary`,
-                e.target.value.toString()
-              );
-            }
+            setFieldValue(
+              `caregiver[${index}].phoneNumberPrimary`,
+              e.target.value
+            );
           }}
         />
         {/* <FormErrorMessage>
@@ -385,15 +398,13 @@ const CaregiverComponent = ({ index }: { index: number }) => {
         <Input
           id={`caregiver[${index}].phoneNumberSecondary`}
           name={`caregiver[${index}].phoneNumberSecondary`}
-          type="number"
+          type="text"
+          value={values.caregiver[index].phoneNumberSecondary}
           onChange={(e) => {
-            const { value } = e.target;
-            if (value.length > 11) {
-              setFieldValue(
-                `caregiver[${index}].phoneNumberSecondary`,
-                e.target.value.toString()
-              );
-            }
+            setFieldValue(
+              `caregiver[${index}].phoneNumberSecondary`,
+              e.target.value
+            );
           }}
         />
         {/* <FormErrorMessage>
@@ -454,14 +465,10 @@ const CaregiverComponent = ({ index }: { index: number }) => {
         </FormLabel>
         <Select
           id={`caregiver[${index}].relationshipWithChild`}
-          placeholder="Select relationship"
+          name={`caregiver[${index}].relationshipWithChild`}
+          value={values.caregiver[index]?.relationshipWithChild || ""}
           onChange={handleRelationshipChange}
-          // onChange={(e) =>
-          //   setFieldValue(
-          //     `caregiver[${index}].relationshipWithChild`,
-          //     e.target.value
-          //   )
-          // }
+          placeholder="Select relationship"
         >
           {relationshipDataFiltered?.relationship?.map(
             (item: { id: string; value: string }) => (
@@ -521,14 +528,10 @@ const CaregiverComponent = ({ index }: { index: number }) => {
         </FormLabel>
         <Select
           id={`caregiver[${index}].caregiverRelationshipTypeWithParent`}
+          name={`caregiver[${index}].caregiverRelationshipTypeWithParent`}
           placeholder="Select relationship"
           onChange={handleRelationshipChange}
-          // onChange={(e) =>
-          //   setFieldValue(
-          //     `caregiver[${index}].caregiverRelationshipTypeWithParent`,
-          //     e.target.value
-          //   )
-          // }
+          value={values.caregiver[index]?.caregiverRelationshipTypeWithParent}
         >
           {caregiverRelationshipTypeWithParent?.map((relationship) => (
             <option key={relationship.id} value={relationship.id}>
@@ -559,14 +562,10 @@ const CaregiverComponent = ({ index }: { index: number }) => {
         </FormLabel>
         <Select
           id={`caregiver[${index}].caregiverRelationshipWithParentData`}
+          name={`caregiver[${index}].caregiverRelationshipWithParentData`}
           placeholder="Select relationship type"
           onChange={handleRelationshipChange}
-          // onChange={(e) =>
-          //   setFieldValue(
-          //     `caregiver[${index}].caregiverRelationshipWithParentData`,
-          //     e.target.value
-          //   )
-          // }
+          value={values.caregiver[index]?.caregiverRelationshipWithParentData}
         >
           {caregiverRelationshipFiltered?.relationship?.map(
             (item: { id: string; value: string }) => (

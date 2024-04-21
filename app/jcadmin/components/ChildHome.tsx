@@ -42,7 +42,7 @@ const ChildHome = ({ childrenData }: { childrenData: Array<any> }) => {
 };
 
 export async function getStaticProps() {
-  const { data } = await axios.get("/api/children");
+  const { data } = await axios.get("/api/child");
   return {
     props: { childrenData: data },
     revalidate: 10, // ISR: Regenerate the page every 10 seconds if there are requests
